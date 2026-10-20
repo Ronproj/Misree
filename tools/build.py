@@ -8,12 +8,11 @@ ARTIFACT = "--artifact" in sys.argv
 
 ADDRESS = "789 Newark Ave, Jersey City, NJ 07306"
 from urllib.parse import quote_plus
-# Jackson Heights street address isn't confirmed yet; maps use a place search until it is.
 LOCATIONS = [
     dict(id="jersey-city", name="Jersey City", area="Journal Square, Jersey City", line1="789 Newark Ave", line2="Jersey City, NJ 07306",
          query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029"),
-    dict(id="jackson-heights", name="Jackson Heights", area="Jackson Heights, Queens", line1="Jackson Heights", line2="Queens, NY",
-         query="Misree Chai, Jackson Heights, Queens, NY", phone=""),
+    dict(id="jackson-heights", name="Jackson Heights", area="Jackson Heights, Queens", line1="72-35 Broadway", line2="Jackson Heights, NY 11372",
+         query="Misree Chai NY, 72-35 Broadway, Jackson Heights, NY 11372", phone=""),
 ]
 for L in LOCATIONS:
     L["embed"] = f"https://www.google.com/maps?q={quote_plus(L['query'])}&z=16&output=embed"
@@ -480,7 +479,7 @@ def build_index():
 <div class="ctas"><a class="btn" href="menu.html">See the menu</a><a class="btn ghost" href="{DOORDASH}" target="_blank" rel="noopener">Order for delivery</a></div>
 <p class="scroll-cue">Scroll ↓</p></div></section>
 <div class="ticker" aria-hidden="true"><div>{tick}</div></div>
-<div class="facts"><div><b>Jersey City</b>789 Newark Ave</div><div><b>Jackson Heights</b>Queens, NY</div><div><b>When</b>Open daily, morning until late</div></div>
+<div class="facts"><div><b>Jersey City</b>789 Newark Ave</div><div><b>Jackson Heights</b>72-35 Broadway</div><div><b>When</b>Open daily, morning until late</div></div>
 <section class="pad"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">The menu</p><h2>Six ways to take a break.</h2></div><p>Pick a category, or open the full menu.</p></div><div class="mosaic">{tiles}</div><div class="cta-row"><a class="btn" href="menu.html">View the full menu</a></div></div></section>
 <section class="pad" style="background:var(--surface)"><div class="wrap story"><div class="photos rv"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy"><img src="{img("masala-chai")}" alt="Masala chai" loading="lazy"></div>
 <div class="rv"><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2><p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City, next to the milk teas, crepes and bowls the neighborhood keeps coming back for.</p>
