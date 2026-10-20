@@ -1,0 +1,269 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Menu · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="The full Misree Chai menu: drinks, crepes, bowls and bakery."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"><style>
+/* Layout: cinematic teahouse. Full-bleed video bands in deep peacock, saffron accents, photo-led menu. */
+:root{
+  --paper:#f5f0e8; --surface:#fffaf2; --ink:#1c2523; --muted:#5b6662; --line:#e2d7c7;
+  --night:#0c1f1d; --night-ink:#f4ecdf; --saffron:#d08a22; --saffron-ink:#1b1206; --rose:#c25a6c;
+  --scrim:rgba(8,20,19,.62); --card-shadow:0 1px 2px rgba(28,37,35,.06),0 12px 32px rgba(28,37,35,.08);
+  --display:"Gloock","Iowan Old Style",Georgia,serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
+  --saffron:#e3a24a; --card-shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
+  --saffron:#e3a24a; --card-shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.35); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,video{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.04;text-wrap:balance;margin:0}
+.eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--saffron);margin:0 0 14px}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:3px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 .95rem var(--body);padding:13px 22px;border-radius:999px;background:var(--saffron);color:var(--saffron-ink);border:0;cursor:pointer;transition:transform .2s, box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(208,138,34,.35)}
+.btn.ghost{background:rgba(255,255,255,.08);color:var(--night-ink);box-shadow:inset 0 0 0 1.5px rgba(244,236,223,.6);backdrop-filter:blur(6px)}
+
+/* header: transparent over video, solid after scroll */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--night)}
+.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;color:var(--night-ink);transition:background .3s, box-shadow .3s}
+.top.solid{background:rgba(12,31,29,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:16px}
+.brand{text-decoration:none;font-family:var(--display);font-size:1.5rem;white-space:nowrap}
+.brand span{color:var(--saffron)}
+.nav{display:flex;gap:22px;margin-left:auto;font-size:.93rem}
+.nav a{text-decoration:none;opacity:.85;padding:4px 0;border-bottom:1.5px solid transparent}
+.nav a:hover,.nav a[aria-current]{opacity:1;border-color:var(--saffron)}
+.menu-btn{display:none;margin-left:auto;background:none;border:0;color:inherit;font:600 .9rem var(--body);cursor:pointer;padding:8px}
+.top .btn{padding:10px 18px}
+@media (max-width:900px){
+  .menu-btn{display:block}.top .btn{display:none}
+  .nav{position:fixed;inset:0;top:0;flex-direction:column;justify-content:center;align-items:center;gap:22px;background:var(--night);font:400 2rem var(--display);opacity:0;pointer-events:none;transition:opacity .25s;margin:0}
+  .nav.open{opacity:1;pointer-events:auto}
+  .nav .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(16px, env(safe-area-inset-right,0px));font:600 .9rem var(--body)}
+}
+@media (min-width:901px){.nav .close{display:none}}
+
+/* video bands */
+.vband{position:relative;overflow:hidden;background:var(--night);color:var(--night-ink);isolation:isolate}
+.vband video,.vband .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.vband::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,20,19,.55) 0%,var(--scrim) 55%,rgba(8,20,19,.85) 100%)}
+.hero .wrap{min-height:min(92vh,860px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:140px 72px}
+.hero h1{font-size:clamp(3.4rem,11vw,9rem);letter-spacing:-.015em}
+.hero h1 em{font-style:normal;color:var(--saffron)}
+.hero .lede{font-size:clamp(1.05rem,2vw,1.3rem);max-width:36ch;opacity:.92;margin:18px 0 30px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.vtoggle{position:absolute;right:max(16px, env(safe-area-inset-right,0px));bottom:20px;z-index:2;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;font:600 .78rem var(--body);padding:8px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+.scroll-cue{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:48px}
+
+.ticker{background:var(--saffron);color:var(--saffron-ink);overflow:hidden;white-space:nowrap;font:400 1.25rem var(--display)}
+.ticker div{display:inline-flex;gap:40px;padding:14px 0;animation:tick 40s linear infinite}
+.ticker span::after{content:"✦";margin-left:40px;font-size:.8rem;vertical-align:middle}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--line)}
+.facts>div{padding:24px;min-width:0}
+.facts>div+div{border-left:1px solid var(--line)}
+.facts b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+@media (max-width:760px){.facts{grid-template-columns:1fr}.facts>div+div{border-left:0;border-top:1px solid var(--line)}}
+
+section.pad{padding-block:96px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head h2{font-size:clamp(2.3rem,5.5vw,4rem)}
+.sec-head p{max-width:44ch;color:var(--muted);margin:0}
+
+/* category mosaic */
+.mosaic{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:220px;gap:14px}
+.mtile{position:relative;overflow:hidden;border-radius:20px;text-decoration:none;color:#fff;isolation:isolate;grid-column:span 2}
+.mtile:nth-child(1){grid-column:span 3;grid-row:span 2}.mtile:nth-child(2){grid-column:span 3;grid-row:span 1}
+.mtile:nth-child(3){grid-column:span 3}
+.mtile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.mtile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.72))}
+.mtile:hover img{transform:scale(1.07)}
+.mtile .t{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;align-items:end;gap:12px}
+.mtile h3{font-size:clamp(1.6rem,3vw,2.3rem)}
+.mtile small{font-size:.85rem;opacity:.85;white-space:nowrap}
+@media (max-width:820px){.mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:200px}.mtile,.mtile:nth-child(n){grid-column:span 1;grid-row:span 1}.mtile:nth-child(1){grid-column:span 2}}
+@media (max-width:480px){.mosaic{grid-template-columns:1fr}.mtile:nth-child(1){grid-column:span 1}}
+
+/* story split */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.story .photos{position:relative;aspect-ratio:1/1}
+.story .photos img{position:absolute;border-radius:20px;object-fit:cover;box-shadow:var(--card-shadow)}
+.story .photos img:first-child{inset:0 18% 18% 0;width:82%;height:82%}
+.story .photos img:last-child{right:0;bottom:0;width:52%;height:52%;border:6px solid var(--paper)}
+.story h2{font-size:clamp(2.2rem,5vw,3.5rem)}
+.story p{color:var(--muted);max-width:50ch}
+@media (max-width:820px){.story{grid-template-columns:1fr}}
+
+/* printed-menu layout */
+.mtabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.mtabs .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.mtabs a{flex:0 0 auto;text-decoration:none;font:600 .88rem var(--body);padding:8px 16px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+.mtabs a[aria-current="true"]{background:var(--ink);color:var(--paper)}
+.msec{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:64px;padding-block:72px;border-top:1px solid var(--line);scroll-margin-top:120px}
+.msec:first-child{border-top:0}
+.msec aside{position:sticky;top:150px;align-self:start}
+.msec aside img{border-radius:20px;aspect-ratio:4/5;object-fit:cover;width:100%;margin-top:22px;box-shadow:var(--card-shadow)}
+.msec h2{font-size:clamp(2.4rem,5vw,3.6rem)}
+.msec aside p{color:var(--muted);margin:10px 0 0}
+.msec aside a{display:inline-block;margin-top:14px;color:var(--saffron);font-weight:600;font-size:.9rem;text-decoration:none}
+@media (max-width:860px){.msec{grid-template-columns:1fr;gap:20px;padding-block:52px}.msec aside{position:static}.msec aside img{display:none}}
+.mlist{display:flex;flex-direction:column}
+.mi{display:grid;grid-template-columns:72px minmax(0,1fr);gap:18px;align-items:center;padding:16px 4px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;color:inherit;font:inherit;cursor:pointer;width:100%;border-radius:0;transition:background .2s}
+.mi:hover{background:var(--surface)}
+.mi img{width:72px;height:72px;border-radius:50%;object-fit:cover;transition:transform .4s}
+.mi:hover img{transform:scale(1.08) rotate(-3deg)}
+.mi .l{display:flex;align-items:baseline;gap:10px}
+.mi .n{font:400 clamp(1.2rem,2.2vw,1.5rem)/1.2 var(--display)}
+.mi .dots{flex:1;min-width:20px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
+.mi .p{font-weight:700;font-variant-numeric:tabular-nums;color:var(--saffron)}
+.mi small{display:block;color:var(--muted);font-size:.9rem;margin-top:2px}
+.mi .view{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .2s}
+.mi:hover .view{opacity:1}
+@media (max-width:520px){.mi{grid-template-columns:56px minmax(0,1fr);gap:14px}.mi img{width:56px;height:56px}.mi .view{display:none}}
+.menu-hero .wrap{min-height:min(52vh,460px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:130px 48px}
+.menu-hero h1{font-size:clamp(3.4rem,10vw,7.5rem)}
+.note{font-size:.85rem;color:var(--muted);margin-top:22px}
+.plain{max-width:760px;margin:0 auto;text-align:center}
+.plain h2{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:28px}
+.plain ul{list-style:none;margin:0;padding:0;text-align:left;border-top:1.5px solid var(--ink)}
+.plain li button{display:block;width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:18px 2px;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.plain li button:hover .n{color:var(--saffron)}
+.plain .l{display:flex;align-items:baseline;gap:12px}
+.plain .n{font:400 clamp(1.3rem,2.6vw,1.7rem)/1.2 var(--display);transition:color .2s}
+.plain .dots{flex:1;min-width:20px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
+.plain .p{font-weight:700;font-variant-numeric:tabular-nums}
+.plain small{display:block;color:var(--muted);font-size:.92rem;margin-top:4px}
+.msec-plain{padding-block:72px 8px;scroll-margin-top:130px}
+.msec-plain + .msec-plain{border-top:1px solid var(--line);margin-top:56px}
+.plain h3{font:600 .82rem var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--saffron);text-align:left;margin:36px 0 8px;scroll-margin-top:140px}
+.plain h3 + ul{border-top-width:1px}
+.rewards{background:var(--night);color:var(--night-ink)}
+#rewards,#visit{scroll-margin-top:64px}
+.rewards .wrap{display:grid;grid-template-columns:1fr minmax(0,360px);gap:56px;align-items:center;padding-block:96px}
+.rewards h2{font-size:clamp(2.4rem,6vw,4.2rem)}
+.rewards .rw-copy p{opacity:.85;max-width:42ch}
+.stores{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:170px;padding:10px 20px;border-radius:14px;background:var(--night-ink);color:var(--night);text-decoration:none;line-height:1.15;transition:transform .2s}
+.store:hover{transform:translateY(-2px)}
+.store small{font-size:.72rem;opacity:.75}
+.store b{font:600 1.2rem var(--body)}
+.store[aria-disabled="true"]{opacity:.55;cursor:default}
+.phone{justify-self:center;width:min(280px,70vw);aspect-ratio:9/19;border-radius:40px;padding:10px;background:#1a1a1a;box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.12)}
+.phone .screen{position:relative;height:100%;border-radius:32px;overflow:hidden}
+.phone img{width:100%;height:100%;object-fit:cover}
+.app-ui{position:absolute;left:0;right:0;bottom:0;padding:22px 18px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;display:flex;flex-direction:column;gap:2px}
+.app-ui b{font:400 1.5rem var(--display)}
+.app-ui span{font-size:.8rem;opacity:.85}
+.app-ui i{display:block;height:40px;border-radius:999px;background:var(--saffron);margin-top:12px}
+@media (max-width:820px){.rewards .wrap{grid-template-columns:1fr;gap:28px;padding-block:72px}}
+.cta-row{display:flex;justify-content:center;margin-top:36px}
+
+/* quick view */
+.qv{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) max(16px, env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px));background:rgba(6,14,13,.7);backdrop-filter:blur(6px)}
+.qv .box{background:var(--surface);color:var(--ink);border-radius:22px;overflow:hidden;max-width:880px;width:100%;display:grid;grid-template-columns:1.2fr 1fr;max-height:100%;animation:pop .25s ease-out}
+.qv .box img{width:100%;height:100%;object-fit:cover;min-height:280px}
+.qv .info{padding:32px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.qv h3{font-size:2.2rem}
+.qv .price{font:700 1.4rem var(--body);color:var(--saffron)}
+.qv .x{align-self:flex-end;background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;font:600 .8rem var(--body)}
+.qv .order{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.qv .order .btn.alt{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+@media (max-width:700px){.qv .box{grid-template-columns:1fr}.qv .box img{min-height:0;aspect-ratio:4/3}}
+@keyframes pop{from{transform:scale(.96);opacity:.6}}
+
+/* gallery strip */
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}
+.strip img{flex:0 0 auto;width:min(360px,78vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+
+/* visit */
+.visit .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;padding-block:120px}
+.visit h2{font-size:clamp(2.6rem,6.5vw,4.8rem)}
+.visit dl{display:grid;grid-template-columns:auto 1fr;gap:12px 24px;margin:0;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
+.visit dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;padding-top:5px}
+.visit dd{margin:0;font-size:1.05rem}
+@media (max-width:820px){.visit .wrap{grid-template-columns:1fr}}
+footer{padding-block:28px;font-size:.85rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* category page */
+.cat-hero .wrap{min-height:min(70vh,640px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:130px 56px}
+.cat-hero h1{font-size:clamp(3.2rem,9vw,7rem)}
+.cat-hero p.lede{font-size:1.2rem;max-width:40ch;opacity:.9;margin:14px 0 0}
+.crumbs{font-size:.85rem;opacity:.8;margin-bottom:16px}
+.crumbs a{text-decoration:none}
+.feature{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;margin-bottom:56px}
+.feature img{border-radius:22px;aspect-ratio:4/3;object-fit:cover;width:100%;box-shadow:var(--card-shadow)}
+.feature h2{font-size:clamp(2.2rem,4.5vw,3.4rem)}
+.feature .price{font:700 1.3rem var(--body);color:var(--saffron);margin:10px 0 18px;display:block}
+@media (max-width:820px){.feature{grid-template-columns:1fr}}
+.pager{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
+.pager a{text-decoration:none;display:flex;flex-direction:column;gap:2px}
+.pager a span{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.pager a b{font-family:var(--display);font-weight:400;font-size:1.7rem}
+.pager a:last-child{text-align:right;margin-left:auto}
+
+/* scroll reveal: content is visible at rest, motion only adds a lift */
+@media (prefers-reduced-motion:no-preference){
+  .rv{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+  .js .rv:not(.in){transform:translateY(28px)}
+}
+@media (prefers-reduced-motion:reduce){.ticker div{animation:none}html{scroll-behavior:auto}}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html">Misree <span>Chai</span></a><nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button><a href="index.html">Home</a><a href="menu.html" aria-current=page>Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="index.html#visit">Visit</a></nav><button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order Online</a></div></header>
+<section class="vband menu-hero"><img class="poster" src="assets/img/milk-tea-pour.jpg" alt="" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata" poster="assets/img/milk-tea-pour.jpg" aria-hidden="true"><source src="assets/video/milk-tea.mp4" type="video/mp4"></video><button class="vtoggle" type="button">Pause video</button><div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a> / Menu</p><p class="eyebrow">Served daily on Newark Ave</p><h1>The Menu</h1></div></section>
+<nav class="mtabs" aria-label="Menu sections"><div class="wrap" style="justify-content:center"><a href="#drinks">Drinks</a><a href="#crepes">Crepes</a><a href="#bowls">Bowls</a><a href="#bakery">Bakery</a></div></nav>
+<div class="wrap"><section class="plain msec-plain" id="drinks" data-sec><p class="eyebrow">Hot and iced</p><h2>Drinks</h2><h3 id="chai">Chai & Coffee</h3><ul><li><button type="button" data-item data-title="Masala Chai" data-price="$4.00" data-img="assets/img/masala-chai.jpg" data-catname="Chai &amp; Coffee" data-desc="" data-page="chai.html"><span class="l"><span class="n">Masala Chai</span><span class="dots"></span><span class="p">$4.00</span></span></button></li><li><button type="button" data-item data-title="Zafrani Chai" data-price="$3.49" data-img="assets/img/zafrani-chai.jpg" data-catname="Chai &amp; Coffee" data-desc="" data-page="chai.html"><span class="l"><span class="n">Zafrani Chai</span><span class="dots"></span><span class="p">$3.49</span></span></button></li><li><button type="button" data-item data-title="South Indian Coffee" data-price="$4.00" data-img="assets/img/south-indian-coffee.jpg" data-catname="Chai &amp; Coffee" data-desc="" data-page="chai.html"><span class="l"><span class="n">South Indian Coffee</span><span class="dots"></span><span class="p">$4.00</span></span></button></li></ul><h3 id="kulfi">Kulfi Milk Tea</h3><ul><li><button type="button" data-item data-title="Falooda Kulfi" data-price="$7.49" data-img="assets/img/falooda-kulfi.jpg" data-catname="Kulfi Milk Tea" data-desc="Falooda-inspired creamy milk tea." data-page="kulfi.html"><span class="l"><span class="n">Falooda Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span><small>Falooda-inspired creamy milk tea.</small></button></li><li><button type="button" data-item data-title="Mango Kulfi" data-price="$7.49" data-img="assets/img/mango-kulfi.jpg" data-catname="Kulfi Milk Tea" data-desc="" data-page="kulfi.html"><span class="l"><span class="n">Mango Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span></button></li><li><button type="button" data-item data-title="Pista Kulfi" data-price="$7.49" data-img="assets/img/pista-kulfi.jpg" data-catname="Kulfi Milk Tea" data-desc="" data-page="kulfi.html"><span class="l"><span class="n">Pista Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span></button></li></ul><h3 id="teas">Milk & Fruit Teas</h3><ul><li><button type="button" data-item data-title="Classic Milk Tea" data-price="$6.49" data-img="assets/img/classic-milk-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Classic Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></button></li><li><button type="button" data-item data-title="Taro Milk Tea" data-price="$6.49" data-img="assets/img/taro-milk-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Taro Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></button></li><li><button type="button" data-item data-title="Strawberry Milk Tea" data-price="$6.49" data-img="assets/img/strawberry-milk-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Strawberry Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></button></li><li><button type="button" data-item data-title="Mango Fruit Tea" data-price="$5.49" data-img="assets/img/mango-fruit-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Mango Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></button></li><li><button type="button" data-item data-title="Strawberry Fruit Tea" data-price="$5.49" data-img="assets/img/strawberry-fruit-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Strawberry Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></button></li><li><button type="button" data-item data-title="Peach Fruit Tea" data-price="$5.49" data-img="assets/img/peach-fruit-tea.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Peach Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></button></li><li><button type="button" data-item data-title="Lychee Refresher" data-price="$5.99" data-img="assets/img/lychee-refresher.jpg" data-catname="Milk &amp; Fruit Teas" data-desc="" data-page="teas.html"><span class="l"><span class="n">Lychee Refresher</span><span class="dots"></span><span class="p">$5.99</span></span></button></li></ul></section><section class="plain msec-plain" id="crepes" data-sec><p class="eyebrow">Folded to order</p><h2>Crepes</h2><ul><li><button type="button" data-item data-title="Triple Chocolate Crepe" data-price="$14.00" data-img="assets/img/triple-chocolate-crepe.jpg" data-catname="Crepes" data-desc="Kinder Bueno, Ferrero, Nutella and chocolate chips." data-page="crepes.html"><span class="l"><span class="n">Triple Chocolate Crepe</span><span class="dots"></span><span class="p">$14.00</span></span><small>Kinder Bueno, Ferrero, Nutella and chocolate chips.</small></button></li><li><button type="button" data-item data-title="Nutella Crepe" data-price="$13.99" data-img="assets/img/nutella-crepe.jpg" data-catname="Crepes" data-desc="" data-page="crepes.html"><span class="l"><span class="n">Nutella Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></button></li><li><button type="button" data-item data-title="Royal Pistachio Crepe" data-price="$13.99" data-img="assets/img/royal-pistachio-crepe.jpg" data-catname="Crepes" data-desc="" data-page="crepes.html"><span class="l"><span class="n">Royal Pistachio Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></button></li><li><button type="button" data-item data-title="Fudge Brownie Crepe" data-price="$12.99" data-img="assets/img/fudge-brownie-crepe.jpg" data-catname="Crepes" data-desc="" data-page="crepes.html"><span class="l"><span class="n">Fudge Brownie Crepe</span><span class="dots"></span><span class="p">$12.99</span></span></button></li><li><button type="button" data-item data-title="Oreo Crepe" data-price="$13.99" data-img="assets/img/oreo-crepe.jpg" data-catname="Crepes" data-desc="" data-page="crepes.html"><span class="l"><span class="n">Oreo Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></button></li><li><button type="button" data-item data-title="Mix Berries Crepe" data-price="$13.99" data-img="assets/img/mix-berries-crepe.jpg" data-catname="Crepes" data-desc="" data-page="crepes.html"><span class="l"><span class="n">Mix Berries Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></button></li></ul></section><section class="plain msec-plain" id="bowls" data-sec><p class="eyebrow">Cold and loaded</p><h2>Bowls</h2><ul><li><button type="button" data-item data-title="Nutella Acai Bowl" data-price="$12.99" data-img="assets/img/nutella-acai-bowl.jpg" data-catname="Bowls" data-desc="" data-page="bowls.html"><span class="l"><span class="n">Nutella Acai Bowl</span><span class="dots"></span><span class="p">$12.99</span></span></button></li><li><button type="button" data-item data-title="Almond Lover Bowl" data-price="$13.99" data-img="assets/img/almond-lover-bowl.jpg" data-catname="Bowls" data-desc="" data-page="bowls.html"><span class="l"><span class="n">Almond Lover Bowl</span><span class="dots"></span><span class="p">$13.99</span></span></button></li><li><button type="button" data-item data-title="Coconut Honey Bowl" data-price="$13.99" data-img="assets/img/coconut-honey-bowl.jpg" data-catname="Bowls" data-desc="" data-page="bowls.html"><span class="l"><span class="n">Coconut Honey Bowl</span><span class="dots"></span><span class="p">$13.99</span></span></button></li><li><button type="button" data-item data-title="Protein Bowl" data-price="$12.99" data-img="assets/img/protein-bowl.jpg" data-catname="Bowls" data-desc="" data-page="bowls.html"><span class="l"><span class="n">Protein Bowl</span><span class="dots"></span><span class="p">$12.99</span></span></button></li></ul></section><section class="plain msec-plain" id="bakery" data-sec><p class="eyebrow">With your chai</p><h2>Bakery</h2><ul><li><button type="button" data-item data-title="Bun Maska" data-price="$4.49" data-img="assets/img/bun-maska.jpg" data-catname="Bakery" data-desc="" data-page="bakery.html"><span class="l"><span class="n">Bun Maska</span><span class="dots"></span><span class="p">$4.49</span></span></button></li><li><button type="button" data-item data-title="Butter Croissant" data-price="$4.00" data-img="assets/img/butter-croissant.jpg" data-catname="Bakery" data-desc="" data-page="bakery.html"><span class="l"><span class="n">Butter Croissant</span><span class="dots"></span><span class="p">$4.00</span></span></button></li><li><button type="button" data-item data-title="Nutella Croissant" data-price="$5.00" data-img="assets/img/nutella-croissant.jpg" data-catname="Bakery" data-desc="" data-page="bakery.html"><span class="l"><span class="n">Nutella Croissant</span><span class="dots"></span><span class="p">$5.00</span></span></button></li></ul></section><p class="note" style="text-align:center">Tap an item to see a photo. Prices are from the cafe's online ordering menu and may differ in store.</p>
+<div class="ctas" style="justify-content:center;margin-top:24px"><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order on DoorDash</a></div></div>
+<div style="height:88px"></div>
+<section class="vband visit" id="visit"><img class="poster" src="assets/img/cafe-interior.jpg" alt="" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata" poster="assets/img/cafe-interior.jpg" aria-hidden="true"><source src="assets/video/interior.mp4" type="video/mp4"></video><button class="vtoggle" type="button">Pause video</button><div class="wrap">
+<div><p class="eyebrow">Visit</p><h2>Pull up a chair on Newark Ave.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ" target="_blank" rel="noopener">Get directions</a><a class="btn ghost" href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">@misreechai</a></div></div>
+<dl><dt>Address</dt><dd>789 Newark Ave, Jersey City, NJ 07306</dd><dt>Phone</dt><dd>(856) 210-2029</dd><dt>Hours</dt><dd>Open daily, morning until late.<br><a href="https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ" target="_blank" rel="noopener">Today's hours on Google Maps</a></dd>
+<dt>Delivery</dt><dd><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a> · <a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></dd></dl></div></section><footer><div class="wrap"><span>Misree Chai · 789 Newark Ave, Jersey City, NJ 07306</span><span>Prices from the cafe's online ordering menu and may change. Photos are styled representations.</span></div></footer><div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Item details"><div class="box"><img src="" alt=""><div class="info">
+<button class="x" type="button">Close</button><span class="cat eyebrow"></span><h3></h3><span class="price"></span><p class="desc" style="color:var(--muted);margin:0"></p>
+<div class="order"><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order on DoorDash</a></div></div></div></div><script>
+document.documentElement.classList.add('js');
+const bar=document.querySelector('.top');
+const onScroll=()=>bar&&bar.classList.toggle('solid',scrollY>40);
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+const nav=document.querySelector('.nav');
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>nav.classList.toggle('open')));
+nav&&nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight)el.classList.add('in');else io.observe(el)});
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.vband').forEach(band=>{
+  const v=band.querySelector('video'),t=band.querySelector('.vtoggle');if(!v)return;
+  if(reduce){v.removeAttribute('autoplay');v.pause()}
+  const sync=()=>{if(t)t.textContent=v.paused?'Play video':'Pause video'};
+  v.addEventListener('play',sync);v.addEventListener('pause',sync);sync();
+  t&&t.addEventListener('click',()=>v.paused?v.play():v.pause());
+  v.addEventListener('error',()=>v.remove(),true);
+});
+// menu tabs scrollspy
+const tabs=document.querySelectorAll('.mtabs a');
+if(tabs.length){
+  const map=new Map([...tabs].map(a=>[a.getAttribute('href').slice(1),a]));
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);if(a){a.setAttribute('aria-current','true');a.scrollIntoView({block:'nearest',inline:'center'})}}}),{rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
+}
+// quick view
+const qv=document.getElementById('qv');
+if(qv){
+  const box=qv.querySelector('.box');let last=null;
+  const close=()=>{qv.hidden=true;last&&last.focus()};
+  document.querySelectorAll('[data-item]').forEach(c=>c.addEventListener('click',()=>{
+    last=c;const d=c.dataset;
+    qv.querySelector('img').src=d.img;qv.querySelector('img').alt=d.title;
+    qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
+    qv.querySelector('.cat').textContent=d.catname;qv.querySelector('.desc').textContent=d.desc||'';
+    qv.hidden=false;qv.querySelector('.x').focus();}));
+  qv.addEventListener('click',e=>{if(!box.contains(e.target))close()});
+  qv.querySelector('.x').addEventListener('click',close);
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!qv.hidden)close()});
+}
+</script></body></html>
