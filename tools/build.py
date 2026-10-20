@@ -7,6 +7,18 @@ OUT = sys.argv[1]
 ARTIFACT = "--artifact" in sys.argv
 
 ADDRESS = "789 Newark Ave, Jersey City, NJ 07306"
+from urllib.parse import quote_plus
+# Jackson Heights street address isn't confirmed yet; maps use a place search until it is.
+LOCATIONS = [
+    dict(id="jersey-city", name="Jersey City", area="Journal Square, Jersey City", line1="789 Newark Ave", line2="Jersey City, NJ 07306",
+         query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029"),
+    dict(id="jackson-heights", name="Jackson Heights", area="Jackson Heights, Queens", line1="Jackson Heights", line2="Queens, NY",
+         query="Misree Chai, Jackson Heights, Queens, NY", phone=""),
+]
+for L in LOCATIONS:
+    L["embed"] = f"https://www.google.com/maps?q={quote_plus(L['query'])}&z=16&output=embed"
+    L["dir"] = f"https://www.google.com/maps/dir/?api=1&destination={quote_plus(L['query'])}"
+    L["search"] = f"https://www.google.com/maps/search/?api=1&query={quote_plus(L['query'])}"
 PHONE = "(856) 210-2029"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ"
 DIRECTIONS = "https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306"
@@ -59,6 +71,7 @@ CATS = [
 ]
 
 def img(name): return f"assets/img/{name}.jpg"
+def img_png(name): return f"assets/img/{name}.png"
 def vid(name): return f"assets/video/{name}.mp4"
 
 CSS = r"""
@@ -67,8 +80,8 @@ CSS = r"""
   --paper:#f5f0e8; --surface:#fffaf2; --ink:#1c2523; --muted:#5b6662; --line:#e2d7c7;
   --night:#0c1f1d; --night-ink:#f4ecdf; --saffron:#d08a22; --saffron-ink:#1b1206; --rose:#c25a6c;
   --scrim:rgba(8,20,19,.62); --card-shadow:0 1px 2px rgba(28,37,35,.06),0 12px 32px rgba(28,37,35,.08);
-  --display:"Gloock","Iowan Old Style",Georgia,serif;
-  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Jost","Futura","Century Gothic",system-ui,sans-serif;
+  --body:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
@@ -83,7 +96,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--b
 a{color:inherit}
 img,video{max-width:100%;display:block}
 .wrap{max-width:1200px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.04;text-wrap:balance;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.05;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{letter-spacing:-.025em}
 .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--saffron);margin:0 0 14px}
 :focus-visible{outline:3px solid var(--saffron);outline-offset:3px;border-radius:6px}
 .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 .95rem var(--body);padding:13px 22px;border-radius:999px;background:var(--saffron);color:var(--saffron-ink);border:0;cursor:pointer;transition:transform .2s, box-shadow .2s}
@@ -95,7 +109,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;color:var(--night-ink);transition:background .3s, box-shadow .3s}
 .top.solid{background:rgba(12,31,29,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
 .top .wrap{display:flex;align-items:center;gap:20px;padding-block:16px}
-.brand{text-decoration:none;font-family:var(--display);font-size:1.5rem;white-space:nowrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:400 1.45rem var(--display);letter-spacing:.02em;white-space:nowrap}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#fff}
+.brand small{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;margin-left:-4px}
 .brand span{color:var(--saffron)}
 .nav{display:flex;gap:22px;margin-left:auto;font-size:.93rem}
 .nav a{text-decoration:none;opacity:.85;padding:4px 0;border-bottom:1.5px solid transparent}
@@ -236,6 +252,16 @@ section.pad{padding-block:96px}
 .mapbar p{margin:4px 0 0;opacity:.8;font-size:.95rem}
 .mapbar .eyebrow{margin:0 0 6px;opacity:1}
 @media (max-width:600px){.bigmap{height:420px;min-height:0}.mapbar .btn{width:100%;justify-content:center}}
+.loc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.loc-tab{display:flex;flex-direction:column;gap:2px;text-align:left;padding:16px 20px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
+.loc-tab b{font:500 1.25rem var(--display)}
+.loc-tab span{color:var(--muted);font-size:.9rem}
+.loc-tab[aria-selected="true"]{border-color:var(--saffron);background:var(--paper);box-shadow:inset 0 0 0 1px var(--saffron)}
+.vlocs{display:grid;gap:14px;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:24px 28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
+.vloc p{margin:0}
+.vloc .eyebrow{margin-bottom:4px}
+.vloc a{display:inline-block;padding:8px 0;color:var(--saffron);font-weight:600;text-decoration:none}
+.vloc + .vloc{border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
 .tlink{color:var(--saffron);font-weight:600;text-decoration:none;display:inline-block;padding:10px 0;margin-top:auto}
 .cta-row{display:flex;justify-content:center;margin-top:36px}
 
@@ -318,6 +344,13 @@ if(tabs.length){
   const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);if(a){a.setAttribute('aria-current','true');a.scrollIntoView({block:'nearest',inline:'center'})}}}),{rootMargin:'-45% 0px -50% 0px'});
   document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
 }
+// visit page location switcher
+const ltabs=document.querySelectorAll('.loc-tab');
+ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.getElementById('loc-map').src=d.embed;document.getElementById('loc-dir').href=d.dir;
+  document.getElementById('loc-name').textContent='Misree Chai · '+d.name;
+  document.getElementById('loc-l1').textContent=d.l1===d.name?d.l2.replace(/^/,d.name+', '):d.l1+', '+d.l2;
+  document.getElementById('loc-meta').textContent=d.phone?'Open daily, morning until late · '+d.phone:'Check hours on Google Maps';}));
 // quick view
 const qv=document.getElementById('qv');
 if(qv){
@@ -335,11 +368,11 @@ if(qv){
 }
 """
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap">'
 
 def page(title, desc, body, is_index=False):
     head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover">'
-            f'<meta name="description" content="{html.escape(desc)}"><meta property="og:image" content="{img("chai-pour")}">{FONTS}<style>{CSS}</style>')
+            f'<meta name="description" content="{html.escape(desc)}"><meta property="og:image" content="{img("chai-pour")}"><link rel="icon" href="{img_png("logo")}">{FONTS}<style>{CSS}</style>')
     tail = f'<script>{JS}</script>'
     if ARTIFACT and is_index:
         return head + body + tail
@@ -348,7 +381,7 @@ def page(title, desc, body, is_index=False):
 
 def header(current=None):
     links = f'<a href="index.html"{" aria-current=page" if current is None else ""}>Home</a><a href="menu.html"{" aria-current=page" if current=="menu" else ""}>Menu</a>' + f'<a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html"{" aria-current=page" if current=="visit" else ""}>Visit</a><a class="btn nav-order" href="{DOORDASH}" target="_blank" rel="noopener">Order Online</a>'
-    return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html">Misree <span>Chai</span></a>'
+    return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="{img_png("logo")}" alt="">misree <small>chai</small></a>'
             f'<nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button>{links}</nav>'
             f'<button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button>'
             f'<a class="btn" href="{DOORDASH}" target="_blank" rel="noopener">Order Online</a></div></header>')
@@ -359,13 +392,13 @@ def vband_media(video, poster):
             f'<button class="vtoggle" type="button">Pause video</button>')
 
 def visit():
+    locs = "".join(f'<div class="vloc"><p class="eyebrow">{L["name"]}</p><p>{L["line1"]}<br>{L["line2"]}</p><a href="{L["dir"]}" target="_blank" rel="noopener">Directions →</a></div>' for L in LOCATIONS)
     return f'''<section class="vband visit" id="visit">{vband_media("interior", "cafe-interior")}<div class="wrap">
-<div><p class="eyebrow">Visit</p><h2>Pull up a chair on Newark Ave.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="{DIRECTIONS}" target="_blank" rel="noopener">Get directions</a></div></div>
-<dl><dt>Address</dt><dd>{ADDRESS}</dd><dt>Phone</dt><dd>{PHONE}</dd><dt>Hours</dt><dd>Open daily, morning until late.<br><a href="{MAPS}" target="_blank" rel="noopener">Today's hours on Google Maps</a></dd>
-<dt>Delivery</dt><dd><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a> · <a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></dd></dl></div></section>'''
+<div><p class="eyebrow">Visit</p><h2>Two cafes. Same chai.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="{INSTA}" target="_blank" rel="noopener">@misreechai</a></div></div>
+<div class="vlocs">{locs}</div></div></section>'''
 
 def footer():
-    return (f'<footer><div class="wrap"><span>Misree Chai · {ADDRESS}</span>'
+    return (f'<footer><div class="wrap"><span>Misree Chai · Jersey City & Jackson Heights</span>'
             f'<span>Prices from the cafe\'s online ordering menu and may change. Photos are styled representations.</span></div></footer>')
 
 QV = f'''<div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Item details"><div class="box"><img src="" alt=""><div class="info">
@@ -422,17 +455,18 @@ def build_visit():
     strip = "".join(f'<img src="{img(n)}" alt="" loading="lazy">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
     body = f'''{header("visit")}
 <section class="vband menu-hero">{vband_media("interior", "cafe-interior")}<div class="wrap">
-<p class="crumbs"><a href="index.html">Home</a> / Visit</p><p class="eyebrow">Journal Square, Jersey City</p><h1>Come say hi.</h1>
+<p class="crumbs"><a href="index.html">Home</a> / Visit</p><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Come say hi.</h1>
 <p class="lede">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p></div></section>
 <section class="pad"><div class="wrap">
+<div class="loc-tabs" role="tablist" aria-label="Choose a location">{"".join(f'<button type="button" role="tab" class="loc-tab" data-loc="{L["id"]}" aria-selected="{"true" if i==0 else "false"}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" data-l1="{html.escape(L["line1"])}" data-l2="{html.escape(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}"><b>{L["name"]}</b><span>{L["line1"]}{", " + L["line2"] if L["line1"] != L["name"] else ", " + L["line2"]}</span></button>' for i, L in enumerate(LOCATIONS))}</div>
 <div class="bigmap"><div class="map-fallback"><img src="{img("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
-<iframe src="{MAP_EMBED}" title="Google Map showing Misree Chai at 789 Newark Ave, Jersey City" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-<div class="mapbar"><div><p class="eyebrow">Misree Chai</p><h3>{ADDRESS}</h3><p>Open daily, morning until late · {PHONE}</p></div>
-<a class="btn" href="{DIRECTIONS}" target="_blank" rel="noopener">Get directions in Google Maps →</a></div>
+<iframe id="loc-map" src="{LOCATIONS[0]["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+<div class="mapbar"><div><p class="eyebrow" id="loc-name">Misree Chai · {LOCATIONS[0]["name"]}</p><h3 id="loc-l1">{LOCATIONS[0]["line1"]}, {LOCATIONS[0]["line2"]}</h3><p id="loc-meta">Open daily, morning until late · {LOCATIONS[0]["phone"]}</p></div>
+<a class="btn" id="loc-dir" href="{LOCATIONS[0]["dir"]}" target="_blank" rel="noopener">Get directions in Google Maps →</a></div>
 </div></section>
 <section class="pad" style="padding-top:0"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">Inside Misree</p><h2>Warm light, hot chai.</h2></div><p><a class="tlink" href="{INSTA}" target="_blank" rel="noopener">Follow @misreechai on Instagram →</a></p></div><div class="strip">{strip}</div></div></section>
 {footer()}{QV}'''
-    return page("Visit · Misree Chai", "Find Misree Chai at 789 Newark Ave, Jersey City: map, directions, hours and contact.", body)
+    return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps, directions and hours.", body)
 
 def build_index():
     tiles = "".join(f'<a class="mtile rv" href="menu.html#{c["slug"]}"><img src="{img(c["items"][0][2])}" alt="" loading="lazy"><div class="t"><h3>{c["name"]}</h3><small>{len(c["items"])} items →</small></div></a>' for c in CATS)
@@ -441,12 +475,12 @@ def build_index():
     strip = "".join(f'<img src="{img(n)}" alt="" loading="lazy">' for n in ["chai-cheers", "falooda-kulfi", "triple-chocolate-crepe", "taro-milk-tea", "nutella-acai-bowl", "bun-maska", "royal-pistachio-crepe", "mango-fruit-tea"])
     body = f'''{header()}
 <section class="vband hero">{vband_media("chai-pour", "chai-pour")}<div class="wrap">
-<p class="eyebrow">Chai house · Journal Square, Jersey City</p><h1>Misree <em>Chai</em></h1>
-<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh on Newark Avenue.</p>
+<p class="eyebrow">Chai house · Jersey City &amp; Jackson Heights</p><h1>Misree <em>Chai</em></h1>
+<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh in Jersey City and Jackson Heights.</p>
 <div class="ctas"><a class="btn" href="menu.html">See the menu</a><a class="btn ghost" href="{DOORDASH}" target="_blank" rel="noopener">Order for delivery</a></div>
 <p class="scroll-cue">Scroll ↓</p></div></section>
 <div class="ticker" aria-hidden="true"><div>{tick}</div></div>
-<div class="facts"><div><b>Where</b>{ADDRESS}</div><div><b>Call</b>{PHONE}</div><div><b>When</b>Open daily, morning until late</div></div>
+<div class="facts"><div><b>Jersey City</b>789 Newark Ave</div><div><b>Jackson Heights</b>Queens, NY</div><div><b>When</b>Open daily, morning until late</div></div>
 <section class="pad"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">The menu</p><h2>Six ways to take a break.</h2></div><p>Pick a category, or open the full menu.</p></div><div class="mosaic">{tiles}</div><div class="cta-row"><a class="btn" href="menu.html">View the full menu</a></div></div></section>
 <section class="pad" style="background:var(--surface)"><div class="wrap story"><div class="photos rv"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy"><img src="{img("masala-chai")}" alt="Masala chai" loading="lazy"></div>
 <div class="rv"><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2><p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City, next to the milk teas, crepes and bowls the neighborhood keeps coming back for.</p>

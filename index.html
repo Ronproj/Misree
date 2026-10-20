@@ -1,11 +1,11 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Misree Chai, a chai house at 789 Newark Ave in Jersey City."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="description" content="Misree Chai, a chai house at 789 Newark Ave in Jersey City."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap"><style>
 /* Layout: cinematic teahouse. Full-bleed video bands in deep peacock, saffron accents, photo-led menu. */
 :root{
   --paper:#f5f0e8; --surface:#fffaf2; --ink:#1c2523; --muted:#5b6662; --line:#e2d7c7;
   --night:#0c1f1d; --night-ink:#f4ecdf; --saffron:#d08a22; --saffron-ink:#1b1206; --rose:#c25a6c;
   --scrim:rgba(8,20,19,.62); --card-shadow:0 1px 2px rgba(28,37,35,.06),0 12px 32px rgba(28,37,35,.08);
-  --display:"Gloock","Iowan Old Style",Georgia,serif;
-  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Jost","Futura","Century Gothic",system-ui,sans-serif;
+  --body:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
@@ -20,7 +20,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--b
 a{color:inherit}
 img,video{max-width:100%;display:block}
 .wrap{max-width:1200px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.04;text-wrap:balance;margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.05;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{letter-spacing:-.025em}
 .eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--saffron);margin:0 0 14px}
 :focus-visible{outline:3px solid var(--saffron);outline-offset:3px;border-radius:6px}
 .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 .95rem var(--body);padding:13px 22px;border-radius:999px;background:var(--saffron);color:var(--saffron-ink);border:0;cursor:pointer;transition:transform .2s, box-shadow .2s}
@@ -32,7 +33,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;color:var(--night-ink);transition:background .3s, box-shadow .3s}
 .top.solid{background:rgba(12,31,29,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
 .top .wrap{display:flex;align-items:center;gap:20px;padding-block:16px}
-.brand{text-decoration:none;font-family:var(--display);font-size:1.5rem;white-space:nowrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:400 1.45rem var(--display);letter-spacing:.02em;white-space:nowrap}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#fff}
+.brand small{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;margin-left:-4px}
 .brand span{color:var(--saffron)}
 .nav{display:flex;gap:22px;margin-left:auto;font-size:.93rem}
 .nav a{text-decoration:none;opacity:.85;padding:4px 0;border-bottom:1.5px solid transparent}
@@ -173,6 +176,16 @@ section.pad{padding-block:96px}
 .mapbar p{margin:4px 0 0;opacity:.8;font-size:.95rem}
 .mapbar .eyebrow{margin:0 0 6px;opacity:1}
 @media (max-width:600px){.bigmap{height:420px;min-height:0}.mapbar .btn{width:100%;justify-content:center}}
+.loc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.loc-tab{display:flex;flex-direction:column;gap:2px;text-align:left;padding:16px 20px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
+.loc-tab b{font:500 1.25rem var(--display)}
+.loc-tab span{color:var(--muted);font-size:.9rem}
+.loc-tab[aria-selected="true"]{border-color:var(--saffron);background:var(--paper);box-shadow:inset 0 0 0 1px var(--saffron)}
+.vlocs{display:grid;gap:14px;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:24px 28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
+.vloc p{margin:0}
+.vloc .eyebrow{margin-bottom:4px}
+.vloc a{display:inline-block;padding:8px 0;color:var(--saffron);font-weight:600;text-decoration:none}
+.vloc + .vloc{border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
 .tlink{color:var(--saffron);font-weight:600;text-decoration:none;display:inline-block;padding:10px 0;margin-top:auto}
 .cta-row{display:flex;justify-content:center;margin-top:36px}
 
@@ -227,14 +240,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .js .rv:not(.in){transform:translateY(28px)}
 }
 @media (prefers-reduced-motion:reduce){.ticker div{animation:none}html{scroll-behavior:auto}}
-</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html">Misree <span>Chai</span></a><nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button><a href="index.html" aria-current=page>Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a><a class="btn nav-order" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order Online</a></nav><button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order Online</a></div></header>
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="">misree <small>chai</small></a><nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button><a href="index.html" aria-current=page>Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a><a class="btn nav-order" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order Online</a></nav><button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order Online</a></div></header>
 <section class="vband hero"><img class="poster" src="assets/img/chai-pour.jpg" alt="" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata" poster="assets/img/chai-pour.jpg" aria-hidden="true"><source src="assets/video/chai-pour.mp4" type="video/mp4"></video><button class="vtoggle" type="button">Pause video</button><div class="wrap">
-<p class="eyebrow">Chai house · Journal Square, Jersey City</p><h1>Misree <em>Chai</em></h1>
-<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh on Newark Avenue.</p>
+<p class="eyebrow">Chai house · Jersey City &amp; Jackson Heights</p><h1>Misree <em>Chai</em></h1>
+<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh in Jersey City and Jackson Heights.</p>
 <div class="ctas"><a class="btn" href="menu.html">See the menu</a><a class="btn ghost" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order for delivery</a></div>
 <p class="scroll-cue">Scroll ↓</p></div></section>
 <div class="ticker" aria-hidden="true"><div><span>Masala Chai</span><span>Zafrani Chai</span><span>South Indian Coffee</span><span>Falooda Kulfi</span><span>Mango Kulfi</span><span>Pista Kulfi</span><span>Classic Milk Tea</span><span>Taro Milk Tea</span><span>Strawberry Milk Tea</span><span>Mango Fruit Tea</span><span>Strawberry Fruit Tea</span><span>Peach Fruit Tea</span><span>Lychee Refresher</span><span>Triple Chocolate Crepe</span><span>Masala Chai</span><span>Zafrani Chai</span><span>South Indian Coffee</span><span>Falooda Kulfi</span><span>Mango Kulfi</span><span>Pista Kulfi</span><span>Classic Milk Tea</span><span>Taro Milk Tea</span><span>Strawberry Milk Tea</span><span>Mango Fruit Tea</span><span>Strawberry Fruit Tea</span><span>Peach Fruit Tea</span><span>Lychee Refresher</span><span>Triple Chocolate Crepe</span></div></div>
-<div class="facts"><div><b>Where</b>789 Newark Ave, Jersey City, NJ 07306</div><div><b>Call</b>(856) 210-2029</div><div><b>When</b>Open daily, morning until late</div></div>
+<div class="facts"><div><b>Jersey City</b>789 Newark Ave</div><div><b>Jackson Heights</b>Queens, NY</div><div><b>When</b>Open daily, morning until late</div></div>
 <section class="pad"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">The menu</p><h2>Six ways to take a break.</h2></div><p>Pick a category, or open the full menu.</p></div><div class="mosaic"><a class="mtile rv" href="menu.html#chai"><img src="assets/img/masala-chai.jpg" alt="" loading="lazy"><div class="t"><h3>Chai & Coffee</h3><small>3 items →</small></div></a><a class="mtile rv" href="menu.html#kulfi"><img src="assets/img/falooda-kulfi.jpg" alt="" loading="lazy"><div class="t"><h3>Kulfi Milk Tea</h3><small>3 items →</small></div></a><a class="mtile rv" href="menu.html#teas"><img src="assets/img/classic-milk-tea.jpg" alt="" loading="lazy"><div class="t"><h3>Milk & Fruit Teas</h3><small>7 items →</small></div></a><a class="mtile rv" href="menu.html#crepes"><img src="assets/img/triple-chocolate-crepe.jpg" alt="" loading="lazy"><div class="t"><h3>Crepes</h3><small>6 items →</small></div></a><a class="mtile rv" href="menu.html#bowls"><img src="assets/img/nutella-acai-bowl.jpg" alt="" loading="lazy"><div class="t"><h3>Bowls</h3><small>4 items →</small></div></a><a class="mtile rv" href="menu.html#bakery"><img src="assets/img/bun-maska.jpg" alt="" loading="lazy"><div class="t"><h3>Bakery</h3><small>3 items →</small></div></a></div><div class="cta-row"><a class="btn" href="menu.html">View the full menu</a></div></div></section>
 <section class="pad" style="background:var(--surface)"><div class="wrap story"><div class="photos rv"><img src="assets/img/misri.jpg" alt="Misri rock sugar beside a glass of chai" loading="lazy"><img src="assets/img/masala-chai.jpg" alt="Masala chai" loading="lazy"></div>
 <div class="rv"><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2><p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City, next to the milk teas, crepes and bowls the neighborhood keeps coming back for.</p>
@@ -245,9 +258,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <div class="phone rv" aria-hidden="true"><div class="screen"><img src="assets/img/falooda-kulfi.jpg" alt=""><div class="app-ui"><b>Misree Chai</b><span>Order ahead · Rewards</span><i></i></div></div></div></div></section>
 <section class="pad"><div class="wrap"><div class="strip"><img src="assets/img/chai-cheers.jpg" alt="" loading="lazy"><img src="assets/img/falooda-kulfi.jpg" alt="" loading="lazy"><img src="assets/img/triple-chocolate-crepe.jpg" alt="" loading="lazy"><img src="assets/img/taro-milk-tea.jpg" alt="" loading="lazy"><img src="assets/img/nutella-acai-bowl.jpg" alt="" loading="lazy"><img src="assets/img/bun-maska.jpg" alt="" loading="lazy"><img src="assets/img/royal-pistachio-crepe.jpg" alt="" loading="lazy"><img src="assets/img/mango-fruit-tea.jpg" alt="" loading="lazy"></div></div></section>
 <section class="vband visit" id="visit"><img class="poster" src="assets/img/cafe-interior.jpg" alt="" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata" poster="assets/img/cafe-interior.jpg" aria-hidden="true"><source src="assets/video/interior.mp4" type="video/mp4"></video><button class="vtoggle" type="button">Pause video</button><div class="wrap">
-<div><p class="eyebrow">Visit</p><h2>Pull up a chair on Newark Ave.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" target="_blank" rel="noopener">Get directions</a></div></div>
-<dl><dt>Address</dt><dd>789 Newark Ave, Jersey City, NJ 07306</dd><dt>Phone</dt><dd>(856) 210-2029</dd><dt>Hours</dt><dd>Open daily, morning until late.<br><a href="https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ" target="_blank" rel="noopener">Today's hours on Google Maps</a></dd>
-<dt>Delivery</dt><dd><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a> · <a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></dd></dl></div></section><footer><div class="wrap"><span>Misree Chai · 789 Newark Ave, Jersey City, NJ 07306</span><span>Prices from the cafe's online ordering menu and may change. Photos are styled representations.</span></div></footer><div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Item details"><div class="box"><img src="" alt=""><div class="info">
+<div><p class="eyebrow">Visit</p><h2>Two cafes. Same chai.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">@misreechai</a></div></div>
+<div class="vlocs"><div class="vloc"><p class="eyebrow">Jersey City</p><p>789 Newark Ave<br>Jersey City, NJ 07306</p><a href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" target="_blank" rel="noopener">Directions →</a></div><div class="vloc"><p class="eyebrow">Jackson Heights</p><p>Jackson Heights<br>Queens, NY</p><a href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+Jackson+Heights%2C+Queens%2C+NY" target="_blank" rel="noopener">Directions →</a></div></div></div></section><footer><div class="wrap"><span>Misree Chai · Jersey City & Jackson Heights</span><span>Prices from the cafe's online ordering menu and may change. Photos are styled representations.</span></div></footer><div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Item details"><div class="box"><img src="" alt=""><div class="info">
 <button class="x" type="button">Close</button><span class="cat eyebrow"></span><h3></h3><span class="price"></span><p class="desc" style="color:var(--muted);margin:0"></p>
 <div class="order"><a class="btn" href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">Order on DoorDash</a></div></div></div></div><script>
 document.documentElement.classList.add('js');
@@ -275,6 +287,13 @@ if(tabs.length){
   const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);if(a){a.setAttribute('aria-current','true');a.scrollIntoView({block:'nearest',inline:'center'})}}}),{rootMargin:'-45% 0px -50% 0px'});
   document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
 }
+// visit page location switcher
+const ltabs=document.querySelectorAll('.loc-tab');
+ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.getElementById('loc-map').src=d.embed;document.getElementById('loc-dir').href=d.dir;
+  document.getElementById('loc-name').textContent='Misree Chai · '+d.name;
+  document.getElementById('loc-l1').textContent=d.l1===d.name?d.l2.replace(/^/,d.name+', '):d.l1+', '+d.l2;
+  document.getElementById('loc-meta').textContent=d.phone?'Open daily, morning until late · '+d.phone:'Check hours on Google Maps';}));
 // quick view
 const qv=document.getElementById('qv');
 if(qv){
