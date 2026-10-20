@@ -9,6 +9,8 @@ ARTIFACT = "--artifact" in sys.argv
 ADDRESS = "789 Newark Ave, Jersey City, NJ 07306"
 PHONE = "(856) 210-2029"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ"
+DIRECTIONS = "https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306"
+MAP_EMBED = "https://www.google.com/maps?q=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306&z=16&output=embed"
 DOORDASH = "https://www.doordash.com/store/misree-chai-jersey-city-33169529/"
 UBER = "https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA"
 INSTA = "https://www.instagram.com/misreechai/"
@@ -98,15 +100,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .nav{display:flex;gap:22px;margin-left:auto;font-size:.93rem}
 .nav a{text-decoration:none;opacity:.85;padding:4px 0;border-bottom:1.5px solid transparent}
 .nav a:hover,.nav a[aria-current]{opacity:1;border-color:var(--saffron)}
-.menu-btn{display:none;margin-left:auto;background:none;border:0;color:inherit;font:600 .9rem var(--body);cursor:pointer;padding:8px}
+.menu-btn{display:none;margin-left:auto;background:none;border:0;color:inherit;font:600 .95rem var(--body);cursor:pointer;padding:12px 4px 12px 16px;min-height:44px}
 .top .btn{padding:10px 18px}
 @media (max-width:900px){
   .menu-btn{display:block}.top .btn{display:none}
-  .nav{position:fixed;inset:0;top:0;flex-direction:column;justify-content:center;align-items:center;gap:22px;background:var(--night);font:400 2rem var(--display);opacity:0;pointer-events:none;transition:opacity .25s;margin:0}
+  .nav{position:fixed;inset:0;top:0;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:0 max(24px, env(safe-area-inset-right,0px)) 0 max(24px, env(safe-area-inset-left,0px));text-align:center;background:var(--night);font:400 clamp(1.6rem,8vw,2.2rem)/1.15 var(--display);opacity:0;pointer-events:none;transition:opacity .25s;margin:0}
+  .nav a{padding:6px 0}
+  .nav .nav-order{display:inline-flex;font:600 1rem var(--body);margin-top:12px;padding:14px 26px;border:0}
   .nav.open{opacity:1;pointer-events:auto}
   .nav .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(16px, env(safe-area-inset-right,0px));font:600 .9rem var(--body)}
 }
-@media (min-width:901px){.nav .close{display:none}}
+@media (min-width:901px){.nav .close,.nav .nav-order{display:none}}
 
 /* video bands */
 .vband{position:relative;overflow:hidden;background:var(--night);color:var(--night-ink);isolation:isolate}
@@ -117,7 +121,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hero h1 em{font-style:normal;color:var(--saffron)}
 .hero .lede{font-size:clamp(1.05rem,2vw,1.3rem);max-width:36ch;opacity:.92;margin:18px 0 30px}
 .ctas{display:flex;gap:12px;flex-wrap:wrap}
-.vtoggle{position:absolute;right:max(16px, env(safe-area-inset-right,0px));bottom:20px;z-index:2;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;font:600 .78rem var(--body);padding:8px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+.vtoggle{position:absolute;right:max(16px, env(safe-area-inset-right,0px));bottom:16px;z-index:2;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;font:600 .8rem var(--body);padding:12px 16px;cursor:pointer;backdrop-filter:blur(6px)}
 .scroll-cue{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:48px}
 
 .ticker{background:var(--saffron);color:var(--saffron-ink);overflow:hidden;white-space:nowrap;font:400 1.25rem var(--display)}
@@ -163,7 +167,7 @@ section.pad{padding-block:96px}
 /* printed-menu layout */
 .mtabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
 .mtabs .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
-.mtabs a{flex:0 0 auto;text-decoration:none;font:600 .88rem var(--body);padding:8px 16px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
+.mtabs a{flex:0 0 auto;text-decoration:none;font:600 .9rem var(--body);padding:12px 18px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
 .mtabs a[aria-current="true"]{background:var(--ink);color:var(--paper)}
 .msec{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:64px;padding-block:72px;border-top:1px solid var(--line);scroll-margin-top:120px}
 .msec:first-child{border-top:0}
@@ -209,9 +213,9 @@ section.pad{padding-block:96px}
 .rewards h2{font-size:clamp(2.4rem,6vw,4.2rem)}
 .rewards .rw-copy p{opacity:.85;max-width:42ch}
 .stores{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:170px;padding:10px 20px;border-radius:14px;background:var(--night-ink);color:var(--night);text-decoration:none;line-height:1.15;transition:transform .2s}
+.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:160px;min-height:52px;padding:10px 20px;border-radius:14px;background:var(--night-ink);color:var(--night);text-decoration:none;line-height:1.15;transition:transform .2s}
 .store:hover{transform:translateY(-2px)}
-.store small{font-size:.72rem;opacity:.75}
+.store small{font-size:.78rem;opacity:.8}
 .store b{font:600 1.2rem var(--body)}
 .store[aria-disabled="true"]{opacity:.55;cursor:default}
 .phone{justify-self:center;width:min(280px,70vw);aspect-ratio:9/19;border-radius:40px;padding:10px;background:#1a1a1a;box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.12)}
@@ -221,7 +225,28 @@ section.pad{padding-block:96px}
 .app-ui b{font:400 1.5rem var(--display)}
 .app-ui span{font-size:.8rem;opacity:.85}
 .app-ui i{display:block;height:40px;border-radius:999px;background:var(--saffron);margin-top:12px}
-@media (max-width:820px){.rewards .wrap{grid-template-columns:1fr;gap:28px;padding-block:72px}}
+@media (max-width:820px){.rewards .wrap{grid-template-columns:1fr;gap:36px;padding-block:72px}.phone{width:min(200px,55vw)}}
+.menu-hero .lede{font-size:1.15rem;max-width:40ch;opacity:.9;margin:14px 0 0}
+.visit-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:stretch}
+@media (max-width:900px){.visit-grid{grid-template-columns:1fr}}
+.mapcard{position:relative;display:block;min-height:460px;border-radius:24px;overflow:hidden;background:var(--night);box-shadow:var(--card-shadow);text-decoration:none;color:#fff;isolation:isolate}
+@media (max-width:600px){.mapcard{min-height:340px}}
+.mapcard .map-fallback,.mapcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mapcard .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.55}
+.mapcard iframe{pointer-events:none;filter:saturate(.85) contrast(1.02)}
+.mapcard .pin{position:absolute;left:50%;top:44%;transform:translate(-50%,-100%);background:var(--night);color:var(--night-ink);padding:10px 16px;border-radius:14px;font-size:.85rem;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.3);line-height:1.3}
+.mapcard .pin b{display:block;font:400 1.15rem var(--display);color:var(--saffron)}
+.mapcard .pin::after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%) rotate(45deg);width:16px;height:16px;background:var(--night)}
+.mapcard .map-cta{position:absolute;left:16px;right:16px;bottom:16px;background:var(--saffron);color:var(--saffron-ink);font-weight:700;text-align:center;padding:14px;border-radius:14px;transition:transform .2s}
+.mapcard:hover .map-cta{transform:translateY(-3px)}
+.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:480px){.info-cards{grid-template-columns:1fr}}
+.icard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.icard h3{font-size:1.5rem;overflow-wrap:anywhere}
+.icard p{margin:0;color:var(--muted);font-size:.95rem}
+.icard .btn{align-self:flex-start;margin-top:auto;padding:12px 18px}
+.tlink{color:var(--saffron);font-weight:600;text-decoration:none;display:inline-block;padding:10px 0;margin-top:auto}
+.tlinks{display:flex;gap:18px;margin-top:auto}
 .cta-row{display:flex;justify-content:center;margin-top:36px}
 
 /* quick view */
@@ -247,6 +272,7 @@ section.pad{padding-block:96px}
 .visit dl{display:grid;grid-template-columns:auto 1fr;gap:12px 24px;margin:0;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
 .visit dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;padding-top:5px}
 .visit dd{margin:0;font-size:1.05rem}
+.visit dd a{display:inline-block;padding:8px 0}
 @media (max-width:820px){.visit .wrap{grid-template-columns:1fr}}
 footer{padding-block:28px;font-size:.85rem;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -331,7 +357,7 @@ def page(title, desc, body, is_index=False):
             f'{head}</head><body>{body}{tail}</body></html>')
 
 def header(current=None):
-    links = f'<a href="index.html"{" aria-current=page" if current is None else ""}>Home</a><a href="menu.html"{" aria-current=page" if current=="menu" else ""}>Menu</a>' + f'<a href="index.html#rewards">Join our Rewards Program</a><a href="index.html#visit">Visit</a>'
+    links = f'<a href="index.html"{" aria-current=page" if current is None else ""}>Home</a><a href="menu.html"{" aria-current=page" if current=="menu" else ""}>Menu</a>' + f'<a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html"{" aria-current=page" if current=="visit" else ""}>Visit</a><a class="btn nav-order" href="{DOORDASH}" target="_blank" rel="noopener">Order Online</a>'
     return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html">Misree <span>Chai</span></a>'
             f'<nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button>{links}</nav>'
             f'<button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button>'
@@ -344,7 +370,7 @@ def vband_media(video, poster):
 
 def visit():
     return f'''<section class="vband visit" id="visit">{vband_media("interior", "cafe-interior")}<div class="wrap">
-<div><p class="eyebrow">Visit</p><h2>Pull up a chair on Newark Ave.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="{MAPS}" target="_blank" rel="noopener">Get directions</a><a class="btn ghost" href="{INSTA}" target="_blank" rel="noopener">@misreechai</a></div></div>
+<div><p class="eyebrow">Visit</p><h2>Pull up a chair on Newark Ave.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="{DIRECTIONS}" target="_blank" rel="noopener">Get directions</a></div></div>
 <dl><dt>Address</dt><dd>{ADDRESS}</dd><dt>Phone</dt><dd>{PHONE}</dd><dt>Hours</dt><dd>Open daily, morning until late.<br><a href="{MAPS}" target="_blank" rel="noopener">Today's hours on Google Maps</a></dd>
 <dt>Delivery</dt><dd><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a> · <a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></dd></dl></div></section>'''
 
@@ -402,6 +428,28 @@ def build_menu():
 {visit()}{footer()}{QV}'''
     return page("Menu · Misree Chai", "The full Misree Chai menu: drinks, crepes, bowls and bakery.", body)
 
+def build_visit():
+    strip = "".join(f'<img src="{img(n)}" alt="" loading="lazy">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
+    body = f'''{header("visit")}
+<section class="vband menu-hero">{vband_media("interior", "cafe-interior")}<div class="wrap">
+<p class="crumbs"><a href="index.html">Home</a> / Visit</p><p class="eyebrow">Journal Square, Jersey City</p><h1>Come say hi.</h1>
+<p class="lede">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p></div></section>
+<section class="pad"><div class="wrap visit-grid">
+<a class="mapcard rv" href="{DIRECTIONS}" target="_blank" rel="noopener" aria-label="Open Google Maps directions to Misree Chai">
+<div class="map-fallback" aria-hidden="true"><img src="{img("cafe-interior")}" alt=""></div>
+<iframe src="{MAP_EMBED}" title="Map showing Misree Chai at 789 Newark Ave" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe>
+<span class="pin" aria-hidden="true"><b>Misree Chai</b>789 Newark Ave</span>
+<span class="map-cta">Get directions in Google Maps →</span></a>
+<div class="info-cards">
+<div class="icard rv"><p class="eyebrow">Address</p><h3>789 Newark Ave</h3><p>Jersey City, NJ 07306</p><a class="btn" href="{DIRECTIONS}" target="_blank" rel="noopener">Directions</a></div>
+<div class="icard rv"><p class="eyebrow">Hours</p><h3>Open daily</h3><p>Morning until late.</p><a class="tlink" href="{MAPS}" target="_blank" rel="noopener">Today's hours on Google Maps →</a></div>
+<div class="icard rv"><p class="eyebrow">Call</p><h3>{PHONE}</h3><p>Call the cafe directly.</p><a class="tlink" href="tel:+18562102029">Tap to call →</a></div>
+<div class="icard rv"><p class="eyebrow">Stay in</p><h3>Delivery</h3><p>Get it brought to you.</p><span class="tlinks"><a class="tlink" href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a class="tlink" href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></span></div>
+</div></div></section>
+<section class="pad" style="padding-top:0"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">Inside Misree</p><h2>Warm light, hot chai.</h2></div><p><a class="tlink" href="{INSTA}" target="_blank" rel="noopener">Follow @misreechai on Instagram →</a></p></div><div class="strip">{strip}</div></div></section>
+{footer()}{QV}'''
+    return page("Visit · Misree Chai", "Find Misree Chai at 789 Newark Ave, Jersey City: map, directions, hours and contact.", body)
+
 def build_index():
     tiles = "".join(f'<a class="mtile rv" href="menu.html#{c["slug"]}"><img src="{img(c["items"][0][2])}" alt="" loading="lazy"><div class="t"><h3>{c["name"]}</h3><small>{len(c["items"])} items →</small></div></a>' for c in CATS)
     names = [it[0] for c in CATS for it in c["items"]]
@@ -430,6 +478,8 @@ def build_index():
 os.makedirs(OUT, exist_ok=True)
 with open(os.path.join(OUT, "index.html"), "w") as fh:
     fh.write(build_index())
+with open(os.path.join(OUT, "visit.html"), "w") as fh:
+    fh.write(build_visit())
 with open(os.path.join(OUT, "menu.html"), "w") as fh:
     fh.write(build_menu())
 print("built", OUT)
