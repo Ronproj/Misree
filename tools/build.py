@@ -227,26 +227,16 @@ section.pad{padding-block:96px}
 .app-ui i{display:block;height:40px;border-radius:999px;background:var(--saffron);margin-top:12px}
 @media (max-width:820px){.rewards .wrap{grid-template-columns:1fr;gap:36px;padding-block:72px}.phone{width:min(200px,55vw)}}
 .menu-hero .lede{font-size:1.15rem;max-width:40ch;opacity:.9;margin:14px 0 0}
-.visit-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:stretch}
-@media (max-width:900px){.visit-grid{grid-template-columns:1fr}}
-.mapcard{position:relative;display:block;min-height:460px;border-radius:24px;overflow:hidden;background:var(--night);box-shadow:var(--card-shadow);text-decoration:none;color:#fff;isolation:isolate}
-@media (max-width:600px){.mapcard{min-height:340px}}
-.mapcard .map-fallback,.mapcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.mapcard .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.55}
-.mapcard iframe{pointer-events:none;filter:saturate(.85) contrast(1.02)}
-.mapcard .pin{position:absolute;left:50%;top:44%;transform:translate(-50%,-100%);background:var(--night);color:var(--night-ink);padding:10px 16px;border-radius:14px;font-size:.85rem;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.3);line-height:1.3}
-.mapcard .pin b{display:block;font:400 1.15rem var(--display);color:var(--saffron)}
-.mapcard .pin::after{content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%) rotate(45deg);width:16px;height:16px;background:var(--night)}
-.mapcard .map-cta{position:absolute;left:16px;right:16px;bottom:16px;background:var(--saffron);color:var(--saffron-ink);font-weight:700;text-align:center;padding:14px;border-radius:14px;transition:transform .2s}
-.mapcard:hover .map-cta{transform:translateY(-3px)}
-.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:480px){.info-cards{grid-template-columns:1fr}}
-.icard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.icard h3{font-size:1.5rem;overflow-wrap:anywhere}
-.icard p{margin:0;color:var(--muted);font-size:.95rem}
-.icard .btn{align-self:flex-start;margin-top:auto;padding:12px 18px}
+.bigmap{position:relative;height:min(70vh,620px);min-height:380px;border-radius:24px 24px 0 0;overflow:hidden;background:var(--night);isolation:isolate}
+.bigmap iframe,.bigmap .map-fallback{position:absolute;inset:0;width:100%;height:100%;border:0}
+.bigmap .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.45}
+.bigmap .map-fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--night-ink);background:rgba(8,20,19,.7);padding:12px 18px;border-radius:12px;font-size:.9rem;text-align:center;max-width:80%}
+.mapbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--night);color:var(--night-ink);padding:24px 28px;border-radius:0 0 24px 24px}
+.mapbar h3{font-size:clamp(1.3rem,3vw,1.8rem)}
+.mapbar p{margin:4px 0 0;opacity:.8;font-size:.95rem}
+.mapbar .eyebrow{margin:0 0 6px;opacity:1}
+@media (max-width:600px){.bigmap{height:420px;min-height:0}.mapbar .btn{width:100%;justify-content:center}}
 .tlink{color:var(--saffron);font-weight:600;text-decoration:none;display:inline-block;padding:10px 0;margin-top:auto}
-.tlinks{display:flex;gap:18px;margin-top:auto}
 .cta-row{display:flex;justify-content:center;margin-top:36px}
 
 /* quick view */
@@ -434,18 +424,12 @@ def build_visit():
 <section class="vband menu-hero">{vband_media("interior", "cafe-interior")}<div class="wrap">
 <p class="crumbs"><a href="index.html">Home</a> / Visit</p><p class="eyebrow">Journal Square, Jersey City</p><h1>Come say hi.</h1>
 <p class="lede">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p></div></section>
-<section class="pad"><div class="wrap visit-grid">
-<a class="mapcard rv" href="{DIRECTIONS}" target="_blank" rel="noopener" aria-label="Open Google Maps directions to Misree Chai">
-<div class="map-fallback" aria-hidden="true"><img src="{img("cafe-interior")}" alt=""></div>
-<iframe src="{MAP_EMBED}" title="Map showing Misree Chai at 789 Newark Ave" loading="lazy" referrerpolicy="no-referrer-when-downgrade" tabindex="-1"></iframe>
-<span class="pin" aria-hidden="true"><b>Misree Chai</b>789 Newark Ave</span>
-<span class="map-cta">Get directions in Google Maps →</span></a>
-<div class="info-cards">
-<div class="icard rv"><p class="eyebrow">Address</p><h3>789 Newark Ave</h3><p>Jersey City, NJ 07306</p><a class="btn" href="{DIRECTIONS}" target="_blank" rel="noopener">Directions</a></div>
-<div class="icard rv"><p class="eyebrow">Hours</p><h3>Open daily</h3><p>Morning until late.</p><a class="tlink" href="{MAPS}" target="_blank" rel="noopener">Today's hours on Google Maps →</a></div>
-<div class="icard rv"><p class="eyebrow">Call</p><h3>{PHONE}</h3><p>Call the cafe directly.</p><a class="tlink" href="tel:+18562102029">Tap to call →</a></div>
-<div class="icard rv"><p class="eyebrow">Stay in</p><h3>Delivery</h3><p>Get it brought to you.</p><span class="tlinks"><a class="tlink" href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a class="tlink" href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></span></div>
-</div></div></section>
+<section class="pad"><div class="wrap">
+<div class="bigmap"><div class="map-fallback"><img src="{img("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
+<iframe src="{MAP_EMBED}" title="Google Map showing Misree Chai at 789 Newark Ave, Jersey City" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+<div class="mapbar"><div><p class="eyebrow">Misree Chai</p><h3>{ADDRESS}</h3><p>Open daily, morning until late · {PHONE}</p></div>
+<a class="btn" href="{DIRECTIONS}" target="_blank" rel="noopener">Get directions in Google Maps →</a></div>
+</div></section>
 <section class="pad" style="padding-top:0"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">Inside Misree</p><h2>Warm light, hot chai.</h2></div><p><a class="tlink" href="{INSTA}" target="_blank" rel="noopener">Follow @misreechai on Instagram →</a></p></div><div class="strip">{strip}</div></div></section>
 {footer()}{QV}'''
     return page("Visit · Misree Chai", "Find Misree Chai at 789 Newark Ave, Jersey City: map, directions, hours and contact.", body)
