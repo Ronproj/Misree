@@ -366,16 +366,19 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 JS = r"""
 const miles=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 7917.6*Math.asin(Math.sqrt(h))};
 function applyNear(id,user){document.querySelectorAll('[data-loc-id]').forEach(el=>el.classList.toggle('is-near',el.dataset.locId===id));document.dispatchEvent(new CustomEvent('nearest',{detail:{id,user}}))}
-document.querySelectorAll('[data-near]').forEach(box=>{const btn=box.querySelector('button'),out=box.querySelector('.near-out');
-  btn.addEventListener('click',()=>{
+function findNearest(box,auto){const btn=box.querySelector('button'),out=box.querySelector('.near-out');{
     if(!navigator.geolocation){out.textContent='Location isn\u2019t available in this browser.';return}
-    btn.disabled=true;out.textContent='Finding the closest cafe\u2026';
+    const prev=out.innerHTML;btn.disabled=true;out.textContent='Finding the closest cafe\u2026';
     navigator.geolocation.getCurrentPosition(p=>{btn.disabled=false;const {latitude:a,longitude:b}=p.coords;
       const n=LOCS.map(L=>({...L,d:miles(a,b,L.lat,L.lng)})).sort((x,y)=>x.d-y.d)[0];
       out.innerHTML=`Closest to you: <b>Misree Chai ${n.name}</b>, about ${n.d<10?n.d.toFixed(1):Math.round(n.d)} mi away.`;
       try{localStorage.setItem('misree-near',n.id)}catch(e){}
-      applyNear(n.id,true)},
-    e=>{btn.disabled=false;out.textContent=e.code===1?'Location is off, so pick a cafe below.':'Couldn\u2019t get your location, so pick a cafe below.'},{timeout:10000,maximumAge:600000})})});
+      applyNear(n.id,!auto)},
+    e=>{btn.disabled=false;if(auto){out.innerHTML=prev;return}out.textContent=e.code===1?'Location is off, so pick a cafe below.':'Couldn\u2019t get your location, so pick a cafe below.'},{timeout:10000,maximumAge:600000})}}
+document.querySelectorAll('[data-near]').forEach(box=>{box.querySelector('button').addEventListener('click',()=>findNearest(box));
+  // pages marked data-near-auto look up the closest cafe on load, unless location was already refused
+  if('nearAuto' in box.dataset){const go=()=>findNearest(box,true);
+    navigator.permissions&&navigator.permissions.query?navigator.permissions.query({name:'geolocation'}).then(r=>{if(r.state!=='denied')go()},go):go()}});
 setTimeout(()=>{let id;try{id=localStorage.getItem('misree-near')}catch(e){}const L=LOCS.find(x=>x.id===id);if(!L)return;
   document.querySelectorAll('[data-near] .near-out').forEach(o=>o.innerHTML=`Your closest cafe: <b>Misree Chai ${L.name}</b>`);applyNear(id)});
 const over=document.querySelector('.top.over');
@@ -529,8 +532,8 @@ def footer():
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
-def near_box():
-    return ('<div class="near" data-near><button class="nearbtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Find my closest cafe</button>'
+def near_box(auto=False):
+    return (f'<div class="near" data-near{" data-near-auto" if auto else ""}><button class="nearbtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Find my closest cafe</button>'
             '<p class="near-out" role="status" aria-live="polite"></p></div>')
 
 def loc_cards():
@@ -610,7 +613,7 @@ def build_order():
     body = f'''{header("order")}<main>
 <div class="demo" role="note"><b>Demo preview.</b> Orders aren't sent to the cafe yet and no card is charged.</div>
 <div class="wrap ptitle"><p class="eyebrow">Pickup</p><h1>Order online</h1>
-<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p>{near_box()}<div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
+<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p>{near_box(auto=True)}<div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
 <label class="field">Pickup time<select id="pickup"><option>ASAP (about 15 min)</option></select></label></div></div>
 <nav class="chips" aria-label="Order sections"><div class="wrap">{chips}</div></nav>
 <div class="wrap olayout"><div>{secs}</div>
