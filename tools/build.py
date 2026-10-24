@@ -82,7 +82,7 @@ CSS = r"""
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
@@ -208,8 +208,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:2px 20px}
 footer nav a{color:#fff8ec;padding:6px 0}
 
 /* page heads and sticky section tabs */
-.phead{padding-block:24px 16px}
-.phead p{margin-top:6px;color:var(--muted)}
+.phead{padding-block:28px 22px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.phead p{margin-top:6px;color:rgba(255,248,236,.72)}
 @media (min-width:900px){.phead{padding-block:48px 24px}}
 .chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(250,246,239,.95);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
@@ -248,8 +248,9 @@ footer nav a{color:#fff8ec;padding:6px 0}
 }
 
 /* order page */
-.obar{padding:20px 0 12px}
-.obar .demo{font-size:13px;color:var(--muted);margin-top:4px}
+.obar{padding:24px 0 20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.obar .demo{font-size:13px;color:rgba(255,248,236,.72);margin-top:4px}
+.obar .psum{border-color:transparent;color:var(--ink)}
 .psum{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);text-align:left;cursor:pointer}
 .psum svg{flex:none;width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -375,7 +376,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 @keyframes up{from{transform:translateY(32px);opacity:.6}}
 
 /* visit page */
-.ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:12px;background:var(--soft);border-radius:var(--r-sm)}
+.ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:16px 0 12px;background:#ece3d3;border-radius:var(--r-sm)}
 .loc-tab{height:44px;border:0;border-radius:9px;background:none;font-weight:500;color:var(--muted);cursor:pointer}
 .loc-tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .bigmap{position:relative;height:320px;overflow:hidden;border-radius:var(--r);background:var(--soft)}
@@ -606,7 +607,7 @@ def build_menu():
         secs += (f'<section class="mgroup" id="{g}" data-sec><div class="mbanner"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"></div>'
                  f'<header><h2>{name}</h2><span>{count} items</span></header>{lists}</section>')
     body = f'''{header("menu")}<main>
-<div class="wrap phead"><h1>Menu</h1><p>Served at both cafes. Tap an item for a photo.</p></div>
+<div class="phead"><div class="wrap"><h1>Menu</h1><p>Served at both cafes. Tap an item for a photo.</p></div></div>
 <nav class="chips" aria-label="Menu sections"><div class="wrap">{chips}</div></nav>
 <div class="wrap">{secs}
 <p class="note">Prices are from the cafe's online ordering menu and may differ in store.</p>
@@ -657,7 +658,7 @@ def build_visit():
     tabs = "".join(f'<button type="button" role="tab" class="loc-tab" aria-selected="{"true" if i == 0 else "false"}" data-loc="{L["id"]}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" '
                    f'data-l1="{esc(L["line1"])}" data-l2="{esc(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}">{L["name"]}</button>' for i, L in enumerate(LOCATIONS))
     body = f'''{header("visit")}<main>
-<div class="wrap phead"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div>
+<div class="phead"><div class="wrap"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div></div>
 <div class="wrap"><div class="ltabs" role="tablist" aria-label="Choose a location">{tabs}</div>
 <div class="bigmap"><div class="map-fallback"><img src="{sm("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
 <iframe id="loc-map" src="{L0["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>

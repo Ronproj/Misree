@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
@@ -138,8 +138,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:2px 20px}
 footer nav a{color:#fff8ec;padding:6px 0}
 
 /* page heads and sticky section tabs */
-.phead{padding-block:24px 16px}
-.phead p{margin-top:6px;color:var(--muted)}
+.phead{padding-block:28px 22px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.phead p{margin-top:6px;color:rgba(255,248,236,.72)}
 @media (min-width:900px){.phead{padding-block:48px 24px}}
 .chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(250,246,239,.95);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
@@ -178,8 +178,9 @@ footer nav a{color:#fff8ec;padding:6px 0}
 }
 
 /* order page */
-.obar{padding:20px 0 12px}
-.obar .demo{font-size:13px;color:var(--muted);margin-top:4px}
+.obar{padding:24px 0 20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.obar .demo{font-size:13px;color:rgba(255,248,236,.72);margin-top:4px}
+.obar .psum{border-color:transparent;color:var(--ink)}
 .psum{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);text-align:left;cursor:pointer}
 .psum svg{flex:none;width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -305,7 +306,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 @keyframes up{from{transform:translateY(32px);opacity:.6}}
 
 /* visit page */
-.ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:12px;background:var(--soft);border-radius:var(--r-sm)}
+.ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:16px 0 12px;background:#ece3d3;border-radius:var(--r-sm)}
 .loc-tab{height:44px;border:0;border-radius:9px;background:none;font-weight:500;color:var(--muted);cursor:pointer}
 .loc-tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .bigmap{position:relative;height:320px;overflow:hidden;border-radius:var(--r);background:var(--soft)}
@@ -322,7 +323,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32">Misree Chai</a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html" aria-current="page">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
-<div class="wrap phead"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div>
+<div class="phead"><div class="wrap"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div></div>
 <div class="wrap"><div class="ltabs" role="tablist" aria-label="Choose a location"><button type="button" role="tab" class="loc-tab" aria-selected="true" data-loc="jersey-city" data-embed="https://www.google.com/maps?q=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306&z=16&output=embed" data-dir="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" data-l1="789 Newark Ave" data-l2="Jersey City, NJ 07306" data-phone="(856) 210-2029" data-name="Jersey City">Jersey City</button><button type="button" role="tab" class="loc-tab" aria-selected="false" data-loc="jackson-heights" data-embed="https://www.google.com/maps?q=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372&z=16&output=embed" data-dir="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372" data-l1="72-35 Broadway" data-l2="Jackson Heights, NY 11372" data-phone="" data-name="Jackson Heights">Jackson Heights</button></div>
 <div class="bigmap"><div class="map-fallback"><img src="assets/img/sm/cafe-interior.jpg" alt=""><span>The live Google Map loads here on the published site.</span></div>
 <iframe id="loc-map" src="https://www.google.com/maps?q=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306&z=16&output=embed" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
