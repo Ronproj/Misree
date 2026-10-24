@@ -76,7 +76,7 @@ CSS = r"""
   --accent:#5f5820; --night:#221a14;
   --hh:56px; --tab:62px; --safe-b:env(safe-area-inset-bottom,0px); --gut:20px;
   --font:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --r:16px; --r-sm:12px;
+  --r:6px; --r-sm:4px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -119,7 +119,7 @@ h3{font-size:18px;font-weight:500}
 .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500}
 .brand img{width:32px;height:32px;border-radius:50%;border:1px solid var(--line)}
 .nav{display:none;gap:4px;margin-left:auto}
-.nav a{padding:8px 12px;border-radius:10px;font-size:15px;color:var(--muted)}
+.nav a{padding:8px 12px;border-radius:var(--r-sm);font-size:15px;color:var(--muted)}
 .nav a:hover{color:var(--ink)}
 .nav a[aria-current]{color:var(--ink);background:var(--soft)}
 .top .btn{display:none;height:40px;font-size:14px}
@@ -147,7 +147,7 @@ h3{font-size:18px;font-weight:500}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,12,6,.5) 0%,rgba(20,12,6,0) 24%,rgba(20,12,6,.2) 50%,rgba(20,12,6,.86) 100%)}
 .hero .wrap{width:100%;padding-bottom:32px}
 .kicker{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:8px}
-.hero h1{font-size:52px;font-weight:300;line-height:1}
+.hero h1{font-size:52px;font-weight:400;line-height:1}
 .hero .lede{color:rgba(255,255,255,.88);max-width:32ch;margin:12px 0 24px}
 .hero .ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px}
 .hero .btn{background:#fff;color:var(--ink)}
@@ -215,7 +215,7 @@ footer nav a{color:#fff8ec;padding:6px 0}
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 .chips .wrap::-webkit-scrollbar{display:none}
-.chips a{flex:none;height:36px;display:inline-flex;align-items:center;padding:0 14px;border-radius:999px;background:var(--soft);color:var(--muted);font-size:14px;font-weight:500}
+.chips a{flex:none;height:36px;display:inline-flex;align-items:center;padding:0 14px;border-radius:var(--r-sm);background:var(--soft);color:var(--muted);font-size:14px;font-weight:500}
 .chips a[aria-current]{background:var(--ink);color:#fff}
 
 /* item rows: text left, photo right (menu and order) */
@@ -229,8 +229,8 @@ footer nav a{color:#fff8ec;padding:6px 0}
 .row img{width:84px;height:84px;object-fit:cover;border-radius:var(--r-sm);background:var(--soft)}
 .row .add{position:absolute;right:-6px;bottom:-6px;width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;
   font-size:19px;line-height:1;box-shadow:0 1px 6px rgba(0,0,0,.18)}
-.row .qtyb{position:absolute;left:-6px;top:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--ink);color:#fff;
-  font-size:12px;font-weight:600;display:grid;place-items:center}
+.row .qtyb{position:absolute;left:-6px;top:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:var(--r-sm);background:var(--ink);color:#fff;
+  font-size:12px;font-weight:500;display:grid;place-items:center}
 
 /* menu page */
 .mgroup{scroll-margin-top:calc(var(--hh) + 60px);overflow:hidden}
@@ -240,7 +240,7 @@ footer nav a{color:#fff8ec;padding:6px 0}
 .mban div{position:absolute;left:var(--pp);right:var(--pp);bottom:16px;z-index:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .mban h2{font-size:32px;font-weight:400;color:#fff}
 .mban span{font-size:14px;color:rgba(255,248,236,.8)}
-.msub{display:flex;align-items:center;gap:14px;margin:26px 0 6px;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);scroll-margin-top:calc(var(--hh) + 60px)}
+.msub{display:flex;align-items:center;gap:14px;margin:26px 0 6px;font-size:15px;font-weight:500;color:var(--accent);scroll-margin-top:calc(var(--hh) + 60px)}
 .msub::before,.msub::after{content:"";flex:1;height:1px;background:var(--line-2)}
 .mlist{list-style:none;margin:0;padding:0}
 .mi{display:block;width:100%;padding:14px 0;border:0;border-bottom:1px dashed var(--line-2);background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
@@ -282,7 +282,7 @@ footer nav a{color:#fff8ec;padding:6px 0}
 select,input,textarea{width:100%;min-height:48px;padding:12px 14px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm)}
 select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
-.ocontrols{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;gap:18px;background:var(--surface);border-radius:20px 20px 0 0;
+.ocontrols{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;gap:18px;background:var(--surface);border-radius:var(--r) var(--r) 0 0;
   padding:20px var(--gut) calc(20px + var(--safe-b));transform:translateY(105%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s}
 .ocontrols.open{transform:none;visibility:visible}
 .olayout{display:grid;gap:24px;padding-bottom:32px}
@@ -297,7 +297,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .ocontrols{position:static;transform:none;visibility:visible;transition:none;background:none;padding:0;border-radius:0;grid-template-columns:400px 200px;gap:12px;align-items:end}
   .ocontrols .lbl{color:rgba(255,248,236,.66)}
   .ocontrols .seg{grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:rgba(255,255,255,.1);border-radius:var(--r-sm)}
-  .ocontrols .seg button{border:0;background:none;color:#fff;padding:8px 12px;border-radius:9px;box-shadow:none}
+  .ocontrols .seg button{border:0;background:none;color:#fff;padding:8px 12px;border-radius:3px;box-shadow:none}
   .ocontrols .seg button span{color:rgba(255,248,236,.6)}
   .ocontrols .seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
   .ocontrols .seg button[aria-pressed="true"] span{color:var(--muted)}
@@ -333,7 +333,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .cline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .cline b{font-weight:500}
 .cline small{grid-column:1;font-size:13px;color:var(--muted)}
-.step{display:inline-flex;align-items:center;width:max-content;margin-top:8px;background:var(--soft);border-radius:999px}
+.step{display:inline-flex;align-items:center;width:max-content;margin-top:8px;background:var(--soft);border-radius:var(--r-sm)}
 .step button{width:36px;height:34px;border:0;background:none;font-size:17px;cursor:pointer}
 .step span{min-width:18px;text-align:center;font-size:15px}
 .sum{display:grid;grid-template-columns:1fr auto;gap:4px;margin-bottom:16px;font-size:15px;color:var(--muted)}
@@ -352,23 +352,23 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .cartbar{display:none!important}
 }
 @media (max-width:999px){
-  .cart{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:88vh;border-radius:20px 20px 0 0;padding-bottom:var(--safe-b);
+  .cart{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:88vh;border-radius:var(--r) var(--r) 0 0;padding-bottom:var(--safe-b);
     transform:translateY(105%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s}
   .cart.open{transform:none;visibility:visible}
 }
 .cartbar{position:fixed;left:var(--gut);right:var(--gut);bottom:calc(var(--tab) + var(--safe-b) + 10px);z-index:35;height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:0 18px;border:0;border-radius:14px;background:var(--ink);color:#fff;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.22)}
-.cartbar .ct{padding:2px 10px;border-radius:999px;background:rgba(255,255,255,.16);font-size:14px}
+  padding:0 18px;border:0;border-radius:var(--r);background:var(--ink);color:#fff;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.cartbar .ct{padding:2px 10px;border-radius:var(--r-sm);background:rgba(255,255,255,.16);font-size:14px}
 .has-cartbar{padding-bottom:calc(var(--tab) + var(--safe-b) + 80px)}
 .scrim{position:fixed;inset:0;z-index:55;background:rgba(20,14,8,.42)}
 .toast{position:fixed;left:50%;bottom:calc(var(--tab) + var(--safe-b) + 78px);transform:translateX(-50%);z-index:80;white-space:nowrap;
-  padding:10px 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+  padding:10px 16px;border-radius:var(--r-sm);background:var(--ink);color:#fff;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 @media (min-width:1000px){.toast{bottom:28px}}
 
 /* bottom sheets: item details and menu quick view */
 .sheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,14,8,.45)}
 .sheet .box{position:relative;display:flex;flex-direction:column;width:100%;max-width:520px;max-height:90vh;overflow:auto;background:var(--surface);
-  border-radius:20px 20px 0 0;padding-bottom:var(--safe-b);animation:up .22s ease-out}
+  border-radius:var(--r) var(--r) 0 0;padding-bottom:var(--safe-b);animation:up .22s ease-out}
 .sheet .box>img{flex:none;width:100%;aspect-ratio:16/10;object-fit:cover}
 .sheet .in{padding:20px var(--gut) 8px}
 .sheet h3{font-size:24px;font-weight:400}
@@ -379,19 +379,19 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
 .opts label{position:relative}
 .opts input{position:absolute;opacity:0;width:1px;height:1px;min-height:0}
-.opts span{display:block;padding:9px 16px;border:1px solid var(--line-2);border-radius:999px;font-size:15px;cursor:pointer}
+.opts span{display:block;padding:9px 16px;border:1px solid var(--line-2);border-radius:var(--r-sm);font-size:15px;cursor:pointer}
 .opts input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
 .opts input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
 .sheet .bar{position:sticky;bottom:0;display:flex;align-items:center;gap:10px;margin-top:auto;padding:14px var(--gut) 16px;background:var(--surface);border-top:1px solid var(--line)}
 .sheet .bar .step{margin:0}
 .sheet .bar .btn{flex:1}
 .sheet .close{position:absolute;top:12px;right:12px;z-index:1;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.94);font-size:15px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.15)}
-@media (min-width:600px){.sheet{align-items:center;padding:24px}.sheet .box{border-radius:20px;max-height:88vh}}
+@media (min-width:600px){.sheet{align-items:center;padding:24px}.sheet .box{border-radius:var(--r);max-height:88vh}}
 @keyframes up{from{transform:translateY(32px);opacity:.6}}
 
 /* visit page */
 .ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:16px 0 12px;background:#ece3d3;border-radius:var(--r-sm)}
-.loc-tab{height:44px;border:0;border-radius:9px;background:none;font-weight:500;color:var(--muted);cursor:pointer}
+.loc-tab{height:44px;border:0;border-radius:3px;background:none;font-weight:500;color:var(--muted);cursor:pointer}
 .loc-tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .bigmap{position:relative;height:320px;overflow:hidden;border-radius:var(--r);background:var(--soft)}
 .bigmap iframe,.bigmap .map-fallback{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -441,7 +441,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .hero h1{font-size:56px}
 .hero .lede{margin:12px auto 24px}
 .hero .ctas{width:100%}
-.eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.eyebrow{font-size:15px;font-weight:500;color:var(--accent);margin-bottom:6px}
 .intro{text-align:center}
 .intro h2{max-width:22ch;margin:0 auto}
 .intro>p:not(.eyebrow){color:var(--muted);margin:10px auto 22px}
@@ -474,6 +474,15 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .duo{grid-template-columns:1.4fr 1fr}
   .duo .promo{display:flex;flex-direction:column;justify-content:center}
 }
+
+.lps{display:grid;gap:20px}
+.lp+.lp{padding-top:20px;border-top:1px solid var(--line)}
+.lp h3{font-size:18px;font-weight:500}
+.lp p{color:var(--muted);font-size:15px;margin-top:2px}
+.lp .lk{display:flex;gap:20px;margin-top:10px}
+.lp .lk a{color:var(--accent);font-weight:500}
+.promo a:not(.btn){color:#fff;text-decoration:underline;text-underline-offset:3px}
+@media (min-width:900px){.lps{grid-template-columns:1fr 1fr;gap:40px}.lp+.lp{padding-top:0;border-top:0;padding-left:40px;border-left:1px solid var(--line)}}
 
 """
 
@@ -635,6 +644,13 @@ def footer():
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
+def loc_plain():
+    def one(L):
+        meta = f'Open daily · {L["phone"]}' if L["phone"] else "Open daily"
+        return (f'<div class="lp"><h3>{L["name"]}</h3><p>{L["line1"]}, {L["line2"]}</p><p>{meta}</p>'
+                f'<p class="lk"><a href="{L["dir"]}" target="_blank" rel="noopener">Directions</a><a href="order.html?store={L["id"]}">Order pickup</a></p></div>')
+    return f'<div class="lps">{"".join(one(L) for L in LOCATIONS)}</div>'
+
 def loc_cards():
     def card(L):
         meta = f'Open daily · {L["phone"]}' if L["phone"] else "Open daily"
@@ -644,8 +660,6 @@ def loc_cards():
 
 def build_index():
     tiles = "".join(f'<a class="tile" href="menu.html#{g}"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"><span>{name}</span></a>' for g, name, _ in GROUPS)
-    picks_src = [("chai", 0), ("kulfi", 0), ("crepes", 3), ("bowls", 0)]
-    picks = "".join((lambda n, p, im, d: f'<a class="fav" href="order.html"><img src="{sm(im)}" alt="" loading="lazy" width="520" height="520"><span><b>{n}</b><em>${p}</em></span></a>')(*BYSLUG[s]["items"][i]) for s, i in picks_src)
     body = f'''{header("home", over=True)}
 <main>
 <section class="hero"><img src="{img("chai-pour")}" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high">
@@ -660,11 +674,9 @@ def build_index():
 <div><p class="eyebrow">Our name</p><h2>Named for the sugar that sweetens the cup</h2>
 <p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. We brought that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p>
 <a class="btn sec" href="menu.html">See the menu</a></div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Try these</h2><a href="order.html">Order</a></div><div class="favs">{picks}</div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap duo"><div class="promo"><div><h2>Skip the line</h2>
-<p>Order ahead and pick up at Jersey City or Jackson Heights.</p></div><a class="btn" href="order.html">Start an order</a></div>
-<a class="panel rewcard" href="rewards.html"><p class="eyebrow">Rewards</p><h2>Earn on every visit</h2><p>Join our Rewards Program in the Misree Chai app.</p><span class="more">Learn more →</span></a></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit us</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="promo"><div><h2>Skip the line</h2>
+<p>Order ahead for pickup, or join our <a href="rewards.html">Rewards Program</a> to earn on every visit.</p></div><a class="btn" href="order.html">Start an order</a></div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit us</h2><a href="visit.html">Map</a></div>{loc_plain()}</div></div></section>
 </main>{footer()}'''
     return page("Misree Chai", "Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup.", body, True)
 
