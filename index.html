@@ -1,8 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#fbf8f3"><meta name="description" content="Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup."><meta property="og:image" content="assets/img/chai-cheers.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"><style>
 /* Simple modern cafe: warm white, olive from the logo, near-black ink. Mobile first. */
 :root{
-  --bg:#fbf8f3; --surface:#ffffff; --soft:#f3eee5; --ink:#1d1b16; --muted:#6a655b; --line:#e7e0d4;
-  --olive:#5f5820; --olive-soft:#eeead6; --on-ink:#ffffff;
+  --bg:#f5ecdc; --surface:#fffaf2; --soft:#efe4d0; --ink:#2b1d14; --muted:#6e6253; --line:#e6d9c3;
+  --olive:#5f5820; --olive-soft:#ece5cc; --on-ink:#ffffff; --rose:#9a4434; --gold:#c9a55a; --night:#2b1d14;
   --hh:60px; --tab:64px; --safe-b:env(safe-area-inset-bottom,0px);
   --font:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:18px; --shadow:0 1px 2px rgba(29,27,22,.05),0 8px 24px rgba(29,27,22,.07);
@@ -11,7 +11,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit}
 img{max-width:100%;height:auto;display:block}
@@ -37,7 +37,7 @@ section.pad{padding-block:48px}
 .head a{font-weight:500;color:var(--olive);text-decoration:none;white-space:nowrap;padding:10px 0}
 
 /* header */
-.top{position:sticky;top:0;z-index:30;background:rgba(251,248,243,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top{position:sticky;top:0;z-index:30;background:rgba(255,250,242,.95);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .top .wrap{display:flex;align-items:center;gap:20px;height:var(--hh)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.3rem;letter-spacing:.01em}
 .brand img{width:36px;height:36px;border-radius:50%;border:1px solid var(--line)}
@@ -70,35 +70,37 @@ section.pad{padding-block:48px}
 .hero .chip b{display:block;font-weight:600}
 @media (min-width:860px){.hero{padding-block:56px 72px}.hero .wrap{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}.hero .ctas{display:flex}.hero figure img{aspect-ratio:5/4}}
 
-.cats{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
+.cats{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
 .cat{flex:0 0 136px;scroll-snap-align:start;text-decoration:none}
-.cat img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);margin-bottom:8px}
+.cat img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 16px 16px;margin-bottom:10px;outline:1.5px solid var(--gold);outline-offset:4px}
+.cat{text-align:center;padding-top:6px}
 .cat b{font-weight:500;display:block;line-height:1.25}
 .cat span{font-size:.85rem;color:var(--muted)}
 @media (min-width:900px){.cats{display:grid;grid-template-columns:repeat(6,1fr);overflow:visible;margin:0;padding:0}.cat{flex:none}}
 
 .picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pick{background:var(--surface);border-radius:var(--r);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.pick img{width:100%;aspect-ratio:1;object-fit:cover}
+.pick{background:var(--surface);border-radius:999px 999px 18px 18px;border:1.5px solid var(--gold);padding:6px 6px 0;overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.pick img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 12px 12px}
+.pick div{text-align:center}
 .pick div{padding:12px 14px 14px}
 .pick b{font-weight:500;display:block;line-height:1.25}
 .pick span{color:var(--muted);font-size:.9rem}
 @media (min-width:900px){.picks{grid-template-columns:repeat(4,1fr);gap:20px}}
 
-.promo{display:grid;gap:20px;background:var(--ink);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
+.promo{display:grid;gap:20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;border:1.5px solid rgba(201,165,90,.5);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
 .promo .eyebrow{color:#d8cf98}
 .promo p.muted{color:rgba(255,255,255,.72);margin:10px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
-.promo img{border-radius:18px;width:100%;aspect-ratio:16/10;object-fit:cover}
+.promo img{border-radius:999px 999px 18px 18px;width:100%;max-width:340px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:6px}
 @media (min-width:860px){.promo{grid-template-columns:1fr 1fr;align-items:center;padding:48px;gap:48px}}
 
 .story{display:grid;gap:24px}
-.story img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.story img{border-radius:999px 999px 22px 22px;width:100%;max-width:420px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:8px}
 .story p.muted{margin-top:14px;max-width:52ch}
 @media (min-width:860px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
 
-.app{background:var(--olive-soft);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
+.app{background:var(--surface);border:1.5px solid var(--gold);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
 .app p.muted{margin:10px 0 20px;max-width:44ch}
 .stores{display:flex;gap:10px;flex-wrap:wrap}
 .store{display:inline-flex;flex-direction:column;justify-content:center;min-width:150px;min-height:52px;padding:8px 18px;border-radius:14px;background:var(--ink);color:#fff;text-decoration:none;line-height:1.15}
@@ -112,16 +114,16 @@ section.pad{padding-block:48px}
 @media (min-width:860px){.app{grid-template-columns:1.1fr 1fr;padding:48px;gap:48px;align-items:center}}
 
 .locs{display:grid;gap:12px}
-.loc{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
+.loc{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
 .loc h3{font-size:1.4rem}
 .loc .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .loc .acts .btn{min-height:44px;flex:1 1 auto;font-size:.92rem;padding:0 16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{border-top:1px solid var(--line);padding-block:28px 36px;font-size:.88rem;color:var(--muted)}
+footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;padding-block:28px 36px;font-size:.88rem;color:rgba(255,245,230,.7)}
 footer .wrap{display:grid;gap:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
-footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
+footer nav a{text-decoration:none;padding:6px 0;color:#fff4e2}
 
 /* page titles */
 .ptitle{padding-block:28px 8px}
@@ -129,7 +131,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 @media (min-width:760px){.ptitle{padding-block:56px 16px}}
 
 /* sticky chips (menu + order) */
-.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(245,236,220,.97);border-bottom:1px solid var(--line)}
 .chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 .chips .wrap::-webkit-scrollbar{display:none}
 .chips a{flex:0 0 auto;text-decoration:none;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:999px;background:var(--soft);color:var(--muted)}
@@ -137,7 +139,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 
 /* menu list */
 .mlist{max-width:760px;margin:0 auto}
-.mgroup{padding-top:28px}
+.mgroup{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:22px 18px 6px;margin-top:20px;scroll-margin-top:calc(var(--hh) + 70px)}
 .mgroup h2{margin-bottom:6px}
 .mgroup h3{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin:22px 0 4px}
 .mlist ul{list-style:none;margin:0;padding:0}
@@ -251,21 +253,46 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 @media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
 .strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+/* ornaments */
+.band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
+.head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
+.mgroup h2::before{margin-inline:0}
+.ptitle h1::before{width:120px;height:22px}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:8px 18px 18px}
+/* full-screen landing photo */
+.fhero{position:relative;height:calc(100svh - var(--tab) - var(--safe-b));min-height:540px;max-height:1100px;color:#fff;display:flex;align-items:flex-end;overflow:hidden;background:var(--night);isolation:isolate}
+.fhero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:36% center;z-index:-2}
+.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,14,6,.6) 0%,rgba(24,14,6,.08) 28%,rgba(24,14,6,.3) 52%,rgba(24,14,6,.9) 100%)}
+.fhero .frame{position:absolute;inset:calc(var(--hh) + env(safe-area-inset-top,0px) + 8px) 12px 12px;border:1.5px solid rgba(225,195,125,.75);border-radius:50% 50% 12px 12px/110px 110px 12px 12px;pointer-events:none}
+.fhero .frame::before{content:"";position:absolute;inset:6px;border:1px solid rgba(225,195,125,.4);border-radius:inherit}
+.fh-in{position:relative;text-align:center;padding-bottom:44px;width:100%}
+.fh-in .orn-l{display:block;width:150px;height:26px;margin:0 auto 14px;background:url(assets/img/orn-light.svg) no-repeat center/contain}
+.fh-in .eyebrow{color:#e9cf8f}
+.fh-in h1{font-size:clamp(3.6rem,17vw,8.5rem);font-weight:300;letter-spacing:-.01em;line-height:.95}
+.fh-in .lede{font-size:1.08rem;max-width:34ch;margin:14px auto 24px;opacity:.92}
+.fh-in .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fh-in .btn{background:#fff7e8;color:var(--ink);min-width:150px}
+.fh-in .btn.line{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75);backdrop-filter:blur(4px)}
+@media (min-width:900px){.fhero .frame{inset:calc(var(--hh) + 16px) 24px 24px;border-radius:50% 50% 14px 14px/190px 190px 14px 14px}.fh-in{padding-bottom:80px}}
+.top.over{position:fixed;left:0;right:0;transition:background .3s,border-color .3s}
+.top.over:not(.solid){background:transparent;border-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
+.top.over:not(.solid) .brand small,.top.over:not(.solid) .nav a{color:rgba(255,255,255,.85)}
+.top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.14);color:#fff}
+.top.over:not(.solid) .btn{background:#fff7e8;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a><nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Menu</a><a href="order.html" class=order><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav>
+</style></head><body><header class="top over"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a><nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Menu</a><a href="order.html" class=order><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav>
 <main>
-<section class="hero"><div class="wrap"><div>
-<p class="eyebrow">Jersey City · Jackson Heights</p><h1>Chai, crepes &amp; kulfi milk tea.</h1>
+<section class="fhero"><img src="assets/img/chai-pour.jpg" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high"><div class="frame" aria-hidden="true"></div>
+<div class="wrap fh-in"><span class="orn-l" aria-hidden="true"></span><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Misree Chai</h1>
 <p class="lede">Masala chai, kulfi milk tea, sweet crepes and acai bowls, made fresh at both of our cafes.</p>
-<div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn line" href="menu.html">View menu</a></div></div>
-<figure><img src="assets/img/chai-cheers.jpg" alt="Two glasses of chai on a cafe table" width="1400" height="1054" fetchpriority="high"><figcaption class="chip"><b>Open daily</b>Two cafes, one menu</figcaption></figure>
-</div></section>
-<section style="padding-block:8px 40px"><div class="wrap"><div class="head"><h2>The menu</h2><a href="menu.html">See all →</a></div><div class="cats"><a class="cat" href="menu.html#chai"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="520" height="391"><b>Chai & Coffee</b><span>3 items</span></a><a class="cat" href="menu.html#kulfi"><img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="520" height="391"><b>Kulfi Milk Tea</b><span>3 items</span></a><a class="cat" href="menu.html#teas"><img src="assets/img/sm/classic-milk-tea.jpg" alt="" loading="lazy" width="520" height="391"><b>Milk & Fruit Teas</b><span>7 items</span></a><a class="cat" href="menu.html#crepes"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="520" height="391"><b>Crepes</b><span>6 items</span></a><a class="cat" href="menu.html#bowls"><img src="assets/img/sm/nutella-acai-bowl.jpg" alt="" loading="lazy" width="520" height="391"><b>Bowls</b><span>4 items</span></a><a class="cat" href="menu.html#bakery"><img src="assets/img/sm/bun-maska.jpg" alt="" loading="lazy" width="520" height="391"><b>Bakery</b><span>3 items</span></a></div></div></section>
+<div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn line" href="menu.html">View menu</a></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section style="padding-block:44px 40px"><div class="wrap"><div class="head"><h2>The menu</h2><a href="menu.html">See all →</a></div><div class="cats"><a class="cat" href="menu.html#chai"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="520" height="391"><b>Chai & Coffee</b><span>3 items</span></a><a class="cat" href="menu.html#kulfi"><img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="520" height="391"><b>Kulfi Milk Tea</b><span>3 items</span></a><a class="cat" href="menu.html#teas"><img src="assets/img/sm/classic-milk-tea.jpg" alt="" loading="lazy" width="520" height="391"><b>Milk & Fruit Teas</b><span>7 items</span></a><a class="cat" href="menu.html#crepes"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="520" height="391"><b>Crepes</b><span>6 items</span></a><a class="cat" href="menu.html#bowls"><img src="assets/img/sm/nutella-acai-bowl.jpg" alt="" loading="lazy" width="520" height="391"><b>Bowls</b><span>4 items</span></a><a class="cat" href="menu.html#bakery"><img src="assets/img/sm/bun-maska.jpg" alt="" loading="lazy" width="520" height="391"><b>Bakery</b><span>3 items</span></a></div></div></section>
 <section class="pad" style="padding-top:8px"><div class="wrap"><div class="head"><h2>From the menu</h2><a href="order.html">Order →</a></div><div class="picks"><a class="pick" href="order.html"><img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="520" height="391"><div><b>Falooda Kulfi</b><span>$7.49</span></div></a><a class="pick" href="order.html"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="520" height="391"><div><b>Masala Chai</b><span>$4.00</span></div></a><a class="pick" href="order.html"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="520" height="391"><div><b>Triple Chocolate Crepe</b><span>$14.00</span></div></a><a class="pick" href="order.html"><img src="assets/img/sm/nutella-acai-bowl.jpg" alt="" loading="lazy" width="520" height="391"><div><b>Nutella Acai Bowl</b><span>$12.99</span></div></a></div></div></section>
 <section style="padding-bottom:48px"><div class="wrap"><div class="promo"><div><p class="eyebrow">Order online</p><h2>Skip the line.</h2>
 <p class="muted">Order ahead and pick it up at Jersey City or Jackson Heights. We'll have it ready when you walk in.</p><a class="btn" href="order.html">Start an order</a></div>
 <img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="520" height="391"></div></div></section>
-<section class="pad" style="background:var(--surface)"><div class="wrap story"><img src="assets/img/sm/misri.jpg" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="520" height="391">
+<section class="pad"><div class="wrap story"><img src="assets/img/sm/misri.jpg" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="520" height="391">
 <div><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2>
 <p class="muted">Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></section>
 <section class="pad" id="rewards" style="scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><p class="eyebrow">The Misree Chai app</p><h2>Join our Rewards Program.</h2>
@@ -273,7 +300,9 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 <div class="stores"><span class="store" aria-disabled="true" title="Link coming soon"><small>Download on the</small><b>App Store</b></span><span class="store" aria-disabled="true" title="Link coming soon"><small>Get it on</small><b>Google Play</b></span></div></div>
 <div class="perks"><div><b>Order ahead</b><span>Skip the line</span></div><div><b>Earn rewards</b><span>On every visit</span></div><div><b>New drinks</b><span>Hear first</span></div><div><b>Both cafes</b><span>NJ &amp; Queens</span></div></div></div></div></section>
 <section class="pad" style="padding-top:0"><div class="wrap"><div class="head"><h2>Visit us</h2><a href="visit.html">Map →</a></div><div class="locs"><div class="loc"><p class="eyebrow" style="margin:0">Jersey City</p><h3>789 Newark Ave</h3><p class="muted">Jersey City, NJ 07306</p><p class="muted">Open daily · (856) 210-2029</p><div class="acts"><a class="btn" href="order.html?store=jersey-city">Order pickup</a><a class="btn line" href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" target="_blank" rel="noopener">Directions</a></div></div><div class="loc"><p class="eyebrow" style="margin:0">Jackson Heights</p><h3>72-35 Broadway</h3><p class="muted">Jackson Heights, NY 11372</p><p class="muted">Open daily</p><div class="acts"><a class="btn" href="order.html?store=jackson-heights">Order pickup</a><a class="btn line" href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372" target="_blank" rel="noopener">Directions</a></div></div></div></div></section>
-</main><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><script>
+</main><div class="band" aria-hidden="true"></div><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><script>
+const over=document.querySelector('.top.over');
+if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
 const chips=document.querySelectorAll('.chips a');
 if(chips.length){

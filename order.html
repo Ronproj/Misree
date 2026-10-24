@@ -1,8 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Order Online · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#fbf8f3"><meta name="description" content="Order Misree Chai online for pickup in Jersey City or Jackson Heights."><meta property="og:image" content="assets/img/chai-cheers.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"><style>
 /* Simple modern cafe: warm white, olive from the logo, near-black ink. Mobile first. */
 :root{
-  --bg:#fbf8f3; --surface:#ffffff; --soft:#f3eee5; --ink:#1d1b16; --muted:#6a655b; --line:#e7e0d4;
-  --olive:#5f5820; --olive-soft:#eeead6; --on-ink:#ffffff;
+  --bg:#f5ecdc; --surface:#fffaf2; --soft:#efe4d0; --ink:#2b1d14; --muted:#6e6253; --line:#e6d9c3;
+  --olive:#5f5820; --olive-soft:#ece5cc; --on-ink:#ffffff; --rose:#9a4434; --gold:#c9a55a; --night:#2b1d14;
   --hh:60px; --tab:64px; --safe-b:env(safe-area-inset-bottom,0px);
   --font:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:18px; --shadow:0 1px 2px rgba(29,27,22,.05),0 8px 24px rgba(29,27,22,.07);
@@ -11,7 +11,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit}
 img{max-width:100%;height:auto;display:block}
@@ -37,7 +37,7 @@ section.pad{padding-block:48px}
 .head a{font-weight:500;color:var(--olive);text-decoration:none;white-space:nowrap;padding:10px 0}
 
 /* header */
-.top{position:sticky;top:0;z-index:30;background:rgba(251,248,243,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top{position:sticky;top:0;z-index:30;background:rgba(255,250,242,.95);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .top .wrap{display:flex;align-items:center;gap:20px;height:var(--hh)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.3rem;letter-spacing:.01em}
 .brand img{width:36px;height:36px;border-radius:50%;border:1px solid var(--line)}
@@ -70,35 +70,37 @@ section.pad{padding-block:48px}
 .hero .chip b{display:block;font-weight:600}
 @media (min-width:860px){.hero{padding-block:56px 72px}.hero .wrap{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}.hero .ctas{display:flex}.hero figure img{aspect-ratio:5/4}}
 
-.cats{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
+.cats{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
 .cat{flex:0 0 136px;scroll-snap-align:start;text-decoration:none}
-.cat img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);margin-bottom:8px}
+.cat img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 16px 16px;margin-bottom:10px;outline:1.5px solid var(--gold);outline-offset:4px}
+.cat{text-align:center;padding-top:6px}
 .cat b{font-weight:500;display:block;line-height:1.25}
 .cat span{font-size:.85rem;color:var(--muted)}
 @media (min-width:900px){.cats{display:grid;grid-template-columns:repeat(6,1fr);overflow:visible;margin:0;padding:0}.cat{flex:none}}
 
 .picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pick{background:var(--surface);border-radius:var(--r);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.pick img{width:100%;aspect-ratio:1;object-fit:cover}
+.pick{background:var(--surface);border-radius:999px 999px 18px 18px;border:1.5px solid var(--gold);padding:6px 6px 0;overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.pick img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 12px 12px}
+.pick div{text-align:center}
 .pick div{padding:12px 14px 14px}
 .pick b{font-weight:500;display:block;line-height:1.25}
 .pick span{color:var(--muted);font-size:.9rem}
 @media (min-width:900px){.picks{grid-template-columns:repeat(4,1fr);gap:20px}}
 
-.promo{display:grid;gap:20px;background:var(--ink);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
+.promo{display:grid;gap:20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;border:1.5px solid rgba(201,165,90,.5);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
 .promo .eyebrow{color:#d8cf98}
 .promo p.muted{color:rgba(255,255,255,.72);margin:10px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
-.promo img{border-radius:18px;width:100%;aspect-ratio:16/10;object-fit:cover}
+.promo img{border-radius:999px 999px 18px 18px;width:100%;max-width:340px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:6px}
 @media (min-width:860px){.promo{grid-template-columns:1fr 1fr;align-items:center;padding:48px;gap:48px}}
 
 .story{display:grid;gap:24px}
-.story img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.story img{border-radius:999px 999px 22px 22px;width:100%;max-width:420px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:8px}
 .story p.muted{margin-top:14px;max-width:52ch}
 @media (min-width:860px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
 
-.app{background:var(--olive-soft);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
+.app{background:var(--surface);border:1.5px solid var(--gold);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
 .app p.muted{margin:10px 0 20px;max-width:44ch}
 .stores{display:flex;gap:10px;flex-wrap:wrap}
 .store{display:inline-flex;flex-direction:column;justify-content:center;min-width:150px;min-height:52px;padding:8px 18px;border-radius:14px;background:var(--ink);color:#fff;text-decoration:none;line-height:1.15}
@@ -112,16 +114,16 @@ section.pad{padding-block:48px}
 @media (min-width:860px){.app{grid-template-columns:1.1fr 1fr;padding:48px;gap:48px;align-items:center}}
 
 .locs{display:grid;gap:12px}
-.loc{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
+.loc{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
 .loc h3{font-size:1.4rem}
 .loc .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .loc .acts .btn{min-height:44px;flex:1 1 auto;font-size:.92rem;padding:0 16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{border-top:1px solid var(--line);padding-block:28px 36px;font-size:.88rem;color:var(--muted)}
+footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;padding-block:28px 36px;font-size:.88rem;color:rgba(255,245,230,.7)}
 footer .wrap{display:grid;gap:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
-footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
+footer nav a{text-decoration:none;padding:6px 0;color:#fff4e2}
 
 /* page titles */
 .ptitle{padding-block:28px 8px}
@@ -129,7 +131,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 @media (min-width:760px){.ptitle{padding-block:56px 16px}}
 
 /* sticky chips (menu + order) */
-.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(245,236,220,.97);border-bottom:1px solid var(--line)}
 .chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 .chips .wrap::-webkit-scrollbar{display:none}
 .chips a{flex:0 0 auto;text-decoration:none;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:999px;background:var(--soft);color:var(--muted)}
@@ -137,7 +139,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 
 /* menu list */
 .mlist{max-width:760px;margin:0 auto}
-.mgroup{padding-top:28px}
+.mgroup{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:22px 18px 6px;margin-top:20px;scroll-margin-top:calc(var(--hh) + 70px)}
 .mgroup h2{margin-bottom:6px}
 .mgroup h3{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin:22px 0 4px}
 .mlist ul{list-style:none;margin:0;padding:0}
@@ -251,6 +253,32 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 @media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
 .strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+/* ornaments */
+.band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
+.head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
+.mgroup h2::before{margin-inline:0}
+.ptitle h1::before{width:120px;height:22px}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:8px 18px 18px}
+/* full-screen landing photo */
+.fhero{position:relative;height:calc(100svh - var(--tab) - var(--safe-b));min-height:540px;max-height:1100px;color:#fff;display:flex;align-items:flex-end;overflow:hidden;background:var(--night);isolation:isolate}
+.fhero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:36% center;z-index:-2}
+.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,14,6,.6) 0%,rgba(24,14,6,.08) 28%,rgba(24,14,6,.3) 52%,rgba(24,14,6,.9) 100%)}
+.fhero .frame{position:absolute;inset:calc(var(--hh) + env(safe-area-inset-top,0px) + 8px) 12px 12px;border:1.5px solid rgba(225,195,125,.75);border-radius:50% 50% 12px 12px/110px 110px 12px 12px;pointer-events:none}
+.fhero .frame::before{content:"";position:absolute;inset:6px;border:1px solid rgba(225,195,125,.4);border-radius:inherit}
+.fh-in{position:relative;text-align:center;padding-bottom:44px;width:100%}
+.fh-in .orn-l{display:block;width:150px;height:26px;margin:0 auto 14px;background:url(assets/img/orn-light.svg) no-repeat center/contain}
+.fh-in .eyebrow{color:#e9cf8f}
+.fh-in h1{font-size:clamp(3.6rem,17vw,8.5rem);font-weight:300;letter-spacing:-.01em;line-height:.95}
+.fh-in .lede{font-size:1.08rem;max-width:34ch;margin:14px auto 24px;opacity:.92}
+.fh-in .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fh-in .btn{background:#fff7e8;color:var(--ink);min-width:150px}
+.fh-in .btn.line{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75);backdrop-filter:blur(4px)}
+@media (min-width:900px){.fhero .frame{inset:calc(var(--hh) + 16px) 24px 24px;border-radius:50% 50% 14px 14px/190px 190px 14px 14px}.fh-in{padding-bottom:80px}}
+.top.over{position:fixed;left:0;right:0;transition:background .3s,border-color .3s}
+.top.over:not(.solid){background:transparent;border-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
+.top.over:not(.solid) .brand small,.top.over:not(.solid) .nav a{color:rgba(255,255,255,.85)}
+.top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.14);color:#fff}
+.top.over:not(.solid) .btn{background:#fff7e8;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html" aria-current="page">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Menu</a><a href="order.html" aria-current="page" class=order><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
 <div class="demo" role="note"><b>Demo preview.</b> Orders aren't sent to the cafe yet and no card is charged.</div>
@@ -270,7 +298,9 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 <button class="btn" type="button" id="s-add">Add to order</button></div></div></div>
 <div id="toast" hidden role="status" class="toast" style="background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-size:.9rem;box-shadow:var(--shadow)"></div>
 <script type="application/json" id="menu-data">{"items": [{"id": "masala-chai", "name": "Masala Chai", "price": 4.0, "img": "assets/img/masala-chai.jpg", "desc": "Slow-brewed with whole spices.", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]]]}, {"id": "zafrani-chai", "name": "Zafrani Chai", "price": 3.49, "img": "assets/img/zafrani-chai.jpg", "desc": "Saffron chai, sweetened the old way.", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]]]}, {"id": "south-indian-coffee", "name": "South Indian Coffee", "price": 4.0, "img": "assets/img/south-indian-coffee.jpg", "desc": "Strong filter coffee with frothed milk.", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]]]}, {"id": "falooda-kulfi", "name": "Falooda Kulfi", "price": 7.49, "img": "assets/img/falooda-kulfi.jpg", "desc": "Falooda-inspired creamy milk tea.", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "mango-kulfi", "name": "Mango Kulfi", "price": 7.49, "img": "assets/img/mango-kulfi.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "pista-kulfi", "name": "Pista Kulfi", "price": 7.49, "img": "assets/img/pista-kulfi.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "classic-milk-tea", "name": "Classic Milk Tea", "price": 6.49, "img": "assets/img/classic-milk-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "taro-milk-tea", "name": "Taro Milk Tea", "price": 6.49, "img": "assets/img/taro-milk-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "strawberry-milk-tea", "name": "Strawberry Milk Tea", "price": 6.49, "img": "assets/img/strawberry-milk-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "mango-fruit-tea", "name": "Mango Fruit Tea", "price": 5.49, "img": "assets/img/mango-fruit-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "strawberry-fruit-tea", "name": "Strawberry Fruit Tea", "price": 5.49, "img": "assets/img/strawberry-fruit-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "peach-fruit-tea", "name": "Peach Fruit Tea", "price": 5.49, "img": "assets/img/peach-fruit-tea.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "lychee-refresher", "name": "Lychee Refresher", "price": 5.99, "img": "assets/img/lychee-refresher.jpg", "desc": "", "opts": [["Sweetness", ["Regular", "Less sweet", "No sugar"]], ["Ice", ["Regular ice", "Light ice", "No ice"]]]}, {"id": "triple-chocolate-crepe", "name": "Triple Chocolate Crepe", "price": 14.0, "img": "assets/img/triple-chocolate-crepe.jpg", "desc": "Kinder Bueno, Ferrero, Nutella and chocolate chips.", "opts": []}, {"id": "nutella-crepe", "name": "Nutella Crepe", "price": 13.99, "img": "assets/img/nutella-crepe.jpg", "desc": "", "opts": []}, {"id": "royal-pistachio-crepe", "name": "Royal Pistachio Crepe", "price": 13.99, "img": "assets/img/royal-pistachio-crepe.jpg", "desc": "", "opts": []}, {"id": "fudge-brownie-crepe", "name": "Fudge Brownie Crepe", "price": 12.99, "img": "assets/img/fudge-brownie-crepe.jpg", "desc": "", "opts": []}, {"id": "oreo-crepe", "name": "Oreo Crepe", "price": 13.99, "img": "assets/img/oreo-crepe.jpg", "desc": "", "opts": []}, {"id": "mix-berries-crepe", "name": "Mix Berries Crepe", "price": 13.99, "img": "assets/img/mix-berries-crepe.jpg", "desc": "", "opts": []}, {"id": "nutella-acai-bowl", "name": "Nutella Acai Bowl", "price": 12.99, "img": "assets/img/nutella-acai-bowl.jpg", "desc": "", "opts": []}, {"id": "almond-lover-bowl", "name": "Almond Lover Bowl", "price": 13.99, "img": "assets/img/almond-lover-bowl.jpg", "desc": "", "opts": []}, {"id": "coconut-honey-bowl", "name": "Coconut Honey Bowl", "price": 13.99, "img": "assets/img/coconut-honey-bowl.jpg", "desc": "", "opts": []}, {"id": "protein-bowl", "name": "Protein Bowl", "price": 12.99, "img": "assets/img/protein-bowl.jpg", "desc": "", "opts": []}, {"id": "bun-maska", "name": "Bun Maska", "price": 4.49, "img": "assets/img/bun-maska.jpg", "desc": "Soft bun with a thick layer of butter.", "opts": []}, {"id": "butter-croissant", "name": "Butter Croissant", "price": 4.0, "img": "assets/img/butter-croissant.jpg", "desc": "", "opts": []}, {"id": "nutella-croissant", "name": "Nutella Croissant", "price": 5.0, "img": "assets/img/nutella-croissant.jpg", "desc": "", "opts": []}], "stores": [{"id": "jersey-city", "name": "Jersey City", "line1": "789 Newark Ave", "tax": 0.06625}, {"id": "jackson-heights", "name": "Jackson Heights", "line1": "72-35 Broadway", "tax": 0.08875}]}</script>
-<footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><script>
+<div class="band" aria-hidden="true"></div><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><script>
+const over=document.querySelector('.top.over');
+if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
 const chips=document.querySelectorAll('.chips a');
 if(chips.length){

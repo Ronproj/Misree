@@ -71,8 +71,8 @@ def esc(s): return html.escape(s, quote=True)
 CSS = r"""
 /* Simple modern cafe: warm white, olive from the logo, near-black ink. Mobile first. */
 :root{
-  --bg:#fbf8f3; --surface:#ffffff; --soft:#f3eee5; --ink:#1d1b16; --muted:#6a655b; --line:#e7e0d4;
-  --olive:#5f5820; --olive-soft:#eeead6; --on-ink:#ffffff;
+  --bg:#f5ecdc; --surface:#fffaf2; --soft:#efe4d0; --ink:#2b1d14; --muted:#6e6253; --line:#e6d9c3;
+  --olive:#5f5820; --olive-soft:#ece5cc; --on-ink:#ffffff; --rose:#9a4434; --gold:#c9a55a; --night:#2b1d14;
   --hh:60px; --tab:64px; --safe-b:env(safe-area-inset-bottom,0px);
   --font:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:18px; --shadow:0 1px 2px rgba(29,27,22,.05),0 8px 24px rgba(29,27,22,.07);
@@ -81,7 +81,7 @@ CSS = r"""
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit}
 img{max-width:100%;height:auto;display:block}
@@ -107,7 +107,7 @@ section.pad{padding-block:48px}
 .head a{font-weight:500;color:var(--olive);text-decoration:none;white-space:nowrap;padding:10px 0}
 
 /* header */
-.top{position:sticky;top:0;z-index:30;background:rgba(251,248,243,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top{position:sticky;top:0;z-index:30;background:rgba(255,250,242,.95);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .top .wrap{display:flex;align-items:center;gap:20px;height:var(--hh)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.3rem;letter-spacing:.01em}
 .brand img{width:36px;height:36px;border-radius:50%;border:1px solid var(--line)}
@@ -140,35 +140,37 @@ section.pad{padding-block:48px}
 .hero .chip b{display:block;font-weight:600}
 @media (min-width:860px){.hero{padding-block:56px 72px}.hero .wrap{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}.hero .ctas{display:flex}.hero figure img{aspect-ratio:5/4}}
 
-.cats{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
+.cats{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
 .cat{flex:0 0 136px;scroll-snap-align:start;text-decoration:none}
-.cat img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);margin-bottom:8px}
+.cat img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 16px 16px;margin-bottom:10px;outline:1.5px solid var(--gold);outline-offset:4px}
+.cat{text-align:center;padding-top:6px}
 .cat b{font-weight:500;display:block;line-height:1.25}
 .cat span{font-size:.85rem;color:var(--muted)}
 @media (min-width:900px){.cats{display:grid;grid-template-columns:repeat(6,1fr);overflow:visible;margin:0;padding:0}.cat{flex:none}}
 
 .picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pick{background:var(--surface);border-radius:var(--r);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.pick img{width:100%;aspect-ratio:1;object-fit:cover}
+.pick{background:var(--surface);border-radius:999px 999px 18px 18px;border:1.5px solid var(--gold);padding:6px 6px 0;overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.pick img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 12px 12px}
+.pick div{text-align:center}
 .pick div{padding:12px 14px 14px}
 .pick b{font-weight:500;display:block;line-height:1.25}
 .pick span{color:var(--muted);font-size:.9rem}
 @media (min-width:900px){.picks{grid-template-columns:repeat(4,1fr);gap:20px}}
 
-.promo{display:grid;gap:20px;background:var(--ink);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
+.promo{display:grid;gap:20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;border:1.5px solid rgba(201,165,90,.5);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
 .promo .eyebrow{color:#d8cf98}
 .promo p.muted{color:rgba(255,255,255,.72);margin:10px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
-.promo img{border-radius:18px;width:100%;aspect-ratio:16/10;object-fit:cover}
+.promo img{border-radius:999px 999px 18px 18px;width:100%;max-width:340px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:6px}
 @media (min-width:860px){.promo{grid-template-columns:1fr 1fr;align-items:center;padding:48px;gap:48px}}
 
 .story{display:grid;gap:24px}
-.story img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.story img{border-radius:999px 999px 22px 22px;width:100%;max-width:420px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:8px}
 .story p.muted{margin-top:14px;max-width:52ch}
 @media (min-width:860px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
 
-.app{background:var(--olive-soft);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
+.app{background:var(--surface);border:1.5px solid var(--gold);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
 .app p.muted{margin:10px 0 20px;max-width:44ch}
 .stores{display:flex;gap:10px;flex-wrap:wrap}
 .store{display:inline-flex;flex-direction:column;justify-content:center;min-width:150px;min-height:52px;padding:8px 18px;border-radius:14px;background:var(--ink);color:#fff;text-decoration:none;line-height:1.15}
@@ -182,16 +184,16 @@ section.pad{padding-block:48px}
 @media (min-width:860px){.app{grid-template-columns:1.1fr 1fr;padding:48px;gap:48px;align-items:center}}
 
 .locs{display:grid;gap:12px}
-.loc{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
+.loc{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
 .loc h3{font-size:1.4rem}
 .loc .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .loc .acts .btn{min-height:44px;flex:1 1 auto;font-size:.92rem;padding:0 16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{border-top:1px solid var(--line);padding-block:28px 36px;font-size:.88rem;color:var(--muted)}
+footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;padding-block:28px 36px;font-size:.88rem;color:rgba(255,245,230,.7)}
 footer .wrap{display:grid;gap:14px}
 footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
-footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
+footer nav a{text-decoration:none;padding:6px 0;color:#fff4e2}
 
 /* page titles */
 .ptitle{padding-block:28px 8px}
@@ -199,7 +201,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 @media (min-width:760px){.ptitle{padding-block:56px 16px}}
 
 /* sticky chips (menu + order) */
-.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(245,236,220,.97);border-bottom:1px solid var(--line)}
 .chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 .chips .wrap::-webkit-scrollbar{display:none}
 .chips a{flex:0 0 auto;text-decoration:none;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:999px;background:var(--soft);color:var(--muted)}
@@ -207,7 +209,7 @@ footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
 
 /* menu list */
 .mlist{max-width:760px;margin:0 auto}
-.mgroup{padding-top:28px}
+.mgroup{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:22px 18px 6px;margin-top:20px;scroll-margin-top:calc(var(--hh) + 70px)}
 .mgroup h2{margin-bottom:6px}
 .mgroup h3{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin:22px 0 4px}
 .mlist ul{list-style:none;margin:0;padding:0}
@@ -321,10 +323,38 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 @media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
 .strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+/* ornaments */
+.band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
+.head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
+.mgroup h2::before{margin-inline:0}
+.ptitle h1::before{width:120px;height:22px}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:8px 18px 18px}
+/* full-screen landing photo */
+.fhero{position:relative;height:calc(100svh - var(--tab) - var(--safe-b));min-height:540px;max-height:1100px;color:#fff;display:flex;align-items:flex-end;overflow:hidden;background:var(--night);isolation:isolate}
+.fhero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:36% center;z-index:-2}
+.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,14,6,.6) 0%,rgba(24,14,6,.08) 28%,rgba(24,14,6,.3) 52%,rgba(24,14,6,.9) 100%)}
+.fhero .frame{position:absolute;inset:calc(var(--hh) + env(safe-area-inset-top,0px) + 8px) 12px 12px;border:1.5px solid rgba(225,195,125,.75);border-radius:50% 50% 12px 12px/110px 110px 12px 12px;pointer-events:none}
+.fhero .frame::before{content:"";position:absolute;inset:6px;border:1px solid rgba(225,195,125,.4);border-radius:inherit}
+.fh-in{position:relative;text-align:center;padding-bottom:44px;width:100%}
+.fh-in .orn-l{display:block;width:150px;height:26px;margin:0 auto 14px;background:url(assets/img/orn-light.svg) no-repeat center/contain}
+.fh-in .eyebrow{color:#e9cf8f}
+.fh-in h1{font-size:clamp(3.6rem,17vw,8.5rem);font-weight:300;letter-spacing:-.01em;line-height:.95}
+.fh-in .lede{font-size:1.08rem;max-width:34ch;margin:14px auto 24px;opacity:.92}
+.fh-in .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fh-in .btn{background:#fff7e8;color:var(--ink);min-width:150px}
+.fh-in .btn.line{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75);backdrop-filter:blur(4px)}
+@media (min-width:900px){.fhero .frame{inset:calc(var(--hh) + 16px) 24px 24px;border-radius:50% 50% 14px 14px/190px 190px 14px 14px}.fh-in{padding-bottom:80px}}
+.top.over{position:fixed;left:0;right:0;transition:background .3s,border-color .3s}
+.top.over:not(.solid){background:transparent;border-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
+.top.over:not(.solid) .brand small,.top.over:not(.solid) .nav a{color:rgba(255,255,255,.85)}
+.top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.14);color:#fff}
+.top.over:not(.solid) .btn{background:#fff7e8;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 """
 
 JS = r"""
+const over=document.querySelector('.top.over');
+if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
 const chips=document.querySelectorAll('.chips a');
 if(chips.length){
@@ -453,19 +483,19 @@ ICONS = {
 NAV = [("home", "Home", "index.html"), ("menu", "Menu", "menu.html"), ("order", "Order", "order.html"),
        ("rewards", "Rewards", "index.html#rewards"), ("visit", "Visit", "visit.html")]
 
-def header(current="home"):
+def header(current="home", over=False):
     cur = lambda k: ' aria-current="page"' if k == current else ""
     links = "".join(f'<a href="{h}"{cur(k)}>{"Join our Rewards Program" if k == "rewards" else ("Order Online" if k == "order" else t)}</a>'
                     for k, t, h in NAV if k != "order")
     tabs = "".join(f'<a href="{h}"{cur(k)}{" class=order" if k == "order" else ""}>'
                    f'{"<span>" if k == "order" else ""}<svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[k]}</svg>{"</span>" if k == "order" else ""}{t}</a>' for k, t, h in NAV)
     order_btn = f'<a class="btn" href="order.html"{cur("order")}>Order Online</a>'
-    return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a>'
+    return (f'<header class="top{' over' if over else ''}"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a>'
             f'<nav class="nav" aria-label="Main">{links}</nav>{order_btn}</div></header>'
             f'<nav class="tabbar" aria-label="Main">{tabs}</nav>')
 
 def footer():
-    return (f'<footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a>'
+    return (f'<div class="band" aria-hidden="true"></div><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a>'
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
@@ -480,20 +510,19 @@ def build_index():
     cats = "".join(f'<a class="cat" href="menu.html#{c["slug"]}"><img src="{sm(c["items"][0][2])}" alt="" loading="lazy" width="520" height="391"><b>{c["name"]}</b><span>{len(c["items"])} items</span></a>' for c in CATS)
     picks_src = [("kulfi", 0), ("chai", 0), ("crepes", 0), ("bowls", 0)]
     picks = "".join((lambda n, p, im, d: f'<a class="pick" href="order.html"><img src="{sm(im)}" alt="" loading="lazy" width="520" height="391"><div><b>{n}</b><span>${p}</span></div></a>')(*BYSLUG[s]["items"][i]) for s, i in picks_src)
-    body = f'''{header("home")}
+    body = f'''{header("home", over=True)}
 <main>
-<section class="hero"><div class="wrap"><div>
-<p class="eyebrow">Jersey City · Jackson Heights</p><h1>Chai, crepes &amp; kulfi milk tea.</h1>
+<section class="fhero"><img src="{img("chai-pour")}" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high"><div class="frame" aria-hidden="true"></div>
+<div class="wrap fh-in"><span class="orn-l" aria-hidden="true"></span><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Misree Chai</h1>
 <p class="lede">Masala chai, kulfi milk tea, sweet crepes and acai bowls, made fresh at both of our cafes.</p>
-<div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn line" href="menu.html">View menu</a></div></div>
-<figure><img src="{img("chai-cheers")}" alt="Two glasses of chai on a cafe table" width="1400" height="1054" fetchpriority="high"><figcaption class="chip"><b>Open daily</b>Two cafes, one menu</figcaption></figure>
-</div></section>
-<section style="padding-block:8px 40px"><div class="wrap"><div class="head"><h2>The menu</h2><a href="menu.html">See all →</a></div><div class="cats">{cats}</div></div></section>
+<div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn line" href="menu.html">View menu</a></div></div></section>
+<div class="band" aria-hidden="true"></div>
+<section style="padding-block:44px 40px"><div class="wrap"><div class="head"><h2>The menu</h2><a href="menu.html">See all →</a></div><div class="cats">{cats}</div></div></section>
 <section class="pad" style="padding-top:8px"><div class="wrap"><div class="head"><h2>From the menu</h2><a href="order.html">Order →</a></div><div class="picks">{picks}</div></div></section>
 <section style="padding-bottom:48px"><div class="wrap"><div class="promo"><div><p class="eyebrow">Order online</p><h2>Skip the line.</h2>
 <p class="muted">Order ahead and pick it up at Jersey City or Jackson Heights. We'll have it ready when you walk in.</p><a class="btn" href="order.html">Start an order</a></div>
 <img src="{sm("falooda-kulfi")}" alt="" loading="lazy" width="520" height="391"></div></div></section>
-<section class="pad" style="background:var(--surface)"><div class="wrap story"><img src="{sm("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="520" height="391">
+<section class="pad"><div class="wrap story"><img src="{sm("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="520" height="391">
 <div><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2>
 <p class="muted">Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></section>
 <section class="pad" id="rewards" style="scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><p class="eyebrow">The Misree Chai app</p><h2>Join our Rewards Program.</h2>
@@ -581,7 +610,57 @@ def build_visit():
 </main>{footer()}'''
     return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps and directions.", body)
 
+
+# Block-print wallpaper and ornaments, drawn as SVG so they stay crisp and tiny.
+def buta(cx, cy, s, bg):
+    g = f'<g transform="translate({cx} {cy}) scale({s})">'
+    g += '<path d="M0 38 C-2 24 3 12 0 -4" fill="none" stroke="var(--l)" stroke-width="2.2" stroke-linecap="round"/>'
+    g += '<path d="M-14 40 Q0 30 14 40" fill="none" stroke="var(--l)" stroke-width="2"/>'
+    for d in (1, -1):
+        g += f'<path d="M{d} 22 C{d*10} 12 {d*22} 14 {d*26} 6 C{d*16} 4 {d*6} 12 {d} 22Z" fill="var(--l)"/>'
+        g += f'<path d="M{d} 22 C{d*10} 15 {d*18} 12 {d*24} 7" fill="none" stroke="{bg}" stroke-width=".9"/>'
+        g += f'<path d="M0 8 C{d*8} 2 {d*12} -2 {d*16} -10 C{d*8} -9 {d*2} -2 0 8Z" fill="var(--l)" opacity=".75"/>'
+    for a in (-64, -32, 0, 32, 64):
+        g += f'<path transform="rotate({a} 0 -6)" d="M0 -6 C-6 -14 -5 -26 0 -32 C5 -26 6 -14 0 -6Z" fill="var(--f)" opacity="{1 if a == 0 else .82}"/>'
+        g += f'<path transform="rotate({a} 0 -6)" d="M0 -9 L0 -27" stroke="{bg}" stroke-width=".8"/>'
+    g += f'<circle cx="0" cy="-6" r="4.2" fill="var(--l)"/><circle cx="0" cy="-6" r="1.8" fill="{bg}"/>'
+    g += "".join(f'<circle cx="{x}" cy="{y}" r="1.4" fill="var(--f)"/>' for x, y in ((0, -38), (-10, -35), (10, -35)))
+    return g + '</g>'
+
+def star(cx, cy, color):
+    g = f'<g transform="translate({cx} {cy})" fill="{color}">'
+    g += "".join(f'<path transform="rotate({a})" d="M0 0 C-3 -3 -3 -8 0 -10 C3 -8 3 -3 0 0Z" opacity=".75"/>' for a in (0, 90, 180, 270))
+    return g + '<circle r="1.6"/></g>'
+
+def wallpaper(leaf, flower, bg, op):
+    body = "".join(buta(x, y, .78, bg) for x, y in ((30, 50), (90, 135), (90, -35))) + "".join(star(x, y, leaf) for x, y in ((90, 50), (30, 135), (30, -35)))
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="120" height="170" viewBox="0 0 120 170"><rect width="120" height="170" fill="{bg}"/>'
+            f'<g opacity="{op}">{body.replace("var(--l)", leaf).replace("var(--f)", flower)}</g></svg>')
+
+def ornament(color, flower):
+    lotus = buta(70, 13, .32, "none").replace('var(--l)', color).replace('var(--f)', flower)
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="140" height="26" viewBox="0 0 140 26">'
+            f'<path d="M4 15H52M88 15H136" stroke="{color}" stroke-width="1.2"/><circle cx="56" cy="15" r="1.8" fill="{color}"/><circle cx="84" cy="15" r="1.8" fill="{color}"/>'
+            f'<circle cx="4" cy="15" r="1.6" fill="{color}"/><circle cx="136" cy="15" r="1.6" fill="{color}"/>{lotus}</svg>')
+
+def border_tile():
+    gold = "#c9a55a"
+    tiny = buta(30, 15.5, .26, "#2b1d14").replace('var(--l)', gold).replace('var(--f)', "#c46a52")
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="60" height="30" viewBox="0 0 60 30"><rect width="60" height="30" fill="#2b1d14"/>'
+            f'<path d="M0 3.5H60M0 26.5H60" stroke="{gold}" stroke-width="1"/><path d="M0 6H60M0 24H60" stroke="{gold}" stroke-width=".5" opacity=".6"/>'
+            f'{tiny}<circle cx="0" cy="15" r="2" fill="{gold}"/><circle cx="60" cy="15" r="2" fill="{gold}"/></svg>')
+
+def write_ornaments(out):
+    d = os.path.join(out, "assets", "img"); os.makedirs(d, exist_ok=True)
+    files = {"wallpaper.svg": wallpaper("#5f5820", "#9a4434", "#f5ecdc", .2),
+             "wallpaper-dark.svg": wallpaper("#c9a55a", "#c46a52", "#2b1d14", .22),
+             "orn.svg": ornament("#8a7a3a", "#9a4434"), "orn-light.svg": ornament("#e1c37d", "#e8a08a"), "border.svg": border_tile()}
+    for n, svg in files.items():
+        with open(os.path.join(d, n), "w") as fh:
+            fh.write(svg)
+
 os.makedirs(OUT, exist_ok=True)
+write_ornaments(OUT)
 for name, fn in [("index.html", build_index), ("menu.html", build_menu), ("order.html", build_order), ("visit.html", build_visit)]:
     with open(os.path.join(OUT, name), "w") as fh:
         fh.write(fn())
