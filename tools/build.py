@@ -233,18 +233,32 @@ footer nav a{color:#fff8ec;padding:6px 0}
   font-size:12px;font-weight:600;display:grid;place-items:center}
 
 /* menu page */
-.mgroup{padding-top:28px;scroll-margin-top:calc(var(--hh) + 60px)}
-.mgroup>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px}
-.mgroup>header span{font-size:14px;color:var(--muted)}
-.mgroup h3{margin:20px 0 0;font-size:14px;font-weight:500;color:var(--accent);scroll-margin-top:calc(var(--hh) + 60px)}
-.mbanner{display:none}
+.mgroup{scroll-margin-top:calc(var(--hh) + 60px);overflow:hidden}
+.mban{position:relative;margin:calc(var(--pp) * -1) calc(var(--pp) * -1) 8px;color:#fff}
+.mban img{display:block;width:100%;aspect-ratio:16/8;object-fit:cover}
+.mban::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,14,10,0) 35%,rgba(20,14,10,.78))}
+.mban div{position:absolute;left:var(--pp);right:var(--pp);bottom:16px;z-index:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.mban h2{font-size:32px;font-weight:400;color:#fff}
+.mban span{font-size:14px;color:rgba(255,248,236,.8)}
+.msub{display:flex;align-items:center;gap:14px;margin:26px 0 6px;font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);scroll-margin-top:calc(var(--hh) + 60px)}
+.msub::before,.msub::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.mlist{list-style:none;margin:0;padding:0}
+.mi{display:block;width:100%;padding:14px 0;border:0;border-bottom:1px dashed var(--line-2);background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mlist li:last-child .mi{border-bottom:0}
+.mi .mt{display:flex;align-items:baseline;gap:8px}
+.mi .n{font-size:17px;font-weight:500}
+.mi .dots{flex:1;min-width:16px;border-bottom:2px dotted var(--line-2);transform:translateY(-4px)}
+.mi .p{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.mi small{display:block;margin-top:3px;font-size:14px;line-height:1.45;color:var(--muted);max-width:52ch}
+.mi:hover .n{color:var(--accent)}
 .note{font-size:14px;color:var(--muted);text-align:center;margin:32px auto 0;max-width:46ch}
 .endcta{display:flex;justify-content:center;margin:20px 0 48px}
 @media (min-width:900px){
-  .mgroup{padding-top:48px}
-  .mbanner{display:block;margin-bottom:20px}
-  .mbanner img{width:100%;aspect-ratio:16/5;object-fit:cover;border-radius:var(--r)}
-  .mgroup .rows{display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+  .mban img{aspect-ratio:16/4.5}
+  .mban div{bottom:24px}
+  .mban h2{font-size:44px}
+  .mlist{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
+  .mlist li:nth-last-child(2):nth-child(odd) .mi{border-bottom:0}
 }
 
 /* order page */
@@ -629,14 +643,15 @@ def build_menu():
         lists = ""
         for sl in slugs:
             c = BYSLUG[sl]
-            sub = f'<h3 id="{sl}">{c["name"]}</h3>' if len(slugs) > 1 else ""
-            rows = "".join(f'<li>{item_row(n, p, im, d, f"data-qv data-title=\"{esc(n)}\" data-price=\"${p}\" data-img=\"{img(im)}\" data-desc=\"{esc(d)}\"")}</li>' for n, p, im, d in c["items"])
-            lists += f'{sub}<ul class="rows">{rows}</ul>'
+            sub = f'<h3 class="msub" id="{sl}">{c["name"]}</h3>' if len(slugs) > 1 else ""
+            rows = "".join(f'<li><button class="mi" type="button" data-qv data-title="{esc(n)}" data-price="${p}" data-img="{img(im)}" data-desc="{esc(d)}">'
+                           f'<span class="mt"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>{f"<small>{d}</small>" if d else ""}</button></li>' for n, p, im, d in c["items"])
+            lists += f'{sub}<ul class="mlist">{rows}</ul>'
         count = sum(len(BYSLUG[sl]["items"]) for sl in slugs)
-        secs += (f'<section class="mgroup" id="{g}" data-sec><div class="mbanner"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"></div>'
-                 f'<header><h2>{name}</h2><span>{count} items</span></header>{lists}</section>')
+        secs += (f'<section class="mgroup" id="{g}" data-sec><div class="mban"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"><div><h2>{name}</h2><span>{count} items</span></div></div>'
+                 f'{lists}</section>')
     body = f'''{header("menu")}<main>
-<div class="phead"><div class="wrap"><h1>Menu</h1><p>Served at both cafes. Tap an item for a photo.</p></div></div>
+<div class="phead"><div class="wrap"><h1>Menu</h1><p>Served at both cafes. Tap any item to see a photo.</p></div></div>
 <nav class="chips" aria-label="Menu sections"><div class="wrap">{chips}</div></nav>
 <div class="wrap">{secs}
 <p class="note">Prices are from the cafe's online ordering menu and may differ in store.</p>
