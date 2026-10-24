@@ -4,7 +4,7 @@ Static site for Misree Chai, 789 Newark Ave, Jersey City.
 
 - `index.html`: home page (video hero, categories, app/rewards, visit)
 - `menu.html`: full menu (Drinks, Crepes, Bowls, Bakery)
-- `assets/`: photos and background videos
+- `assets/`: photos and simple photo layout
 
 There is no build step. Deploy the repo root as a static site (Vercel: Framework Preset "Other", no build command, output directory `.`).
 

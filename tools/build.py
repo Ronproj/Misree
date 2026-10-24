@@ -1,27 +1,21 @@
-"""Misree Chai static site generator (photo + video edition).
-Usage: python3 build2.py OUTDIR [--artifact]
-Pages reference media at assets/img/<name>.jpg and assets/video/<name>.mp4."""
+"""Misree Chai static site generator (simple modern edition).
+Usage: python3 tools/build.py OUTDIR [--artifact]
+Pages reference photos at assets/img/<name>.jpg, with 520px copies in assets/img/sm/ for cards and lists."""
 import os, sys, html, json
+from urllib.parse import quote_plus
 
 OUT = sys.argv[1]
 ARTIFACT = "--artifact" in sys.argv
 
-ADDRESS = "789 Newark Ave, Jersey City, NJ 07306"
-from urllib.parse import quote_plus
 LOCATIONS = [
-    dict(id="jersey-city", name="Jersey City", area="Journal Square, Jersey City", line1="789 Newark Ave", line2="Jersey City, NJ 07306",
-         query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029"),
-    dict(id="jackson-heights", name="Jackson Heights", area="Jackson Heights, Queens", line1="72-35 Broadway", line2="Jackson Heights, NY 11372",
-         query="Misree Chai NY, 72-35 Broadway, Jackson Heights, NY 11372", phone=""),
+    dict(id="jersey-city", name="Jersey City", line1="789 Newark Ave", line2="Jersey City, NJ 07306",
+         query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029", tax=0.06625),
+    dict(id="jackson-heights", name="Jackson Heights", line1="72-35 Broadway", line2="Jackson Heights, NY 11372",
+         query="Misree Chai NY, 72-35 Broadway, Jackson Heights, NY 11372", phone="", tax=0.08875),
 ]
 for L in LOCATIONS:
     L["embed"] = f"https://www.google.com/maps?q={quote_plus(L['query'])}&z=16&output=embed"
     L["dir"] = f"https://www.google.com/maps/dir/?api=1&destination={quote_plus(L['query'])}"
-    L["search"] = f"https://www.google.com/maps/search/?api=1&query={quote_plus(L['query'])}"
-PHONE = "(856) 210-2029"
-MAPS = "https://www.google.com/maps/search/?api=1&query=Misree+Chai+789+Newark+Ave+Jersey+City+NJ"
-DIRECTIONS = "https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306"
-MAP_EMBED = "https://www.google.com/maps?q=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306&z=16&output=embed"
 DOORDASH = "https://www.doordash.com/store/misree-chai-jersey-city-33169529/"
 UBER = "https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA"
 INSTA = "https://www.instagram.com/misreechai/"
@@ -34,469 +28,561 @@ def store_btn(url, small, big):
         return f'<a class="store" href="{url}" target="_blank" rel="noopener"><small>{small}</small><b>{big}</b></a>'
     return f'<span class="store" aria-disabled="true" title="Link coming soon"><small>{small}</small><b>{big}</b></span>'
 
-def slug(s):
-    return s.lower().replace(" ", "-")
-
 # Menu data from the cafe's DoorDash / Uber Eats listings and misreechai.com search snippets.
+# opts names an entry in OPTIONS (the demo ordering choices for that category).
 CATS = [
-    dict(slug="chai", name="Chai & Coffee", kicker="The heart of the house", video="chai-pour", poster="chai-pour",
-         intro="Slow-brewed chai and South Indian coffee, poured hot and sweetened the old way.",
-         items=[("Masala Chai", "4.00", "masala-chai", ""), ("Zafrani Chai", "3.49", "zafrani-chai", ""),
-                ("South Indian Coffee", "4.00", "south-indian-coffee", "")]),
-    dict(slug="kulfi", name="Kulfi Milk Tea", kicker="House signature", video="milk-tea", poster="milk-tea-pour",
-         intro="Creamy milk tea built around the flavors of kulfi.",
+    dict(slug="chai", name="Chai & Coffee", opts="hot",
+         items=[("Masala Chai", "4.00", "masala-chai", "Slow-brewed with whole spices."), ("Zafrani Chai", "3.49", "zafrani-chai", "Saffron chai, sweetened the old way."),
+                ("South Indian Coffee", "4.00", "south-indian-coffee", "Strong filter coffee with frothed milk.")]),
+    dict(slug="kulfi", name="Kulfi Milk Tea", opts="iced",
          items=[("Falooda Kulfi", "7.49", "falooda-kulfi", "Falooda-inspired creamy milk tea."),
                 ("Mango Kulfi", "7.49", "mango-kulfi", ""), ("Pista Kulfi", "7.49", "pista-kulfi", "")]),
-    dict(slug="teas", name="Milk & Fruit Teas", kicker="Iced and bright", video="milk-tea", poster="milk-tea-pour",
-         intro="Classic milk teas and fruit teas, shaken over ice.",
+    dict(slug="teas", name="Milk & Fruit Teas", opts="iced",
          items=[("Classic Milk Tea", "6.49", "classic-milk-tea", ""), ("Taro Milk Tea", "6.49", "taro-milk-tea", ""),
                 ("Strawberry Milk Tea", "6.49", "strawberry-milk-tea", ""), ("Mango Fruit Tea", "5.49", "mango-fruit-tea", ""),
                 ("Strawberry Fruit Tea", "5.49", "strawberry-fruit-tea", ""), ("Peach Fruit Tea", "5.49", "peach-fruit-tea", ""),
                 ("Lychee Refresher", "5.99", "lychee-refresher", "")]),
-    dict(slug="crepes", name="Crepes", kicker="Folded to order", video="crepe", poster="crepe-griddle",
-         intro="Sweet crepes off the griddle, generously filled and finished with drizzle.",
+    dict(slug="crepes", name="Crepes", opts="food",
          items=[("Triple Chocolate Crepe", "14.00", "triple-chocolate-crepe", "Kinder Bueno, Ferrero, Nutella and chocolate chips."),
                 ("Nutella Crepe", "13.99", "nutella-crepe", ""), ("Royal Pistachio Crepe", "13.99", "royal-pistachio-crepe", ""),
                 ("Fudge Brownie Crepe", "12.99", "fudge-brownie-crepe", ""), ("Oreo Crepe", "13.99", "oreo-crepe", ""),
                 ("Mix Berries Crepe", "13.99", "mix-berries-crepe", "")]),
-    dict(slug="bowls", name="Bowls", kicker="Cold and loaded", video="interior", poster="cafe-interior",
-         intro="Acai and protein bowls stacked with fruit, nuts and drizzle.",
+    dict(slug="bowls", name="Bowls", opts="food",
          items=[("Nutella Acai Bowl", "12.99", "nutella-acai-bowl", ""), ("Almond Lover Bowl", "13.99", "almond-lover-bowl", ""),
                 ("Coconut Honey Bowl", "13.99", "coconut-honey-bowl", ""), ("Protein Bowl", "12.99", "protein-bowl", "")]),
-    dict(slug="bakery", name="Bakery", kicker="With your chai", video="chai-pour", poster="chai-cheers",
-         intro="Buttery bakes made for dunking.",
-         items=[("Bun Maska", "4.49", "bun-maska", ""), ("Butter Croissant", "4.00", "butter-croissant", ""),
+    dict(slug="bakery", name="Bakery", opts="food",
+         items=[("Bun Maska", "4.49", "bun-maska", "Soft bun with a thick layer of butter."), ("Butter Croissant", "4.00", "butter-croissant", ""),
                 ("Nutella Croissant", "5.00", "nutella-croissant", "")]),
 ]
+OPTIONS = {
+    "hot": [("Sweetness", ["Regular", "Less sweet", "No sugar"])],
+    "iced": [("Sweetness", ["Regular", "Less sweet", "No sugar"]), ("Ice", ["Regular ice", "Light ice", "No ice"])],
+    "food": [],
+}
+GROUPS = [("drinks", "Drinks", ["chai", "kulfi", "teas"]), ("crepes", "Crepes", ["crepes"]),
+          ("bowls", "Bowls", ["bowls"]), ("bakery", "Bakery", ["bakery"])]
+BYSLUG = {c["slug"]: c for c in CATS}
 
 def img(name): return f"assets/img/{name}.jpg"
-def img_png(name): return f"assets/img/{name}.png"
-def vid(name): return f"assets/video/{name}.mp4"
+def sm(name): return f"assets/img/sm/{name}.jpg"
+def slug(s): return s.lower().replace(" ", "-").replace("&", "and")
+def esc(s): return html.escape(s, quote=True)
 
 CSS = r"""
-/* Layout: cinematic teahouse. Full-bleed video bands in deep peacock, saffron accents, photo-led menu. */
+/* Simple modern cafe: warm white, olive from the logo, near-black ink. Mobile first. */
 :root{
-  --paper:#f5f0e8; --surface:#fffaf2; --ink:#1c2523; --muted:#5b6662; --line:#e2d7c7;
-  --night:#0c1f1d; --night-ink:#f4ecdf; --saffron:#d08a22; --saffron-ink:#1b1206; --rose:#c25a6c;
-  --scrim:rgba(8,20,19,.62); --card-shadow:0 1px 2px rgba(28,37,35,.06),0 12px 32px rgba(28,37,35,.08);
-  --display:"Jost","Futura","Century Gothic",system-ui,sans-serif;
-  --body:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bg:#fbf8f3; --surface:#ffffff; --soft:#f3eee5; --ink:#1d1b16; --muted:#6a655b; --line:#e7e0d4;
+  --olive:#5f5820; --olive-soft:#eeead6; --on-ink:#ffffff;
+  --hh:60px; --tab:64px; --safe-b:env(safe-area-inset-bottom,0px);
+  --font:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:18px; --shadow:0 1px 2px rgba(29,27,22,.05),0 8px 24px rgba(29,27,22,.07);
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
-  --saffron:#e3a24a; --card-shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.35); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#0e1716; --surface:#142120; --ink:#efe7da; --muted:#a6b0ab; --line:#26332f;
-  --saffron:#e3a24a; --card-shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.35); color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit}
-img,video{max-width:100%;display:block}
-.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.05;letter-spacing:-.01em;text-wrap:balance;margin:0}
-h1{letter-spacing:-.025em}
-.eyebrow{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--saffron);margin:0 0 14px}
-:focus-visible{outline:3px solid var(--saffron);outline-offset:3px;border-radius:6px}
-.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 .95rem var(--body);padding:13px 22px;border-radius:999px;background:var(--saffron);color:var(--saffron-ink);border:0;cursor:pointer;transition:transform .2s, box-shadow .2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(208,138,34,.35)}
-.btn.ghost{background:rgba(255,255,255,.08);color:var(--night-ink);box-shadow:inset 0 0 0 1.5px rgba(244,236,223,.6);backdrop-filter:blur(6px)}
+img{max-width:100%;height:auto;display:block}
+button{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-weight:400;line-height:1.08;letter-spacing:-.015em;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.4rem,9vw,4.6rem);font-weight:300}
+h2{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:300}
+p{margin:0}
+.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin-bottom:10px}
+.muted{color:var(--muted)}
+:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px;border-radius:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:0;
+  background:var(--ink);color:var(--on-ink);text-decoration:none;font-weight:500;font-size:1rem;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.97)}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.olive{background:var(--olive)}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+section.pad{padding-block:48px}
+@media (min-width:760px){section.pad{padding-block:80px}}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:20px}
+.head a{font-weight:500;color:var(--olive);text-decoration:none;white-space:nowrap;padding:10px 0}
 
-/* header: transparent over video, solid after scroll */
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--night)}
-.top{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;color:var(--night-ink);transition:background .3s, box-shadow .3s}
-.top.solid{background:rgba(12,31,29,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
-.top .wrap{display:flex;align-items:center;gap:20px;padding-block:16px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:400 1.45rem var(--display);letter-spacing:.02em;white-space:nowrap}
-.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#fff}
-.brand small{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;opacity:.8;margin-left:-4px}
-.brand span{color:var(--saffron)}
-.nav{display:flex;gap:22px;margin-left:auto;font-size:.93rem}
-.nav a{text-decoration:none;opacity:.85;padding:4px 0;border-bottom:1.5px solid transparent}
-.nav a:hover,.nav a[aria-current]{opacity:1;border-color:var(--saffron)}
-.menu-btn{display:none;margin-left:auto;background:none;border:0;color:inherit;font:600 .95rem var(--body);cursor:pointer;padding:12px 4px 12px 16px;min-height:44px}
-.top .btn{padding:10px 18px}
-@media (max-width:900px){
-  .menu-btn{display:block}.top .btn{display:none}
-  .nav{position:fixed;inset:0;top:0;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:0 max(24px, env(safe-area-inset-right,0px)) 0 max(24px, env(safe-area-inset-left,0px));text-align:center;background:var(--night);font:400 clamp(1.6rem,8vw,2.2rem)/1.15 var(--display);opacity:0;pointer-events:none;transition:opacity .25s;margin:0}
-  .nav a{padding:6px 0}
-  .nav .nav-order{display:inline-flex;font:600 1rem var(--body);margin-top:12px;padding:14px 26px;border:0}
-  .nav.open{opacity:1;pointer-events:auto}
-  .nav .close{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:max(16px, env(safe-area-inset-right,0px));font:600 .9rem var(--body)}
+/* header */
+.top{position:sticky;top:0;z-index:30;background:rgba(251,248,243,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:var(--hh)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.3rem;letter-spacing:.01em}
+.brand img{width:36px;height:36px;border-radius:50%;border:1px solid var(--line)}
+.brand small{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.nav{display:none;gap:4px;margin-left:auto}
+.nav a{text-decoration:none;padding:8px 14px;border-radius:999px;color:var(--muted);font-weight:500;font-size:.95rem}
+.nav a:hover{color:var(--ink)}
+.nav a[aria-current]{color:var(--ink);background:var(--soft)}
+.top .btn{min-height:40px;padding:0 18px;font-size:.92rem;margin-left:auto}
+@media (min-width:900px){:root{--hh:72px;--tab:0px}.nav{display:flex}.top .btn{margin-left:8px}}
+
+/* bottom tab bar (phones and tablets) */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:0 env(safe-area-inset-right,0px) var(--safe-b) env(safe-area-inset-left,0px)}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:var(--tab);text-decoration:none;color:var(--muted);font-size:.7rem;font-weight:500}
+.tabbar svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current]{color:var(--olive)}
+.tabbar a.order span{background:var(--ink);color:#fff;width:46px;height:30px;border-radius:999px;display:grid;place-items:center}
+.tabbar a.order svg{width:19px;height:19px}
+@media (min-width:900px){.tabbar{display:none}}
+
+/* home */
+.hero{padding-block:24px 40px}
+.hero .wrap{display:grid;gap:24px}
+.hero .lede{font-size:1.1rem;color:var(--muted);max-width:38ch;margin:14px 0 22px}
+.hero .ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero figure{margin:0;position:relative}
+.hero figure img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:22px}
+.hero .chip{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.94);border-radius:14px;padding:10px 14px;font-size:.85rem;box-shadow:var(--shadow)}
+.hero .chip b{display:block;font-weight:600}
+@media (min-width:860px){.hero{padding-block:56px 72px}.hero .wrap{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}.hero .ctas{display:flex}.hero figure img{aspect-ratio:5/4}}
+
+.cats{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:0 0 136px;scroll-snap-align:start;text-decoration:none}
+.cat img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);margin-bottom:8px}
+.cat b{font-weight:500;display:block;line-height:1.25}
+.cat span{font-size:.85rem;color:var(--muted)}
+@media (min-width:900px){.cats{display:grid;grid-template-columns:repeat(6,1fr);overflow:visible;margin:0;padding:0}.cat{flex:none}}
+
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pick{background:var(--surface);border-radius:var(--r);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.pick img{width:100%;aspect-ratio:1;object-fit:cover}
+.pick div{padding:12px 14px 14px}
+.pick b{font-weight:500;display:block;line-height:1.25}
+.pick span{color:var(--muted);font-size:.9rem}
+@media (min-width:900px){.picks{grid-template-columns:repeat(4,1fr);gap:20px}}
+
+.promo{display:grid;gap:20px;background:var(--ink);color:#fff;border-radius:26px;padding:28px 22px;overflow:hidden}
+.promo .eyebrow{color:#d8cf98}
+.promo p.muted{color:rgba(255,255,255,.72);margin:10px 0 20px}
+.promo .btn{background:#fff;color:var(--ink)}
+.promo img{border-radius:18px;width:100%;aspect-ratio:16/10;object-fit:cover}
+@media (min-width:860px){.promo{grid-template-columns:1fr 1fr;align-items:center;padding:48px;gap:48px}}
+
+.story{display:grid;gap:24px}
+.story img{border-radius:22px;width:100%;aspect-ratio:4/3;object-fit:cover}
+.story p.muted{margin-top:14px;max-width:52ch}
+@media (min-width:860px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
+
+.app{background:var(--olive-soft);border-radius:26px;padding:28px 22px;display:grid;gap:24px}
+.app p.muted{margin:10px 0 20px;max-width:44ch}
+.stores{display:flex;gap:10px;flex-wrap:wrap}
+.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:150px;min-height:52px;padding:8px 18px;border-radius:14px;background:var(--ink);color:#fff;text-decoration:none;line-height:1.15}
+.store small{font-size:.72rem;opacity:.8}
+.store b{font-weight:500;font-size:1.1rem}
+.store[aria-disabled="true"]{opacity:.45}
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.perks div{background:rgba(255,255,255,.75);border-radius:16px;padding:14px}
+.perks b{display:block;font-weight:500}
+.perks span{font-size:.88rem;color:var(--muted)}
+@media (min-width:860px){.app{grid-template-columns:1.1fr 1fr;padding:48px;gap:48px;align-items:center}}
+
+.locs{display:grid;gap:12px}
+.loc{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
+.loc h3{font-size:1.4rem}
+.loc .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.loc .acts .btn{min-height:44px;flex:1 1 auto;font-size:.92rem;padding:0 16px}
+@media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
+
+footer{border-top:1px solid var(--line);padding-block:28px 36px;font-size:.88rem;color:var(--muted)}
+footer .wrap{display:grid;gap:14px}
+footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
+footer nav a{text-decoration:none;padding:6px 0;color:var(--ink)}
+
+/* page titles */
+.ptitle{padding-block:28px 8px}
+.ptitle p.muted{margin-top:10px;max-width:46ch}
+@media (min-width:760px){.ptitle{padding-block:56px 16px}}
+
+/* sticky chips (menu + order) */
+.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.chips .wrap::-webkit-scrollbar{display:none}
+.chips a{flex:0 0 auto;text-decoration:none;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.chips a[aria-current="true"]{background:var(--ink);color:#fff}
+
+/* menu list */
+.mlist{max-width:760px;margin:0 auto}
+.mgroup{padding-top:28px}
+.mgroup h2{margin-bottom:6px}
+.mgroup h3{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin:22px 0 4px}
+.mlist ul{list-style:none;margin:0;padding:0}
+.mlist li{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.mlist li img{width:56px;height:56px;border-radius:14px;object-fit:cover}
+.mlist .n{font-size:1.08rem;line-height:1.3}
+.mlist small{display:block;color:var(--muted);font-size:.86rem;line-height:1.35}
+.mlist .p{font-weight:500;font-variant-numeric:tabular-nums}
+.note{font-size:.85rem;color:var(--muted);text-align:center;margin:28px auto 0;max-width:52ch}
+
+/* order */
+.demo{background:var(--olive-soft);color:var(--ink);font-size:.86rem;text-align:center;padding:9px 16px}
+.demo b{font-weight:600}
+.setup{display:grid;gap:12px;margin-top:18px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--soft);padding:5px;border-radius:16px}
+.seg button{border:0;background:none;border-radius:12px;padding:10px 8px;cursor:pointer;text-align:left;min-height:56px}
+.seg button b{display:block;font-weight:500;font-size:.98rem}
+.seg button span{font-size:.78rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:var(--shadow)}
+.field{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--muted)}
+select,input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;min-height:48px;width:100%}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
+@media (min-width:760px){.setup{grid-template-columns:1.6fr 1fr;align-items:end}}
+.olayout{display:grid;gap:32px;padding-bottom:32px}
+@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 360px;align-items:start}}
+.osec{padding-top:24px}
+.osec h2{font-size:1.5rem;font-weight:400;margin-bottom:10px}
+.ogrid{display:grid;gap:10px}
+@media (min-width:640px){.ogrid{grid-template-columns:1fr 1fr}}
+.oitem{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:14px;align-items:center;background:var(--surface);border:0;border-radius:var(--r);padding:12px 12px 12px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);width:100%}
+.oitem .n{font-size:1.04rem;line-height:1.3;display:block}
+.oitem small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);font-size:.84rem;line-height:1.35;margin-top:2px}
+.oitem .p{display:block;margin-top:6px;font-weight:500}
+.oitem .ph{position:relative}
+.oitem img{width:96px;height:96px;border-radius:14px;object-fit:cover}
+.oitem .plus{position:absolute;right:-4px;bottom:-4px;width:34px;height:34px;border-radius:50%;background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;font-size:1.4rem;line-height:1}
+.oitem .qtyb{position:absolute;left:-6px;top:-6px;min-width:26px;height:26px;border-radius:999px;background:var(--olive);color:#fff;font-size:.8rem;font-weight:600;display:grid;place-items:center;padding:0 7px}
+
+/* cart: sidebar on desktop, bottom sheet on phones */
+.cart{background:var(--surface);border-radius:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.cart header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 12px}
+.cart header h2{font-size:1.4rem;font-weight:400}
+.cart .x{border:0;background:var(--soft);border-radius:999px;min-width:40px;height:40px;cursor:pointer;font-size:1.1rem}
+.cart .body{padding:0 20px;overflow:auto;flex:1}
+.cart .foot{padding:14px 20px 20px;border-top:1px solid var(--line)}
+.cline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cline b{font-weight:500}
+.cline small{color:var(--muted);font-size:.82rem;grid-column:1}
+.step{display:inline-flex;align-items:center;gap:2px;background:var(--soft);border-radius:999px;margin-top:6px;width:max-content}
+.step button{border:0;background:none;width:36px;height:34px;cursor:pointer;font-size:1.1rem}
+.step span{min-width:18px;text-align:center;font-size:.92rem}
+.sum{display:grid;grid-template-columns:1fr auto;gap:4px;font-size:.92rem;color:var(--muted);margin-bottom:14px}
+.sum b{color:var(--ink);font-weight:600;font-size:1.05rem}
+.empty{color:var(--muted);text-align:center;padding:28px 0}
+.form{display:grid;gap:12px;padding-bottom:6px}
+.paybox{border:1.5px dashed var(--line);border-radius:14px;padding:14px;font-size:.85rem;color:var(--muted)}
+.paybox .row{display:grid;grid-template-columns:1fr 90px;gap:8px;margin-top:8px}
+.done{text-align:center;padding:12px 0 6px}
+.done .tick{width:64px;height:64px;border-radius:50%;background:var(--olive);color:#fff;display:grid;place-items:center;margin:4px auto 14px;font-size:1.8rem}
+.done h3{font-size:1.5rem;margin-bottom:6px}
+.back{border:0;background:none;color:var(--olive);font-weight:500;cursor:pointer;padding:8px 0}
+@media (min-width:1000px){.cart{position:sticky;top:calc(var(--hh) + 80px);max-height:calc(100vh - var(--hh) - 100px)}.cart .x{display:none}.cartbar{display:none!important}}
+@media (max-width:999px){
+  .cart{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:22px 22px 0 0;max-height:min(88vh,calc(100% - 40px));transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding-bottom:var(--safe-b);visibility:hidden}
+  .cart.open{transform:none;visibility:visible}
 }
-@media (min-width:901px){.nav .close,.nav .nav-order{display:none}}
+.cartbar{position:fixed;left:12px;right:12px;bottom:calc(var(--tab) + var(--safe-b) + 10px);z-index:35;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--ink);color:#fff;border:0;border-radius:16px;min-height:56px;padding:0 18px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:500}
+.cartbar .ct{background:rgba(255,255,255,.16);border-radius:999px;padding:3px 10px;font-size:.85rem}
+.has-cartbar{padding-bottom:calc(var(--tab) + var(--safe-b) + 80px)}
+.toast{position:fixed;left:50%;bottom:calc(var(--tab) + var(--safe-b) + 78px);transform:translateX(-50%);z-index:80;white-space:nowrap;}
+@media (min-width:1000px){.toast{bottom:28px}}
+.scrim{position:fixed;inset:0;z-index:55;background:rgba(20,18,14,.45)}
 
-/* video bands */
-.vband{position:relative;overflow:hidden;background:var(--night);color:var(--night-ink);isolation:isolate}
-.vband video,.vband .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.vband::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,20,19,.55) 0%,var(--scrim) 55%,rgba(8,20,19,.85) 100%)}
-.hero .wrap{min-height:min(92vh,860px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:140px 72px}
-.hero h1{font-size:clamp(3.4rem,11vw,9rem);letter-spacing:-.015em}
-.hero h1 em{font-style:normal;color:var(--saffron)}
-.hero .lede{font-size:clamp(1.05rem,2vw,1.3rem);max-width:36ch;opacity:.92;margin:18px 0 30px}
-.ctas{display:flex;gap:12px;flex-wrap:wrap}
-.vtoggle{position:absolute;right:max(16px, env(safe-area-inset-right,0px));bottom:16px;z-index:2;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;font:600 .8rem var(--body);padding:12px 16px;cursor:pointer;backdrop-filter:blur(6px)}
-.scroll-cue{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-top:48px}
-
-.ticker{background:var(--saffron);color:var(--saffron-ink);overflow:hidden;white-space:nowrap;font:400 1.25rem var(--display)}
-.ticker div{display:inline-flex;gap:40px;padding:14px 0;animation:tick 40s linear infinite}
-.ticker span::after{content:"✦";margin-left:40px;font-size:.8rem;vertical-align:middle}
-@keyframes tick{to{transform:translateX(-50%)}}
-
-.facts{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--line)}
-.facts>div{padding:24px;min-width:0}
-.facts>div+div{border-left:1px solid var(--line)}
-.facts b{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
-@media (max-width:760px){.facts{grid-template-columns:1fr}.facts>div+div{border-left:0;border-top:1px solid var(--line)}}
-
-section.pad{padding-block:96px}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
-.sec-head h2{font-size:clamp(2.3rem,5.5vw,4rem)}
-.sec-head p{max-width:44ch;color:var(--muted);margin:0}
-
-/* category mosaic */
-.mosaic{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:220px;gap:14px}
-.mtile{position:relative;overflow:hidden;border-radius:20px;text-decoration:none;color:#fff;isolation:isolate;grid-column:span 2}
-.mtile:nth-child(1){grid-column:span 3;grid-row:span 2}.mtile:nth-child(2){grid-column:span 3;grid-row:span 1}
-.mtile:nth-child(3){grid-column:span 3}
-.mtile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
-.mtile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.72))}
-.mtile:hover img{transform:scale(1.07)}
-.mtile .t{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;align-items:end;gap:12px}
-.mtile h3{font-size:clamp(1.6rem,3vw,2.3rem)}
-.mtile small{font-size:.85rem;opacity:.85;white-space:nowrap}
-@media (max-width:820px){.mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:200px}.mtile,.mtile:nth-child(n){grid-column:span 1;grid-row:span 1}.mtile:nth-child(1){grid-column:span 2}}
-@media (max-width:480px){.mosaic{grid-template-columns:1fr}.mtile:nth-child(1){grid-column:span 1}}
-
-/* story split */
-.story{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-.story .photos{position:relative;aspect-ratio:1/1}
-.story .photos img{position:absolute;border-radius:20px;object-fit:cover;box-shadow:var(--card-shadow)}
-.story .photos img:first-child{inset:0 18% 18% 0;width:82%;height:82%}
-.story .photos img:last-child{right:0;bottom:0;width:52%;height:52%;border:6px solid var(--paper)}
-.story h2{font-size:clamp(2.2rem,5vw,3.5rem)}
-.story p{color:var(--muted);max-width:50ch}
-@media (max-width:820px){.story{grid-template-columns:1fr}}
-
-/* printed-menu layout */
-.mtabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
-.mtabs .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
-.mtabs a{flex:0 0 auto;text-decoration:none;font:600 .9rem var(--body);padding:12px 18px;border-radius:999px;color:var(--muted);transition:background .2s,color .2s}
-.mtabs a[aria-current="true"]{background:var(--ink);color:var(--paper)}
-.msec{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:64px;padding-block:72px;border-top:1px solid var(--line);scroll-margin-top:120px}
-.msec:first-child{border-top:0}
-.msec aside{position:sticky;top:150px;align-self:start}
-.msec aside img{border-radius:20px;aspect-ratio:4/5;object-fit:cover;width:100%;margin-top:22px;box-shadow:var(--card-shadow)}
-.msec h2{font-size:clamp(2.4rem,5vw,3.6rem)}
-.msec aside p{color:var(--muted);margin:10px 0 0}
-.msec aside a{display:inline-block;margin-top:14px;color:var(--saffron);font-weight:600;font-size:.9rem;text-decoration:none}
-@media (max-width:860px){.msec{grid-template-columns:1fr;gap:20px;padding-block:52px}.msec aside{position:static}.msec aside img{display:none}}
-.mlist{display:flex;flex-direction:column}
-.mi{display:grid;grid-template-columns:72px minmax(0,1fr);gap:18px;align-items:center;padding:16px 4px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;color:inherit;font:inherit;cursor:pointer;width:100%;border-radius:0;transition:background .2s}
-.mi:hover{background:var(--surface)}
-.mi img{width:72px;height:72px;border-radius:50%;object-fit:cover;transition:transform .4s}
-.mi:hover img{transform:scale(1.08) rotate(-3deg)}
-.mi .l{display:flex;align-items:baseline;gap:10px}
-.mi .n{font:400 clamp(1.2rem,2.2vw,1.5rem)/1.2 var(--display)}
-.mi .dots{flex:1;min-width:20px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
-.mi .p{font-weight:700;font-variant-numeric:tabular-nums;color:var(--saffron)}
-.mi small{display:block;color:var(--muted);font-size:.9rem;margin-top:2px}
-.mi .view{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .2s}
-.mi:hover .view{opacity:1}
-@media (max-width:520px){.mi{grid-template-columns:56px minmax(0,1fr);gap:14px}.mi img{width:56px;height:56px}.mi .view{display:none}}
-.menu-hero .wrap{min-height:min(52vh,460px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:130px 48px}
-.menu-hero h1{font-size:clamp(3.4rem,10vw,7.5rem)}
-.note{font-size:.85rem;color:var(--muted);margin-top:22px}
-.plain{max-width:760px;margin:0 auto;text-align:center}
-.plain h2{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:28px}
-.plain ul{list-style:none;margin:0;padding:0;text-align:left;border-top:1.5px solid var(--ink)}
-.plain li button{display:block;width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:18px 2px;text-align:left;color:inherit;font:inherit;cursor:pointer}
-.plain li button:hover .n{color:var(--saffron)}
-.plain .l{display:flex;align-items:baseline;gap:12px}
-.plain .n{font:400 clamp(1.3rem,2.6vw,1.7rem)/1.2 var(--display);transition:color .2s}
-.plain .dots{flex:1;min-width:20px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
-.plain .p{font-weight:700;font-variant-numeric:tabular-nums}
-.plain small{display:block;color:var(--muted);font-size:.92rem;margin-top:4px}
-.msec-plain{padding-block:72px 8px;scroll-margin-top:130px}
-.msec-plain + .msec-plain{border-top:1px solid var(--line);margin-top:56px}
-.plain h3{font:600 .82rem var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--saffron);text-align:left;margin:36px 0 8px;scroll-margin-top:140px}
-.plain h3 + ul{border-top-width:1px}
-.rewards{background:var(--night);color:var(--night-ink)}
-#rewards,#visit{scroll-margin-top:64px}
-.rewards .wrap{display:grid;grid-template-columns:1fr minmax(0,360px);gap:56px;align-items:center;padding-block:96px}
-.rewards h2{font-size:clamp(2.4rem,6vw,4.2rem)}
-.rewards .rw-copy p{opacity:.85;max-width:42ch}
-.stores{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:160px;min-height:52px;padding:10px 20px;border-radius:14px;background:var(--night-ink);color:var(--night);text-decoration:none;line-height:1.15;transition:transform .2s}
-.store:hover{transform:translateY(-2px)}
-.store small{font-size:.78rem;opacity:.8}
-.store b{font:600 1.2rem var(--body)}
-.store[aria-disabled="true"]{opacity:.55;cursor:default}
-.phone{justify-self:center;width:min(280px,70vw);aspect-ratio:9/19;border-radius:40px;padding:10px;background:#1a1a1a;box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.12)}
-.phone .screen{position:relative;height:100%;border-radius:32px;overflow:hidden}
-.phone img{width:100%;height:100%;object-fit:cover}
-.app-ui{position:absolute;left:0;right:0;bottom:0;padding:22px 18px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;display:flex;flex-direction:column;gap:2px}
-.app-ui b{font:400 1.5rem var(--display)}
-.app-ui span{font-size:.8rem;opacity:.85}
-.app-ui i{display:block;height:40px;border-radius:999px;background:var(--saffron);margin-top:12px}
-@media (max-width:820px){.rewards .wrap{grid-template-columns:1fr;gap:36px;padding-block:72px}.phone{width:min(200px,55vw)}}
-.menu-hero .lede{font-size:1.15rem;max-width:40ch;opacity:.9;margin:14px 0 0}
-.bigmap{position:relative;height:min(70vh,620px);min-height:380px;border-radius:24px 24px 0 0;overflow:hidden;background:var(--night);isolation:isolate}
-.bigmap iframe,.bigmap .map-fallback{position:absolute;inset:0;width:100%;height:100%;border:0}
-.bigmap .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.45}
-.bigmap .map-fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--night-ink);background:rgba(8,20,19,.7);padding:12px 18px;border-radius:12px;font-size:.9rem;text-align:center;max-width:80%}
-.mapbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--night);color:var(--night-ink);padding:24px 28px;border-radius:0 0 24px 24px}
-.mapbar h3{font-size:clamp(1.3rem,3vw,1.8rem)}
-.mapbar p{margin:4px 0 0;opacity:.8;font-size:.95rem}
-.mapbar .eyebrow{margin:0 0 6px;opacity:1}
-@media (max-width:600px){.bigmap{height:420px;min-height:0}.mapbar .btn{width:100%;justify-content:center}}
-.loc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.loc-tab{display:flex;flex-direction:column;gap:2px;text-align:left;padding:16px 20px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
-.loc-tab b{font:500 1.25rem var(--display)}
-.loc-tab span{color:var(--muted);font-size:.9rem}
-.loc-tab[aria-selected="true"]{border-color:var(--saffron);background:var(--paper);box-shadow:inset 0 0 0 1px var(--saffron)}
-.vlocs{display:grid;gap:14px;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:24px 28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
-.vloc p{margin:0}
-.vloc .eyebrow{margin-bottom:4px}
-.vloc a{display:inline-block;padding:8px 0;color:var(--saffron);font-weight:600;text-decoration:none}
-.vloc + .vloc{border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
-.tlink{color:var(--saffron);font-weight:600;text-decoration:none;display:inline-block;padding:10px 0;margin-top:auto}
-.cta-row{display:flex;justify-content:center;margin-top:36px}
-
-/* quick view */
-.qv{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) max(16px, env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px));background:rgba(6,14,13,.7);backdrop-filter:blur(6px)}
-.qv .box{background:var(--surface);color:var(--ink);border-radius:22px;overflow:hidden;max-width:880px;width:100%;display:grid;grid-template-columns:1.2fr 1fr;max-height:100%;animation:pop .25s ease-out}
-.qv .box img{width:100%;height:100%;object-fit:cover;min-height:280px}
-.qv .info{padding:32px;display:flex;flex-direction:column;gap:12px;overflow:auto}
-.qv h3{font-size:2.2rem}
-.qv .price{font:700 1.4rem var(--body);color:var(--saffron)}
-.qv .x{align-self:flex-end;background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;font:600 .8rem var(--body)}
-.qv .order{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
-.qv .order .btn.alt{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
-@media (max-width:700px){.qv .box{grid-template-columns:1fr}.qv .box img{min-height:0;aspect-ratio:4/3}}
-@keyframes pop{from{transform:scale(.96);opacity:.6}}
-
-/* gallery strip */
-.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px}
-.strip img{flex:0 0 auto;width:min(360px,78vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+/* item sheet (order) and quick view (menu) */
+.sheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,18,14,.5)}
+.sheet .box{background:var(--surface);width:100%;max-width:520px;max-height:92vh;border-radius:24px 24px 0 0;overflow:auto;padding-bottom:var(--safe-b);animation:up .25s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.sheet .box>img{width:100%;aspect-ratio:16/11;object-fit:cover;flex:none}
+.sheet .in{padding:18px 20px 8px}
+.sheet h3{font-size:1.6rem}
+.sheet .price{font-weight:500;font-size:1.1rem;margin-top:4px}
+.sheet .desc{color:var(--muted);margin-top:8px}
+.sheet fieldset{border:0;padding:0;margin:18px 0 0}
+.sheet legend{font-weight:600;font-size:.9rem;margin-bottom:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;width:1px;height:1px;min-height:0}
+.opts span{display:block;padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);font-size:.92rem;cursor:pointer}
+.opts input:checked+span{border-color:var(--ink);background:var(--ink);color:#fff}
+.opts input:focus-visible+span{outline:2.5px solid var(--olive);outline-offset:2px}
+.sheet .bar{position:sticky;bottom:0;background:var(--surface);display:flex;gap:10px;align-items:center;padding:14px 20px 16px;border-top:1px solid var(--line);margin-top:auto}
+.sheet .bar .step{margin:0}
+.sheet .bar .btn{flex:1}
+.sheet .close{position:absolute;margin:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.92);cursor:pointer;font-size:1.1rem;box-shadow:var(--shadow);z-index:1}
+@media (min-width:600px){.sheet{align-items:center;padding:24px}.sheet .box{border-radius:24px;max-height:88vh}}
+@keyframes up{from{transform:translateY(40px);opacity:.5}}
 
 /* visit */
-.visit .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end;padding-block:120px}
-.visit h2{font-size:clamp(2.6rem,6.5vw,4.8rem)}
-.visit dl{display:grid;grid-template-columns:auto 1fr;gap:12px 24px;margin:0;background:rgba(8,20,19,.55);backdrop-filter:blur(8px);padding:28px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
-.visit dt{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;padding-top:5px}
-.visit dd{margin:0;font-size:1.05rem}
-.visit dd a{display:inline-block;padding:8px 0}
-@media (max-width:820px){.visit .wrap{grid-template-columns:1fr}}
-footer{padding-block:28px;font-size:.85rem;color:var(--muted)}
-footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-
-/* category page */
-.cat-hero .wrap{min-height:min(70vh,640px);display:flex;flex-direction:column;justify-content:flex-end;padding-block:130px 56px}
-.cat-hero h1{font-size:clamp(3.2rem,9vw,7rem)}
-.cat-hero p.lede{font-size:1.2rem;max-width:40ch;opacity:.9;margin:14px 0 0}
-.crumbs{font-size:.85rem;opacity:.8;margin-bottom:16px}
-.crumbs a{text-decoration:none}
-.feature{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;margin-bottom:56px}
-.feature img{border-radius:22px;aspect-ratio:4/3;object-fit:cover;width:100%;box-shadow:var(--card-shadow)}
-.feature h2{font-size:clamp(2.2rem,4.5vw,3.4rem)}
-.feature .price{font:700 1.3rem var(--body);color:var(--saffron);margin:10px 0 18px;display:block}
-@media (max-width:820px){.feature{grid-template-columns:1fr}}
-.pager{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;padding-top:28px;border-top:1px solid var(--line)}
-.pager a{text-decoration:none;display:flex;flex-direction:column;gap:2px}
-.pager a span{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.pager a b{font-family:var(--display);font-weight:400;font-size:1.7rem}
-.pager a:last-child{text-align:right;margin-left:auto}
-
-/* scroll reveal: content is visible at rest, motion only adds a lift */
-@media (prefers-reduced-motion:no-preference){
-  .rv{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
-  .js .rv:not(.in){transform:translateY(28px)}
-}
-@media (prefers-reduced-motion:reduce){.ticker div{animation:none}html{scroll-behavior:auto}}
+.loc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--soft);padding:5px;border-radius:16px;margin:18px 0 14px}
+.loc-tab{border:0;background:none;border-radius:12px;padding:10px 12px;text-align:left;cursor:pointer;min-height:56px}
+.loc-tab b{display:block;font-weight:500}
+.loc-tab span{font-size:.78rem;color:var(--muted)}
+.loc-tab[aria-selected="true"]{background:var(--surface);box-shadow:var(--shadow)}
+.bigmap{position:relative;height:min(62vh,560px);min-height:320px;border-radius:22px 22px 0 0;overflow:hidden;background:var(--soft)}
+.bigmap iframe,.bigmap .map-fallback{position:absolute;inset:0;width:100%;height:100%;border:0}
+.bigmap .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.35}
+.bigmap .map-fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--surface);padding:10px 16px;border-radius:12px;font-size:.88rem;text-align:center;max-width:80%;box-shadow:var(--shadow)}
+.mapbar{display:grid;gap:14px;background:var(--surface);padding:20px;border-radius:0 0 22px 22px;box-shadow:var(--shadow)}
+.mapbar h3{font-size:1.35rem}
+.mapbar .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
+.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
+.strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 """
 
 JS = r"""
-document.documentElement.classList.add('js');
-const bar=document.querySelector('.top');
-const onScroll=()=>bar&&bar.classList.toggle('solid',scrollY>40);
-addEventListener('scroll',onScroll,{passive:true});onScroll();
-const nav=document.querySelector('.nav');
-document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>nav.classList.toggle('open')));
-nav&&nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
-document.querySelectorAll('.rv').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight)el.classList.add('in');else io.observe(el)});
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-document.querySelectorAll('.vband').forEach(band=>{
-  const v=band.querySelector('video'),t=band.querySelector('.vtoggle');if(!v)return;
-  if(reduce){v.removeAttribute('autoplay');v.pause()}
-  const sync=()=>{if(t)t.textContent=v.paused?'Play video':'Pause video'};
-  v.addEventListener('play',sync);v.addEventListener('pause',sync);sync();
-  t&&t.addEventListener('click',()=>v.paused?v.play():v.pause());
-  v.addEventListener('error',()=>v.remove(),true);
-});
-// menu tabs scrollspy
-const tabs=document.querySelectorAll('.mtabs a');
-if(tabs.length){
-  const map=new Map([...tabs].map(a=>[a.getAttribute('href').slice(1),a]));
-  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){tabs.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);if(a){a.setAttribute('aria-current','true');a.scrollIntoView({block:'nearest',inline:'center'})}}}),{rootMargin:'-45% 0px -50% 0px'});
+// menu + order chips scrollspy
+const chips=document.querySelectorAll('.chips a');
+if(chips.length){
+  const map=new Map([...chips].map(a=>[a.getAttribute('href').slice(1),a]));
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){chips.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);
+    if(a){a.setAttribute('aria-current','true');const w=a.parentElement;w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}}}),{rootMargin:'-30% 0px -60% 0px'});
   document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
 }
 // visit page location switcher
 const ltabs=document.querySelectorAll('.loc-tab');
 ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach(x=>x.setAttribute('aria-selected',x===t));
   document.getElementById('loc-map').src=d.embed;document.getElementById('loc-dir').href=d.dir;
+  document.getElementById('loc-order').href='order.html?store='+d.loc;
   document.getElementById('loc-name').textContent='Misree Chai · '+d.name;
-  document.getElementById('loc-l1').textContent=d.l1===d.name?d.l2.replace(/^/,d.name+', '):d.l1+', '+d.l2;
-  document.getElementById('loc-meta').textContent=d.phone?'Open daily, morning until late · '+d.phone:'Check hours on Google Maps';}));
-// quick view
+  document.getElementById('loc-l1').textContent=d.l1+', '+d.l2;
+  document.getElementById('loc-meta').textContent=d.phone?'Open daily · '+d.phone:'Open daily · check hours on Google Maps';}));
+// menu quick view
 const qv=document.getElementById('qv');
 if(qv){
-  const box=qv.querySelector('.box');let last=null;
-  const close=()=>{qv.hidden=true;last&&last.focus()};
-  document.querySelectorAll('[data-item]').forEach(c=>c.addEventListener('click',()=>{
-    last=c;const d=c.dataset;
-    qv.querySelector('img').src=d.img;qv.querySelector('img').alt=d.title;
-    qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
-    qv.querySelector('.cat').textContent=d.catname;qv.querySelector('.desc').textContent=d.desc||'';
-    qv.hidden=false;qv.querySelector('.x').focus();}));
-  qv.addEventListener('click',e=>{if(!box.contains(e.target))close()});
-  qv.querySelector('.x').addEventListener('click',close);
+  let last=null;const close=()=>{qv.hidden=true;document.body.style.overflow='';last&&last.focus()};
+  document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click()}}));
+  document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('click',()=>{last=c;const d=c.dataset;
+    qv.querySelector('img').src=d.img;qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
+    qv.querySelector('.desc').textContent=d.desc||'';qv.hidden=false;document.body.style.overflow='hidden';qv.querySelector('.close').focus()}));
+  qv.addEventListener('click',e=>{if(e.target===qv)close()});qv.querySelector('.close').addEventListener('click',close);
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!qv.hidden)close()});
 }
 """
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap">'
+# Demo ordering: everything stays in the browser. Nothing is sent or charged.
+ORDER_JS = r"""
+const D=JSON.parse(document.getElementById('menu-data').textContent);
+const ITEMS=new Map(D.items.map(i=>[i.id,i]));
+const $=s=>document.querySelector(s);
+const money=n=>'$'+n.toFixed(2);
+const state={store:D.stores[0].id,cart:[],view:'cart'};
+const want=new URLSearchParams(location.search).get('store');if(D.stores.some(s=>s.id===want))state.store=want;
+const store=()=>D.stores.find(s=>s.id===state.store);
+const segs=document.querySelectorAll('.seg button');
+const setStore=id=>{state.store=id;segs.forEach(b=>b.setAttribute('aria-pressed',b.dataset.store===id));render()};
+segs.forEach(b=>b.addEventListener('click',()=>setStore(b.dataset.store)));
+// pickup times: ASAP plus 15 minute slots for the next 3 hours
+const sel=$('#pickup');const now=new Date();now.setMinutes(Math.ceil((now.getMinutes()+20)/15)*15,0,0);
+for(let i=0;i<12;i++){const t=new Date(now.getTime()+i*9e5);const o=document.createElement('option');o.textContent=t.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});sel.append(o)}
+// item sheet
+const sheet=$('#sheet');let cur=null,qty=1,lastBtn=null;
+const lineTotal=()=>cur?cur.price*qty:0;
+const sync=()=>{$('#s-qty').textContent=qty;$('#s-add').textContent='Add '+qty+' to order · '+money(lineTotal())};
+function openItem(id,btn){cur=ITEMS.get(id);qty=1;lastBtn=btn;
+  sheet.querySelector('img').src=cur.img;sheet.querySelector('img').alt=cur.name;$('#s-name').textContent=cur.name;$('#s-price').textContent=money(cur.price);
+  $('#s-desc').textContent=cur.desc;$('#s-desc').hidden=!cur.desc;
+  $('#s-opts').innerHTML=cur.opts.map((g,gi)=>`<fieldset><legend>${g[0]}</legend><div class="opts">${g[1].map((o,oi)=>`<label><input type="radio" name="o${gi}" value="${o}"${oi?'':' checked'}><span>${o}</span></label>`).join('')}</div></fieldset>`).join('');
+  $('#s-note').value='';sync();sheet.hidden=false;document.body.style.overflow='hidden';sheet.querySelector('.close').focus()}
+function closeItem(){sheet.hidden=true;if(!cartOpen())document.body.style.overflow='';lastBtn&&lastBtn.focus()}
+document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>openItem(b.dataset.add,b)));
+sheet.addEventListener('click',e=>{if(e.target===sheet)closeItem()});sheet.querySelector('.close').addEventListener('click',closeItem);
+$('#s-minus').addEventListener('click',()=>{qty=Math.max(1,qty-1);sync()});$('#s-plus').addEventListener('click',()=>{qty=Math.min(20,qty+1);sync()});
+$('#s-add').addEventListener('click',()=>{
+  const opts=[...sheet.querySelectorAll('input[type=radio]:checked')].map(i=>i.value).filter(v=>!/^Regular/.test(v));
+  const note=$('#s-note').value.trim();const key=cur.id+'|'+opts.join(',')+'|'+note;
+  const hit=state.cart.find(l=>l.key===key);if(hit)hit.qty+=qty;else state.cart.push({key,id:cur.id,qty,opts,note});
+  state.view='cart';closeItem();render();toast(cur.name+' added')});
+// cart
+const cart=$('#cart'),scrim=$('#scrim'),bar=$('#cartbar');
+const cartOpen=()=>cart.classList.contains('open');
+const openCart=()=>{cart.classList.add('open');scrim.hidden=false;document.body.style.overflow='hidden';cart.querySelector('.x').focus()};
+const closeCart=()=>{cart.classList.remove('open');scrim.hidden=true;document.body.style.overflow='';bar.focus()};
+bar.addEventListener('click',openCart);scrim.addEventListener('click',closeCart);cart.querySelector('.x').addEventListener('click',closeCart);
+addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!sheet.hidden)closeItem();else if(cartOpen())closeCart()});
+const totals=()=>{const sub=state.cart.reduce((s,l)=>s+ITEMS.get(l.id).price*l.qty,0);const tax=Math.round(sub*store().tax*100)/100;return{sub,tax,total:sub+tax,count:state.cart.reduce((s,l)=>s+l.qty,0)}};
+function render(){
+  const t=totals(),body=$('#c-body'),foot=$('#c-foot'),s=store();
+  document.querySelectorAll('[data-add]').forEach(b=>{const n=state.cart.filter(l=>l.id===b.dataset.add).reduce((a,l)=>a+l.qty,0);const q=b.querySelector('.qtyb');q.hidden=!n;q.textContent=n});
+  bar.hidden=!t.count||state.view==='done';document.body.classList.toggle('has-cartbar',!bar.hidden);
+  $('#cb-count').textContent=t.count+(t.count===1?' item':' items');$('#cb-total').textContent=money(t.total);
+  $('#c-title').textContent=state.view==='checkout'?'Checkout':state.view==='done'?'Order placed':'Your order';
+  if(state.view==='done'){body.innerHTML=`<div class="done"><div class="tick" aria-hidden="true">✓</div><h3>Thanks, ${esc(state.name)}!</h3>
+    <p class="muted">Order #${state.no} for pickup at Misree Chai ${s.name}, ${s.line1}. Ready ${esc(state.time)}.</p>
+    <p class="muted" style="margin-top:12px;font-size:.85rem">This is a demo, so no order was sent and no card was charged.</p></div>`;
+    foot.innerHTML='<button class="btn block" type="button" id="c-new">Start a new order</button>';
+    $('#c-new').onclick=()=>{state.cart=[];state.view='cart';render();if(cartOpen())closeCart()};return}
+  if(!state.cart.length){body.innerHTML='<p class="empty">Your bag is empty.<br>Tap any item to add it.</p>';foot.innerHTML='';state.view='cart';return}
+  const sum=`<div class="sum"><span>Subtotal</span><span>${money(t.sub)}</span><span>Est. tax</span><span>${money(t.tax)}</span><b>Total</b><b>${money(t.total)}</b></div>`;
+  if(state.view==='checkout'){
+    body.innerHTML=`<button class="back" type="button" id="c-back">← Back to order</button>
+    <p class="muted" style="font-size:.88rem;margin-bottom:12px">Pickup at <b style="color:var(--ink);font-weight:500">${s.name}</b>, ${s.line1} · ${esc(sel.value)}</p>
+    <form class="form" id="c-form" novalidate><label class="field">Name<input name="name" autocomplete="given-name" required placeholder="Your name"></label>
+    <label class="field">Phone, for a text when it's ready<input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555-0123"></label>
+    <div class="paybox">Payment (demo, nothing is charged)<input aria-label="Card number" inputmode="numeric" placeholder="Card number" style="margin-top:8px"><div class="row"><input aria-label="Expiry" placeholder="MM / YY" inputmode="numeric"><input aria-label="CVC" placeholder="CVC" inputmode="numeric"></div></div></form>`;
+    foot.innerHTML=sum+`<button class="btn block olive" type="submit" form="c-form">Place order · ${money(t.total)}</button>`;
+    $('#c-back').onclick=()=>{state.view='cart';render()};
+    $('#c-form').addEventListener('submit',e=>{e.preventDefault();const n=e.target.name;if(!n.value.trim()){n.focus();n.style.borderColor='#b3261e';return}
+      state.name=n.value.trim();state.no=1000+Math.floor(Math.random()*9000);state.time=sel.selectedIndex?'at '+sel.value:'in about 15 minutes';state.view='done';render();
+      cart.scrollIntoView({block:'nearest'})});return}
+  body.innerHTML=state.cart.map((l,i)=>{const it=ITEMS.get(l.id);const extra=[...l.opts,l.note&&('“'+esc(l.note)+'”')].filter(Boolean).join(' · ');
+    return `<div class="cline"><b>${it.name}</b><span>${money(it.price*l.qty)}</span>${extra?`<small>${extra}</small>`:''}
+    <div class="step" style="grid-column:1"><button type="button" aria-label="Remove one" data-dec="${i}">${l.qty>1?'−':'×'}</button><span>${l.qty}</span><button type="button" aria-label="Add one" data-inc="${i}">+</button></div></div>`}).join('');
+  foot.innerHTML=sum+`<button class="btn block" type="button" id="c-go">Checkout</button>`;
+  body.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{state.cart[b.dataset.inc].qty++;render()});
+  body.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const l=state.cart[b.dataset.dec];if(--l.qty<1)state.cart.splice(b.dataset.dec,1);render();if(!state.cart.length&&cartOpen())closeCart()});
+  $('#c-go').onclick=()=>{state.view='checkout';render()};
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let tt;function toast(m){const el=$('#toast');el.textContent=m;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,1600)}
+setStore(state.store);
+"""
 
-def page(title, desc, body, is_index=False):
-    head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover">'
-            f'<meta name="description" content="{html.escape(desc)}"><meta property="og:image" content="{img("chai-pour")}"><link rel="icon" href="{img_png("logo")}">{FONTS}<style>{CSS}</style>')
-    tail = f'<script>{JS}</script>'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">'
+
+def page(title, desc, body, is_index=False, extra_js=""):
+    head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#fbf8f3">'
+            f'<meta name="description" content="{esc(desc)}"><meta property="og:image" content="{img("chai-cheers")}"><link rel="icon" href="assets/img/logo.png">{FONTS}<style>{CSS}</style>')
+    tail = f'<script>{JS}{extra_js}</script>'
     if ARTIFACT and is_index:
         return head + body + tail
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
             f'{head}</head><body>{body}{tail}</body></html>')
 
-def header(current=None):
-    links = f'<a href="index.html"{" aria-current=page" if current is None else ""}>Home</a><a href="menu.html"{" aria-current=page" if current=="menu" else ""}>Menu</a>' + f'<a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html"{" aria-current=page" if current=="visit" else ""}>Visit</a><a class="btn nav-order" href="{DOORDASH}" target="_blank" rel="noopener">Order Online</a>'
-    return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="{img_png("logo")}" alt="">misree <small>chai</small></a>'
-            f'<nav class="nav" aria-label="Menu categories"><button class="menu-btn close" data-nav type="button">Close</button>{links}</nav>'
-            f'<button class="menu-btn" data-nav type="button" aria-label="Open menu">Menu</button>'
-            f'<a class="btn" href="{DOORDASH}" target="_blank" rel="noopener">Order Online</a></div></header>')
+ICONS = {
+    "home": '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+    "menu": '<path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/>',
+    "order": '<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+    "rewards": '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+    "visit": '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+}
+NAV = [("home", "Home", "index.html"), ("menu", "Menu", "menu.html"), ("order", "Order", "order.html"),
+       ("rewards", "Rewards", "index.html#rewards"), ("visit", "Visit", "visit.html")]
 
-def vband_media(video, poster):
-    return (f'<img class="poster" src="{img(poster)}" alt="" aria-hidden="true">'
-            f'<video autoplay muted loop playsinline preload="metadata" poster="{img(poster)}" aria-hidden="true"><source src="{vid(video)}" type="video/mp4"></video>'
-            f'<button class="vtoggle" type="button">Pause video</button>')
-
-def visit():
-    locs = "".join(f'<div class="vloc"><p class="eyebrow">{L["name"]}</p><p>{L["line1"]}<br>{L["line2"]}</p><a href="{L["dir"]}" target="_blank" rel="noopener">Directions →</a></div>' for L in LOCATIONS)
-    return f'''<section class="vband visit" id="visit">{vband_media("interior", "cafe-interior")}<div class="wrap">
-<div><p class="eyebrow">Visit</p><h2>Two cafes. Same chai.</h2><div class="ctas" style="margin-top:28px"><a class="btn" href="visit.html">Plan your visit</a><a class="btn ghost" href="{INSTA}" target="_blank" rel="noopener">@misreechai</a></div></div>
-<div class="vlocs">{locs}</div></div></section>'''
+def header(current="home"):
+    cur = lambda k: ' aria-current="page"' if k == current else ""
+    links = "".join(f'<a href="{h}"{cur(k)}>{"Join our Rewards Program" if k == "rewards" else ("Order Online" if k == "order" else t)}</a>'
+                    for k, t, h in NAV if k != "order")
+    tabs = "".join(f'<a href="{h}"{cur(k)}{" class=order" if k == "order" else ""}>'
+                   f'{"<span>" if k == "order" else ""}<svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[k]}</svg>{"</span>" if k == "order" else ""}{t}</a>' for k, t, h in NAV)
+    order_btn = f'<a class="btn" href="order.html"{cur("order")}>Order Online</a>'
+    return (f'<header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a>'
+            f'<nav class="nav" aria-label="Main">{links}</nav>{order_btn}</div></header>'
+            f'<nav class="tabbar" aria-label="Main">{tabs}</nav>')
 
 def footer():
-    return (f'<footer><div class="wrap"><span>Misree Chai · Jersey City & Jackson Heights</span>'
-            f'<span>Prices from the cafe\'s online ordering menu and may change. Photos are styled representations.</span></div></footer>')
+    return (f'<footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a>'
+            f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
+            f'<p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
-QV = f'''<div class="qv" id="qv" hidden role="dialog" aria-modal="true" aria-label="Item details"><div class="box"><img src="" alt=""><div class="info">
-<button class="x" type="button">Close</button><span class="cat eyebrow"></span><h3></h3><span class="price"></span><p class="desc" style="color:var(--muted);margin:0"></p>
-<div class="order"><a class="btn" href="{DOORDASH}" target="_blank" rel="noopener">Order on DoorDash</a></div></div></div></div>'''
+def loc_cards():
+    def card(L):
+        meta = f'Open daily · {L["phone"]}' if L["phone"] else "Open daily"
+        return (f'<div class="loc"><p class="eyebrow" style="margin:0">{L["name"]}</p><h3>{L["line1"]}</h3><p class="muted">{L["line2"]}</p><p class="muted">{meta}</p>'
+                f'<div class="acts"><a class="btn" href="order.html?store={L["id"]}">Order pickup</a><a class="btn line" href="{L["dir"]}" target="_blank" rel="noopener">Directions</a></div></div>')
+    return f'<div class="locs">{"".join(card(L) for L in LOCATIONS)}</div>'
 
-def row(c, item):
-    n, p, im, d = item
-    return (f'<button class="mi" type="button" data-item data-title="{html.escape(n)}" data-price="${p}" data-img="{img(im)}" '
-            f'data-catname="{html.escape(c["name"])}" data-desc="{html.escape(d)}" data-page="{c["slug"]}.html">'
-            f'<img src="{img(im)}" alt="" loading="lazy"><span><span class="l"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>'
-            f'{f"<small>{d}</small>" if d else ""}</span></button>')
+def build_index():
+    cats = "".join(f'<a class="cat" href="menu.html#{c["slug"]}"><img src="{sm(c["items"][0][2])}" alt="" loading="lazy" width="520" height="391"><b>{c["name"]}</b><span>{len(c["items"])} items</span></a>' for c in CATS)
+    picks_src = [("kulfi", 0), ("chai", 0), ("crepes", 0), ("bowls", 0)]
+    picks = "".join((lambda n, p, im, d: f'<a class="pick" href="order.html"><img src="{sm(im)}" alt="" loading="lazy" width="520" height="391"><div><b>{n}</b><span>${p}</span></div></a>')(*BYSLUG[s]["items"][i]) for s, i in picks_src)
+    body = f'''{header("home")}
+<main>
+<section class="hero"><div class="wrap"><div>
+<p class="eyebrow">Jersey City · Jackson Heights</p><h1>Chai, crepes &amp; kulfi milk tea.</h1>
+<p class="lede">Masala chai, kulfi milk tea, sweet crepes and acai bowls, made fresh at both of our cafes.</p>
+<div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn line" href="menu.html">View menu</a></div></div>
+<figure><img src="{img("chai-cheers")}" alt="Two glasses of chai on a cafe table" width="1400" height="1054" fetchpriority="high"><figcaption class="chip"><b>Open daily</b>Two cafes, one menu</figcaption></figure>
+</div></section>
+<section style="padding-block:8px 40px"><div class="wrap"><div class="head"><h2>The menu</h2><a href="menu.html">See all →</a></div><div class="cats">{cats}</div></div></section>
+<section class="pad" style="padding-top:8px"><div class="wrap"><div class="head"><h2>From the menu</h2><a href="order.html">Order →</a></div><div class="picks">{picks}</div></div></section>
+<section style="padding-bottom:48px"><div class="wrap"><div class="promo"><div><p class="eyebrow">Order online</p><h2>Skip the line.</h2>
+<p class="muted">Order ahead and pick it up at Jersey City or Jackson Heights. We'll have it ready when you walk in.</p><a class="btn" href="order.html">Start an order</a></div>
+<img src="{sm("falooda-kulfi")}" alt="" loading="lazy" width="520" height="391"></div></div></section>
+<section class="pad" style="background:var(--surface)"><div class="wrap story"><img src="{sm("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="520" height="391">
+<div><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2>
+<p class="muted">Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></section>
+<section class="pad" id="rewards" style="scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><p class="eyebrow">The Misree Chai app</p><h2>Join our Rewards Program.</h2>
+<p class="muted">Download the Misree Chai app to order ahead, collect rewards on every visit, and hear about new drinks first.</p>
+<div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div>
+<div class="perks"><div><b>Order ahead</b><span>Skip the line</span></div><div><b>Earn rewards</b><span>On every visit</span></div><div><b>New drinks</b><span>Hear first</span></div><div><b>Both cafes</b><span>NJ &amp; Queens</span></div></div></div></div></section>
+<section class="pad" style="padding-top:0"><div class="wrap"><div class="head"><h2>Visit us</h2><a href="visit.html">Map →</a></div>{loc_cards()}</div></section>
+</main>{footer()}'''
+    return page("Misree Chai", "Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup.", body, True)
 
-def plain_row(c, item):
-    n, p, im, d = item
-    return (f'<li><button type="button" data-item data-title="{html.escape(n)}" data-price="${p}" data-img="{img(im)}" '
-            f'data-catname="{html.escape(c["name"])}" data-desc="{html.escape(d)}" data-page="{c["slug"]}.html">'
-            f'<span class="l"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>{f"<small>{d}</small>" if d else ""}</button></li>')
-
-def menu_section(c, link=True):
-    rows = "".join(row(c, it) for it in c["items"])
-    more = f'<a href="{c["slug"]}.html">Open the {c["name"]} page →</a>' if link else ""
-    return (f'<section class="msec" id="{c["slug"]}"><aside><p class="eyebrow">{c["kicker"]}</p><h2>{c["name"]}</h2><p>{c["intro"]}</p>{more}'
-            f'<img src="{img(c["items"][0][2])}" alt="{html.escape(c["items"][0][0])}" loading="lazy"></aside><div class="mlist">{rows}</div></section>')
-
-GROUPS = [("drinks", "Drinks", "Hot and iced", ["chai", "kulfi", "teas"]),
-          ("crepes", "Crepes", "Folded to order", ["crepes"]),
-          ("bowls", "Bowls", "Cold and loaded", ["bowls"]),
-          ("bakery", "Bakery", "With your chai", ["bakery"])]
-BYSLUG = {c["slug"]: c for c in CATS}
-GROUP_OF = {s: g for g, _, _, ss in GROUPS for s in ss}
+QV = '''<div class="sheet" id="qv" hidden role="dialog" aria-modal="true" aria-labelledby="qv-t"><div class="box" style="position:relative"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
+<div class="in"><h3 id="qv-t"></h3><p class="price"></p><p class="desc"></p></div><div class="bar"><a class="btn block" href="order.html">Order for pickup</a></div></div></div>'''
 
 def build_menu():
-    tabs = "".join(f'<a href="#{g}">{name}</a>' for g, name, _, _ in GROUPS)
+    chips = "".join(f'<a href="#{g}">{name}</a>' for g, name, _ in GROUPS)
     secs = ""
-    for g, name, kicker, slugs in GROUPS:
+    for g, name, slugs in GROUPS:
         lists = ""
         for sl in slugs:
             c = BYSLUG[sl]
             sub = f'<h3 id="{sl}">{c["name"]}</h3>' if len(slugs) > 1 else ""
-            lists += f'{sub}<ul>{"".join(plain_row(c, it) for it in c["items"])}</ul>'
-        secs += f'<section class="plain msec-plain" id="{g}" data-sec><p class="eyebrow">{kicker}</p><h2>{name}</h2>{lists}</section>'
-    body = f'''{header("menu")}
-<section class="vband menu-hero">{vband_media("milk-tea", "milk-tea-pour")}<div class="wrap">
-<p class="crumbs"><a href="index.html">Home</a> / Menu</p><p class="eyebrow">Served daily on Newark Ave</p><h1>The Menu</h1></div></section>
-<nav class="mtabs" aria-label="Menu sections"><div class="wrap" style="justify-content:center">{tabs}</div></nav>
-<div class="wrap">{secs}<p class="note" style="text-align:center">Tap an item to see a photo. Prices are from the cafe's online ordering menu and may differ in store.</p>
-<div class="ctas" style="justify-content:center;margin-top:24px"><a class="btn" href="{DOORDASH}" target="_blank" rel="noopener">Order on DoorDash</a></div></div>
-<div style="height:88px"></div>
-{visit()}{footer()}{QV}'''
+            rows = "".join(f'<li data-qv data-title="{esc(n)}" data-price="${p}" data-img="{img(im)}" data-desc="{esc(d)}" role="button" tabindex="0" style="cursor:pointer">'
+                           f'<img src="{sm(im)}" alt="" loading="lazy" width="56" height="56"><span><span class="n">{n}</span>{f"<small>{d}</small>" if d else ""}</span><span class="p">${p}</span></li>'
+                           for n, p, im, d in c["items"])
+            lists += f'{sub}<ul>{rows}</ul>'
+        secs += f'<section class="mgroup" id="{g}" data-sec><h2>{name}</h2>{lists}</section>'
+    body = f'''{header("menu")}<main>
+<div class="wrap ptitle"><p class="eyebrow">Served at both cafes</p><h1>Menu</h1></div>
+<nav class="chips" aria-label="Menu sections"><div class="wrap">{chips}</div></nav>
+<div class="wrap"><div class="mlist">{secs}
+<p class="note">Tap an item to see a photo. Prices are from the cafe's online ordering menu and may differ in store.</p>
+<div style="display:flex;justify-content:center;margin:24px 0 48px"><a class="btn" href="order.html">Order for pickup</a></div></div></div></main>
+{footer()}{QV}'''
     return page("Menu · Misree Chai", "The full Misree Chai menu: drinks, crepes, bowls and bakery.", body)
 
-def build_visit():
-    strip = "".join(f'<img src="{img(n)}" alt="" loading="lazy">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
-    body = f'''{header("visit")}
-<section class="vband menu-hero">{vband_media("interior", "cafe-interior")}<div class="wrap">
-<p class="crumbs"><a href="index.html">Home</a> / Visit</p><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Come say hi.</h1>
-<p class="lede">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p></div></section>
-<section class="pad"><div class="wrap">
-<div class="loc-tabs" role="tablist" aria-label="Choose a location">{"".join(f'<button type="button" role="tab" class="loc-tab" data-loc="{L["id"]}" aria-selected="{"true" if i==0 else "false"}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" data-l1="{html.escape(L["line1"])}" data-l2="{html.escape(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}"><b>{L["name"]}</b><span>{L["line1"]}{", " + L["line2"] if L["line1"] != L["name"] else ", " + L["line2"]}</span></button>' for i, L in enumerate(LOCATIONS))}</div>
-<div class="bigmap"><div class="map-fallback"><img src="{img("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
-<iframe id="loc-map" src="{LOCATIONS[0]["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-<div class="mapbar"><div><p class="eyebrow" id="loc-name">Misree Chai · {LOCATIONS[0]["name"]}</p><h3 id="loc-l1">{LOCATIONS[0]["line1"]}, {LOCATIONS[0]["line2"]}</h3><p id="loc-meta">Open daily, morning until late · {LOCATIONS[0]["phone"]}</p></div>
-<a class="btn" id="loc-dir" href="{LOCATIONS[0]["dir"]}" target="_blank" rel="noopener">Get directions in Google Maps →</a></div>
-</div></section>
-<section class="pad" style="padding-top:0"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">Inside Misree</p><h2>Warm light, hot chai.</h2></div><p><a class="tlink" href="{INSTA}" target="_blank" rel="noopener">Follow @misreechai on Instagram →</a></p></div><div class="strip">{strip}</div></div></section>
-{footer()}{QV}'''
-    return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps, directions and hours.", body)
+def build_order():
+    items = []
+    secs = ""
+    for c in CATS:
+        cards = ""
+        for n, p, im, d in c["items"]:
+            iid = slug(n)
+            items.append(dict(id=iid, name=n, price=float(p), img=img(im), desc=d, opts=OPTIONS[c["opts"]]))
+            cards += (f'<button class="oitem" type="button" data-add="{iid}" aria-label="{esc(n)}, ${p}"><span><span class="n">{n}</span>{f"<small>{d}</small>" if d else ""}<span class="p">${p}</span></span>'
+                      f'<span class="ph"><img src="{sm(im)}" alt="" loading="lazy" width="96" height="96"><span class="plus" aria-hidden="true">+</span><span class="qtyb" hidden></span></span></button>')
+        secs += f'<section class="osec" id="o-{c["slug"]}" data-sec><h2>{c["name"]}</h2><div class="ogrid">{cards}</div></section>'
+    stores = [dict(id=L["id"], name=L["name"], line1=L["line1"], tax=L["tax"]) for L in LOCATIONS]
+    data = json.dumps(dict(items=items, stores=stores)).replace("</", "<\\/")
+    seg = "".join(f'<button type="button" data-store="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
+    chips = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
+    body = f'''{header("order")}<main>
+<div class="demo" role="note"><b>Demo preview.</b> Orders aren't sent to the cafe yet and no card is charged.</div>
+<div class="wrap ptitle"><p class="eyebrow">Pickup</p><h1>Order online</h1>
+<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p><div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
+<label class="field">Pickup time<select id="pickup"><option>ASAP (about 15 min)</option></select></label></div></div>
+<nav class="chips" aria-label="Order sections"><div class="wrap">{chips}</div></nav>
+<div class="wrap olayout"><div>{secs}</div>
+<aside class="cart" id="cart" aria-label="Your order"><header><h2 id="c-title">Your order</h2><button class="x" type="button" aria-label="Close order">✕</button></header>
+<div class="body" id="c-body"></div><div class="foot" id="c-foot"></div></aside></div></main>
+<div class="scrim" id="scrim" hidden></div>
+<button class="cartbar" id="cartbar" type="button" hidden><span class="ct" id="cb-count"></span><span>View order</span><span id="cb-total"></span></button>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="s-name"><div class="box" style="position:relative"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
+<div class="in"><h3 id="s-name"></h3><p class="price" id="s-price"></p><p class="desc" id="s-desc"></p><div id="s-opts"></div>
+<label class="field" style="margin-top:18px">Special instructions<textarea id="s-note" rows="2" placeholder="Optional"></textarea></label></div>
+<div class="bar"><div class="step"><button type="button" id="s-minus" aria-label="Fewer">−</button><span id="s-qty">1</span><button type="button" id="s-plus" aria-label="More">+</button></div>
+<button class="btn" type="button" id="s-add">Add to order</button></div></div></div>
+<div id="toast" hidden role="status" class="toast" style="background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-size:.9rem;box-shadow:var(--shadow)"></div>
+<script type="application/json" id="menu-data">{data}</script>
+{footer()}'''
+    return page("Order Online · Misree Chai", "Order Misree Chai online for pickup in Jersey City or Jackson Heights.", body, extra_js=ORDER_JS)
 
-def build_index():
-    tiles = "".join(f'<a class="mtile rv" href="menu.html#{c["slug"]}"><img src="{img(c["items"][0][2])}" alt="" loading="lazy"><div class="t"><h3>{c["name"]}</h3><small>{len(c["items"])} items →</small></div></a>' for c in CATS)
-    names = [it[0] for c in CATS for it in c["items"]]
-    tick = "".join(f"<span>{n}</span>" for n in names[:14]) * 2
-    strip = "".join(f'<img src="{img(n)}" alt="" loading="lazy">' for n in ["chai-cheers", "falooda-kulfi", "triple-chocolate-crepe", "taro-milk-tea", "nutella-acai-bowl", "bun-maska", "royal-pistachio-crepe", "mango-fruit-tea"])
-    body = f'''{header()}
-<section class="vband hero">{vband_media("chai-pour", "chai-pour")}<div class="wrap">
-<p class="eyebrow">Chai house · Jersey City &amp; Jackson Heights</p><h1>Misree <em>Chai</em></h1>
-<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh in Jersey City and Jackson Heights.</p>
-<div class="ctas"><a class="btn" href="menu.html">See the menu</a><a class="btn ghost" href="{DOORDASH}" target="_blank" rel="noopener">Order for delivery</a></div>
-<p class="scroll-cue">Scroll ↓</p></div></section>
-<div class="ticker" aria-hidden="true"><div>{tick}</div></div>
-<div class="facts"><div><b>Jersey City</b>789 Newark Ave</div><div><b>Jackson Heights</b>72-35 Broadway</div><div><b>When</b>Open daily, morning until late</div></div>
-<section class="pad"><div class="wrap"><div class="sec-head rv"><div><p class="eyebrow">The menu</p><h2>Six ways to take a break.</h2></div><p>Pick a category, or open the full menu.</p></div><div class="mosaic">{tiles}</div><div class="cta-row"><a class="btn" href="menu.html">View the full menu</a></div></div></section>
-<section class="pad" style="background:var(--surface)"><div class="wrap story"><div class="photos rv"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy"><img src="{img("masala-chai")}" alt="Masala chai" loading="lazy"></div>
-<div class="rv"><p class="eyebrow">Why "Misree"</p><h2>Named for the sugar that sweetens the cup.</h2><p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City, next to the milk teas, crepes and bowls the neighborhood keeps coming back for.</p>
-<a class="btn" href="menu.html#chai" style="margin-top:12px">Start with chai</a></div></div></section>
-<section class="rewards" id="rewards"><div class="wrap"><div class="rw-copy rv"><p class="eyebrow">The Misree Chai app</p><h2>Join our Rewards Program.</h2>
-<p>Download the Misree Chai app to order ahead, collect rewards on every visit, and hear about new drinks first.</p>
-<div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div>
-<div class="phone rv" aria-hidden="true"><div class="screen"><img src="{img("falooda-kulfi")}" alt=""><div class="app-ui"><b>Misree Chai</b><span>Order ahead · Rewards</span><i></i></div></div></div></div></section>
-<section class="pad"><div class="wrap"><div class="strip">{strip}</div></div></section>
-{visit()}{footer()}{QV}'''
-    return page("Misree Chai", "Misree Chai, a chai house at 789 Newark Ave in Jersey City.", body, True)
+def build_visit():
+    strip = "".join(f'<img src="{sm(n)}" alt="" loading="lazy" width="520" height="391">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
+    L0 = LOCATIONS[0]
+    tabs = "".join(f'<button type="button" role="tab" class="loc-tab" aria-selected="{"true" if i == 0 else "false"}" data-loc="{L["id"]}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" '
+                   f'data-l1="{esc(L["line1"])}" data-l2="{esc(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for i, L in enumerate(LOCATIONS))
+    body = f'''{header("visit")}<main>
+<div class="wrap ptitle"><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Visit us</h1><p class="muted">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p>
+<div class="loc-tabs" role="tablist" aria-label="Choose a location">{tabs}</div>
+<div class="bigmap"><div class="map-fallback"><img src="{sm("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
+<iframe id="loc-map" src="{L0["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+<div class="mapbar"><div><p class="eyebrow" id="loc-name" style="margin-bottom:4px">Misree Chai · {L0["name"]}</p><h3 id="loc-l1">{L0["line1"]}, {L0["line2"]}</h3><p class="muted" id="loc-meta">Open daily · {L0["phone"]}</p></div>
+<div class="acts"><a class="btn" id="loc-dir" href="{L0["dir"]}" target="_blank" rel="noopener">Directions</a><a class="btn line" id="loc-order" href="order.html?store={L0["id"]}">Order pickup</a></div></div></div>
+<section class="pad"><div class="wrap"><div class="head"><h2>Inside Misree</h2><a href="{INSTA}" target="_blank" rel="noopener">@misreechai →</a></div><div class="strip">{strip}</div></div></section>
+</main>{footer()}'''
+    return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps and directions.", body)
 
 os.makedirs(OUT, exist_ok=True)
-with open(os.path.join(OUT, "index.html"), "w") as fh:
-    fh.write(build_index())
-with open(os.path.join(OUT, "visit.html"), "w") as fh:
-    fh.write(build_visit())
-with open(os.path.join(OUT, "menu.html"), "w") as fh:
-    fh.write(build_menu())
+for name, fn in [("index.html", build_index), ("menu.html", build_menu), ("order.html", build_order), ("visit.html", build_visit)]:
+    with open(os.path.join(OUT, name), "w") as fh:
+        fh.write(fn())
 print("built", OUT)
