@@ -323,17 +323,8 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 @media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
 .strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
-/* closest cafe */
-.near{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:4px 0 14px}
-.nearbtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--gold);background:var(--surface);color:var(--ink);font-weight:500;cursor:pointer}
-.nearbtn svg{width:18px;height:18px;fill:none;stroke:var(--rose);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.nearbtn[disabled]{opacity:.6}
-.near-out{font-size:.92rem;color:var(--muted)}
-.near-out b{color:var(--ink);font-weight:500}
-.loc.is-near{border-color:var(--gold);order:-1}
-.loc.is-near::before,.loc-tab.is-near b::after,.seg button.is-near b::after{content:"Closest to you";display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--rose);border-radius:999px;padding:3px 9px;vertical-align:middle}
-.loc.is-near::before{align-self:flex-start;margin-bottom:6px}
-.loc-tab.is-near b::after,.seg button.is-near b::after{content:"Closest";margin-left:6px;font-size:.58rem;padding:2px 7px}
+/* closest cafe badge (order page) */
+.seg button.is-near b::after{content:"Closest";display:inline-block;margin-left:6px;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--rose);border-radius:999px;padding:2px 7px;vertical-align:middle}
 /* ornaments */
 .band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
 .head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
@@ -364,25 +355,6 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 """
 
 JS = r"""
-const miles=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 7917.6*Math.asin(Math.sqrt(h))};
-function applyNear(id,user){document.querySelectorAll('[data-loc-id]').forEach(el=>el.classList.toggle('is-near',el.dataset.locId===id));document.dispatchEvent(new CustomEvent('nearest',{detail:{id,user}}))}
-function findNearest(box,auto){const btn=box.querySelector('button'),out=box.querySelector('.near-out');{
-    if(!navigator.geolocation){out.textContent='Location isn\u2019t available in this browser.';return}
-    const prev=out.innerHTML;btn.disabled=true;out.textContent='Finding the closest cafe\u2026';
-    navigator.geolocation.getCurrentPosition(p=>{btn.disabled=false;const {latitude:a,longitude:b}=p.coords;
-      const n=LOCS.map(L=>({...L,d:miles(a,b,L.lat,L.lng)})).sort((x,y)=>x.d-y.d)[0];
-      out.innerHTML=`Closest to you: <b>Misree Chai ${n.name}</b>, about ${n.d<10?n.d.toFixed(1):Math.round(n.d)} mi away.`;
-      try{localStorage.setItem('misree-near',n.id)}catch(e){}
-      applyNear(n.id,!auto)},
-    e=>{btn.disabled=false;if(auto){out.innerHTML=prev;return}out.textContent=e.code===1?'Location is off, so pick a cafe below.':'Couldn\u2019t get your location, so pick a cafe below.'},{timeout:10000,maximumAge:600000})}}
-document.querySelectorAll('[data-near]').forEach(box=>{box.querySelector('button').addEventListener('click',()=>findNearest(box));
-  // pages marked data-near-auto look up the closest cafe on load, unless location was already refused
-  if('nearAuto' in box.dataset){const go=()=>findNearest(box,true);
-    navigator.permissions&&navigator.permissions.query?navigator.permissions.query({name:'geolocation'}).then(r=>{if(r.state!=='denied')go()},go):go()}});
-setTimeout(()=>{let id;try{id=localStorage.getItem('misree-near')}catch(e){}const L=LOCS.find(x=>x.id===id);if(!L)return;
-  document.querySelectorAll('[data-near] .near-out').forEach(o=>o.innerHTML=`Your closest cafe: <b>Misree Chai ${L.name}</b>`);applyNear(id)});
-const over=document.querySelector('.top.over');
-if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
 const chips=document.querySelectorAll('.chips a');
 if(chips.length){
@@ -399,7 +371,6 @@ ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach
   document.getElementById('loc-name').textContent='Misree Chai · '+d.name;
   document.getElementById('loc-l1').textContent=d.l1+', '+d.l2;
   document.getElementById('loc-meta').textContent=d.phone?'Open daily · '+d.phone:'Open daily · check hours on Google Maps';}));
-document.addEventListener('nearest',e=>{const t=document.querySelector('.loc-tab[data-loc-id="'+e.detail.id+'"]');if(t&&t.getAttribute('aria-selected')!=='true')t.click()});
 // menu quick view
 const qv=document.getElementById('qv');
 if(qv){
@@ -420,8 +391,7 @@ const ITEMS=new Map(D.items.map(i=>[i.id,i]));
 const $=s=>document.querySelector(s);
 const money=n=>'$'+n.toFixed(2);
 const state={store:D.stores[0].id,cart:[],view:'cart'};
-let want=new URLSearchParams(location.search).get('store');if(!want)try{want=localStorage.getItem('misree-near')}catch(e){}
-if(D.stores.some(s=>s.id===want))state.store=want;
+const want=new URLSearchParams(location.search).get('store');if(D.stores.some(s=>s.id===want))state.store=want;
 const store=()=>D.stores.find(s=>s.id===state.store);
 const segs=document.querySelectorAll('.seg button');
 const setStore=id=>{state.store=id;segs.forEach(b=>b.setAttribute('aria-pressed',b.dataset.store===id));render()};
@@ -490,8 +460,11 @@ function render(){
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 let tt;function toast(m){const el=$('#toast');el.textContent=m;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,1600)}
 setStore(state.store);
-let fromUrl=new URLSearchParams(location.search).has('store');
-document.addEventListener('nearest',e=>{if(e.detail.user||!fromUrl)setStore(e.detail.id)});
+// preselect the closest cafe, unless the link already chose one
+const rad=x=>x*Math.PI/180,dist=(a,b,c,d)=>Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;
+if(!want&&navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>{const {latitude:a,longitude:b}=p.coords;
+  const n=[...D.stores].sort((x,y)=>dist(a,b,x.lat,x.lng)-dist(a,b,y.lat,y.lng))[0];
+  segs.forEach(x=>x.classList.toggle('is-near',x.dataset.store===n.id));setStore(n.id)},()=>{},{timeout:10000,maximumAge:600000});
 """
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">'
@@ -499,8 +472,7 @@ FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="p
 def page(title, desc, body, is_index=False, extra_js=""):
     head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#fbf8f3">'
             f'<meta name="description" content="{esc(desc)}"><meta property="og:image" content="{img("chai-cheers")}"><link rel="icon" href="assets/img/logo.png">{FONTS}<style>{CSS}</style>')
-    locs = json.dumps([dict(id=L['id'], name=L['name'], lat=L['lat'], lng=L['lng']) for L in LOCATIONS])
-    tail = f'<script>const LOCS={locs};{JS}{extra_js}</script>'
+    tail = f'<script>{JS}{extra_js}</script>'
     if ARTIFACT and is_index:
         return head + body + tail
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
@@ -532,14 +504,10 @@ def footer():
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
-def near_box(auto=False):
-    return (f'<div class="near" data-near{" data-near-auto" if auto else ""}><button class="nearbtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Find my closest cafe</button>'
-            '<p class="near-out" role="status" aria-live="polite"></p></div>')
-
 def loc_cards():
     def card(L):
         meta = f'Open daily · {L["phone"]}' if L["phone"] else "Open daily"
-        return (f'<div class="loc" data-loc-id="{L["id"]}"><p class="eyebrow" style="margin:0">{L["name"]}</p><h3>{L["line1"]}</h3><p class="muted">{L["line2"]}</p><p class="muted">{meta}</p>'
+        return (f'<div class="loc"><p class="eyebrow" style="margin:0">{L["name"]}</p><h3>{L["line1"]}</h3><p class="muted">{L["line2"]}</p><p class="muted">{meta}</p>'
                 f'<div class="acts"><a class="btn" href="order.html?store={L["id"]}">Order pickup</a><a class="btn line" href="{L["dir"]}" target="_blank" rel="noopener">Directions</a></div></div>')
     return f'<div class="locs">{"".join(card(L) for L in LOCATIONS)}</div>'
 
@@ -566,7 +534,7 @@ def build_index():
 <p class="muted">Download the Misree Chai app to order ahead, collect rewards on every visit, and hear about new drinks first.</p>
 <div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div>
 <div class="perks"><div><b>Order ahead</b><span>Skip the line</span></div><div><b>Earn rewards</b><span>On every visit</span></div><div><b>New drinks</b><span>Hear first</span></div><div><b>Both cafes</b><span>NJ &amp; Queens</span></div></div></div></div></section>
-<section class="pad" style="padding-top:0"><div class="wrap"><div class="head"><h2>Visit us</h2><a href="visit.html">Map →</a></div>{near_box()}{loc_cards()}</div></section>
+<section class="pad" style="padding-top:0"><div class="wrap"><div class="head"><h2>Visit us</h2><a href="visit.html">Map →</a></div>{loc_cards()}</div></section>
 </main>{footer()}'''
     return page("Misree Chai", "Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup.", body, True)
 
@@ -606,14 +574,14 @@ def build_order():
             cards += (f'<button class="oitem" type="button" data-add="{iid}" aria-label="{esc(n)}, ${p}"><span><span class="n">{n}</span>{f"<small>{d}</small>" if d else ""}<span class="p">${p}</span></span>'
                       f'<span class="ph"><img src="{sm(im)}" alt="" loading="lazy" width="96" height="96"><span class="plus" aria-hidden="true">+</span><span class="qtyb" hidden></span></span></button>')
         secs += f'<section class="osec" id="o-{c["slug"]}" data-sec><h2>{c["name"]}</h2><div class="ogrid">{cards}</div></section>'
-    stores = [dict(id=L["id"], name=L["name"], line1=L["line1"], tax=L["tax"]) for L in LOCATIONS]
+    stores = [dict(id=L["id"], name=L["name"], line1=L["line1"], tax=L["tax"], lat=L["lat"], lng=L["lng"]) for L in LOCATIONS]
     data = json.dumps(dict(items=items, stores=stores)).replace("</", "<\\/")
-    seg = "".join(f'<button type="button" data-store="{L["id"]}" data-loc-id="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
+    seg = "".join(f'<button type="button" data-store="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
     chips = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
     body = f'''{header("order")}<main>
 <div class="demo" role="note"><b>Demo preview.</b> Orders aren't sent to the cafe yet and no card is charged.</div>
 <div class="wrap ptitle"><p class="eyebrow">Pickup</p><h1>Order online</h1>
-<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p>{near_box(auto=True)}<div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
+<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p><div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
 <label class="field">Pickup time<select id="pickup"><option>ASAP (about 15 min)</option></select></label></div></div>
 <nav class="chips" aria-label="Order sections"><div class="wrap">{chips}</div></nav>
 <div class="wrap olayout"><div>{secs}</div>
@@ -634,11 +602,11 @@ def build_order():
 def build_visit():
     strip = "".join(f'<img src="{sm(n)}" alt="" loading="lazy" width="520" height="391">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
     L0 = LOCATIONS[0]
-    tabs = "".join(f'<button type="button" role="tab" class="loc-tab" data-loc-id="{L["id"]}" aria-selected="{"true" if i == 0 else "false"}" data-loc="{L["id"]}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" '
+    tabs = "".join(f'<button type="button" role="tab" class="loc-tab" aria-selected="{"true" if i == 0 else "false"}" data-loc="{L["id"]}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" '
                    f'data-l1="{esc(L["line1"])}" data-l2="{esc(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for i, L in enumerate(LOCATIONS))
     body = f'''{header("visit")}<main>
 <div class="wrap ptitle"><p class="eyebrow">Jersey City · Jackson Heights</p><h1>Visit us</h1><p class="muted">Pull up a chair for a glass of chai, or grab a kulfi milk tea and a crepe to go.</p>
-{near_box()}<div class="loc-tabs" role="tablist" aria-label="Choose a location">{tabs}</div>
+<div class="loc-tabs" role="tablist" aria-label="Choose a location">{tabs}</div>
 <div class="bigmap"><div class="map-fallback"><img src="{sm("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
 <iframe id="loc-map" src="{L0["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
 <div class="mapbar"><div><p class="eyebrow" id="loc-name" style="margin-bottom:4px">Misree Chai · {L0["name"]}</p><h3 id="loc-l1">{L0["line1"]}, {L0["line2"]}</h3><p class="muted" id="loc-meta">Open daily · {L0["phone"]}</p></div>
