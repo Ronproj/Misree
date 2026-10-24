@@ -253,6 +253,17 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 @media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
 .strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:18px;scroll-snap-align:start}
+/* closest cafe */
+.near{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:4px 0 14px}
+.nearbtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--gold);background:var(--surface);color:var(--ink);font-weight:500;cursor:pointer}
+.nearbtn svg{width:18px;height:18px;fill:none;stroke:var(--rose);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nearbtn[disabled]{opacity:.6}
+.near-out{font-size:.92rem;color:var(--muted)}
+.near-out b{color:var(--ink);font-weight:500}
+.loc.is-near{border-color:var(--gold);order:-1}
+.loc.is-near::before,.loc-tab.is-near b::after,.seg button.is-near b::after{content:"Closest to you";display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--rose);border-radius:999px;padding:3px 9px;vertical-align:middle}
+.loc.is-near::before{align-self:flex-start;margin-bottom:6px}
+.loc-tab.is-near b::after,.seg button.is-near b::after{content:"Closest";margin-left:6px;font-size:.58rem;padding:2px 7px}
 /* ornaments */
 .band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
 .head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
@@ -287,7 +298,21 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 <p class="note">Tap an item to see a photo. Prices are from the cafe's online ordering menu and may differ in store.</p>
 <div style="display:flex;justify-content:center;margin:24px 0 48px"><a class="btn" href="order.html">Order for pickup</a></div></div></div></main>
 <div class="band" aria-hidden="true"></div><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><div class="sheet" id="qv" hidden role="dialog" aria-modal="true" aria-labelledby="qv-t"><div class="box" style="position:relative"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
-<div class="in"><h3 id="qv-t"></h3><p class="price"></p><p class="desc"></p></div><div class="bar"><a class="btn block" href="order.html">Order for pickup</a></div></div></div><script>
+<div class="in"><h3 id="qv-t"></h3><p class="price"></p><p class="desc"></p></div><div class="bar"><a class="btn block" href="order.html">Order for pickup</a></div></div></div><script>const LOCS=[{"id": "jersey-city", "name": "Jersey City", "lat": 40.7353, "lng": -74.0617}, {"id": "jackson-heights", "name": "Jackson Heights", "lat": 40.7467, "lng": -73.8935}];
+const miles=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 7917.6*Math.asin(Math.sqrt(h))};
+function applyNear(id,user){document.querySelectorAll('[data-loc-id]').forEach(el=>el.classList.toggle('is-near',el.dataset.locId===id));document.dispatchEvent(new CustomEvent('nearest',{detail:{id,user}}))}
+document.querySelectorAll('[data-near]').forEach(box=>{const btn=box.querySelector('button'),out=box.querySelector('.near-out');
+  btn.addEventListener('click',()=>{
+    if(!navigator.geolocation){out.textContent='Location isn\u2019t available in this browser.';return}
+    btn.disabled=true;out.textContent='Finding the closest cafe\u2026';
+    navigator.geolocation.getCurrentPosition(p=>{btn.disabled=false;const {latitude:a,longitude:b}=p.coords;
+      const n=LOCS.map(L=>({...L,d:miles(a,b,L.lat,L.lng)})).sort((x,y)=>x.d-y.d)[0];
+      out.innerHTML=`Closest to you: <b>Misree Chai ${n.name}</b>, about ${n.d<10?n.d.toFixed(1):Math.round(n.d)} mi away.`;
+      try{localStorage.setItem('misree-near',n.id)}catch(e){}
+      applyNear(n.id,true)},
+    e=>{btn.disabled=false;out.textContent=e.code===1?'Location is off, so pick a cafe below.':'Couldn\u2019t get your location, so pick a cafe below.'},{timeout:10000,maximumAge:600000})})});
+setTimeout(()=>{let id;try{id=localStorage.getItem('misree-near')}catch(e){}const L=LOCS.find(x=>x.id===id);if(!L)return;
+  document.querySelectorAll('[data-near] .near-out').forEach(o=>o.innerHTML=`Your closest cafe: <b>Misree Chai ${L.name}</b>`);applyNear(id)});
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
@@ -306,6 +331,7 @@ ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach
   document.getElementById('loc-name').textContent='Misree Chai · '+d.name;
   document.getElementById('loc-l1').textContent=d.l1+', '+d.l2;
   document.getElementById('loc-meta').textContent=d.phone?'Open daily · '+d.phone:'Open daily · check hours on Google Maps';}));
+document.addEventListener('nearest',e=>{const t=document.querySelector('.loc-tab[data-loc-id="'+e.detail.id+'"]');if(t&&t.getAttribute('aria-selected')!=='true')t.click()});
 // menu quick view
 const qv=document.getElementById('qv');
 if(qv){
