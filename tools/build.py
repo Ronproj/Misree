@@ -435,6 +435,46 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .steps p{color:var(--muted);font-size:15px;margin-top:2px}
 @media (min-width:900px){.rhero{grid-template-columns:1.1fr 1fr;align-items:center;gap:36px}.steps{grid-template-columns:repeat(3,1fr);gap:28px}}
 
+/* home */
+.hero .wrap{text-align:center;display:flex;flex-direction:column;align-items:center}
+.hlogo{width:64px;height:64px;border-radius:50%;margin-bottom:14px;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.hero h1{font-size:56px}
+.hero .lede{margin:12px auto 24px}
+.hero .ctas{width:100%}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.intro{text-align:center}
+.intro h2{max-width:22ch;margin:0 auto}
+.intro>p:not(.eyebrow){color:var(--muted);margin:10px auto 22px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{position:relative;display:block;border-radius:var(--r-sm);overflow:hidden;aspect-ratio:1}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,14,10,0) 45%,rgba(20,14,10,.72))}
+.tile span{position:absolute;left:14px;bottom:12px;z-index:1;color:#fff;font-size:20px;font-weight:500}
+.tile:hover img{transform:scale(1.04)}
+.split{display:grid;gap:20px}
+.split img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-sm)}
+.split p:not(.eyebrow){color:var(--muted);margin:10px 0 20px;max-width:52ch}
+.favs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fav img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r-sm)}
+.fav span{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:8px}
+.fav b{font-weight:500;font-size:15px;line-height:1.3}
+.fav em{font-style:normal;font-size:14px;color:var(--muted)}
+.duo{display:grid;gap:16px}
+.rewcard{display:block}
+.rewcard p:not(.eyebrow){color:var(--muted);margin:8px 0 16px}
+.rewcard .more{font-weight:500;color:var(--accent)}
+@media (min-width:900px){
+  .hero h1{font-size:88px}
+  .hlogo{width:80px;height:80px}
+  .tiles{grid-template-columns:repeat(4,1fr);gap:16px}
+  .tile{aspect-ratio:4/5}
+  .tile span{font-size:24px;left:20px;bottom:18px}
+  .split{grid-template-columns:1.1fr 1fr;align-items:center;gap:40px}
+  .favs{grid-template-columns:repeat(4,1fr);gap:20px}
+  .duo{grid-template-columns:1.4fr 1fr}
+  .duo .promo{display:flex;flex-direction:column;justify-content:center}
+}
+
 """
 
 JS = r"""
@@ -603,26 +643,28 @@ def loc_cards():
     return f'<div class="locs">{"".join(card(L) for L in LOCATIONS)}</div>'
 
 def build_index():
-    cats = "".join(f'<a class="cat" href="menu.html#{c["slug"]}"><img src="{sm(c["items"][0][2])}" alt="" loading="lazy" width="520" height="520"><b>{c["name"]}</b><span>{len(c["items"])} items</span></a>' for c in CATS)
-    picks_src = [("kulfi", 0), ("chai", 0), ("crepes", 0), ("bowls", 0)]
-    picks = "".join((lambda n, p, im, d: f'<a class="pick" href="order.html"><span class="ph"><img src="{sm(im)}" alt="" loading="lazy" width="520" height="520"><i aria-hidden="true">+</i></span><b>{n}</b><span>${p}</span></a>')(*BYSLUG[s]["items"][i]) for s, i in picks_src)
+    tiles = "".join(f'<a class="tile" href="menu.html#{g}"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"><span>{name}</span></a>' for g, name, _ in GROUPS)
+    picks_src = [("chai", 0), ("kulfi", 0), ("crepes", 3), ("bowls", 0)]
+    picks = "".join((lambda n, p, im, d: f'<a class="fav" href="order.html"><img src="{sm(im)}" alt="" loading="lazy" width="520" height="520"><span><b>{n}</b><em>${p}</em></span></a>')(*BYSLUG[s]["items"][i]) for s, i in picks_src)
     body = f'''{header("home", over=True)}
 <main>
 <section class="hero"><img src="{img("chai-pour")}" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high">
-<div class="wrap"><p class="kicker">Jersey City · Jackson Heights</p><h1>Misree Chai</h1>
-<p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh every day.</p>
+<div class="wrap"><img class="hlogo" src="assets/img/logo.png" alt="" width="64" height="64"><h1>Misree Chai</h1>
+<p class="lede">Chai house and crepe bar in Jersey City and Jackson Heights.</p>
 <div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn ghost" href="menu.html">View menu</a></div></div></section>
-<section class="sec-pad"><div class="wrap"><div class="panel"><div class="shead"><h2>Menu</h2><a href="menu.html">See all</a></div><div class="rail cats">{cats}</div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Start here</h2><a href="order.html">Order</a></div><div class="rail picks">{picks}</div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="promo"><div><h2>Skip the line</h2>
-<p>Order ahead and pick up at Jersey City or Jackson Heights.</p></div><a class="btn" href="order.html">Start an order</a></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="story panel"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="1400" height="1054">
-<div><h2>Named for the sugar that sweetens the cup</h2>
-<p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></div></section>
-<section class="sec-pad" id="rewards" style="padding-top:0;scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><h2><a href="rewards.html">Join our Rewards Program</a></h2>
-<p>Download the Misree Chai app to order ahead, earn rewards on every visit, and hear about new drinks first.</p></div>
-<div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></div></section>
+<section class="sec-pad"><div class="wrap"><div class="panel intro"><p class="eyebrow">Welcome</p>
+<h2>Spiced chai, kulfi milk teas, warm crepes and acai bowls</h2>
+<p>Made fresh at both cafes, for here or to go.</p>
+<div class="tiles">{tiles}</div></div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel split"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="1400" height="1054">
+<div><p class="eyebrow">Our name</p><h2>Named for the sugar that sweetens the cup</h2>
+<p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. We brought that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p>
+<a class="btn sec" href="menu.html">See the menu</a></div></div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Try these</h2><a href="order.html">Order</a></div><div class="favs">{picks}</div></div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap duo"><div class="promo"><div><h2>Skip the line</h2>
+<p>Order ahead and pick up at Jersey City or Jackson Heights.</p></div><a class="btn" href="order.html">Start an order</a></div>
+<a class="panel rewcard" href="rewards.html"><p class="eyebrow">Rewards</p><h2>Earn on every visit</h2><p>Join our Rewards Program in the Misree Chai app.</p><span class="more">Learn more →</span></a></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit us</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></div></section>
 </main>{footer()}'''
     return page("Misree Chai", "Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup.", body, True)
 
