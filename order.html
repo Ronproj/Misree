@@ -219,21 +219,21 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .ocontrols .seg button[aria-pressed="true"] span{color:var(--muted)}
   .ocontrols select{height:58px;border:0}
   .osec h2{font-size:24px;font-weight:400;margin-bottom:14px}
-  .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-  .ogrid .row{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;transition:border-color .15s}
-  .ogrid .row:hover{border-color:var(--line-2)}
-  .ogrid .row .ph{order:-1}
-  .ogrid .row img{width:100%;height:auto;aspect-ratio:4/3;border-radius:0}
-  .ogrid .row .txt{display:flex;flex-direction:column;flex:1;padding:12px 14px 14px}
-  .ogrid .row .p{margin-top:auto;padding-top:8px}
-  .ogrid .row .add{right:10px;bottom:10px}
-  .ogrid .row .qtyb{left:10px;top:10px}
+  .opage .wrap{max-width:1360px}
+  .obar{padding:24px 0}
+  .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .ogrid .row{grid-template-columns:minmax(0,1fr) 104px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:border-color .15s,box-shadow .15s}
+  .ogrid .row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(34,26,20,.08)}
+  .ogrid .row img{width:104px;height:104px}
+  .ogrid .row .txt{align-self:stretch;display:flex;flex-direction:column}
+  .ogrid .row .p{margin-top:auto;padding-top:6px}
 }
-@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 340px;gap:32px;padding-top:8px}}
+@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 340px;gap:24px}}
+@media (min-width:900px) and (max-width:1199px){.opage .cart{top:calc(var(--hh) + 74px);max-height:calc(100vh - var(--hh) - 90px)}}
 @media (min-width:1200px){
   .opage .chips{display:none}
-  .olayout{grid-template-columns:170px minmax(0,1fr) 340px}
-  .oside{display:flex;flex-direction:column;position:sticky;top:calc(var(--hh) + 24px);align-self:start;padding-top:24px}
+  .olayout{grid-template-columns:190px minmax(0,1fr) 340px}
+  .oside{display:flex;flex-direction:column;position:sticky;top:calc(var(--hh) + 16px);align-self:start}
   .oside a{padding:9px 0 9px 14px;border-left:2px solid var(--line);color:var(--muted);font-weight:500}
   .oside a[aria-current]{color:var(--ink);border-color:var(--ink)}
 }
@@ -263,7 +263,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .done h3{font-size:22px;font-weight:400;margin-bottom:6px}
 .back{padding:12px 0;border:0;background:none;color:var(--accent);font-weight:500;cursor:pointer}
 @media (min-width:1000px){
-  .cart{position:sticky;top:calc(var(--hh) + 24px);margin-top:24px;max-height:calc(100vh - var(--hh) - 48px);border:1px solid var(--line);border-radius:var(--r)}
+  .cart{position:sticky;top:calc(var(--hh) + 16px);margin-top:16px;align-self:start;max-height:calc(100vh - var(--hh) - 32px);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(34,26,20,.06)}
   .cart .x{display:none}
   .cartbar{display:none!important}
 }
@@ -327,6 +327,8 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 @media (min-width:900px){:root{--pp:28px}}
 .panel,.mgroup,.osec{background:#fff;border-radius:var(--r);padding:var(--pp);box-shadow:0 1px 3px rgba(34,26,20,.06)}
 .mgroup,.osec{margin-top:16px}
+.rows>li:last-child .row{border-bottom:0}
+@media (max-width:899px){.ogrid>.row:last-child{border-bottom:0;padding-bottom:0}}
 .panel .rail{margin-inline:calc(var(--pp) * -1);padding-inline:var(--pp);scroll-padding-inline:var(--pp)}
 @media (min-width:900px){.panel .rail{margin-inline:0;padding-inline:0}}
 .panel .card,.mgroup .card{box-shadow:none}
