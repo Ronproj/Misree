@@ -409,6 +409,18 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .ltabs .loc-tab[aria-selected="true"]{background:var(--ink);color:#fff}
 @media (min-width:900px){.oside{background:#fff;border-radius:var(--r);padding:16px;margin-top:16px}}
 
+/* rewards page */
+.rwrap{display:grid;gap:16px}
+.rhero{display:grid;gap:18px}
+.rhero img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--r-sm)}
+.rhero p{color:var(--muted);margin:8px 0 18px;max-width:46ch}
+.steps{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:18px}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start}
+.steps .num{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:500}
+.steps h3{font-size:17px;font-weight:500}
+.steps p{color:var(--muted);font-size:15px;margin-top:2px}
+@media (min-width:900px){.rhero{grid-template-columns:1.1fr 1fr;align-items:center;gap:36px}.steps{grid-template-columns:repeat(3,1fr);gap:28px}}
+
 """
 
 JS = r"""
@@ -553,7 +565,7 @@ ICONS = {
 }
 PIN = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS["visit"] + '</svg>'
 NAV = [("home", "Home", "index.html"), ("menu", "Menu", "menu.html"), ("order", "Order", "order.html"),
-       ("rewards", "Rewards", "index.html#rewards"), ("visit", "Visit", "visit.html")]
+       ("rewards", "Rewards", "rewards.html"), ("visit", "Visit", "visit.html")]
 
 def header(current="home", over=False):
     cur = lambda k: ' aria-current="page"' if k == current else ""
@@ -565,7 +577,7 @@ def header(current="home", over=False):
 
 def footer():
     return (f'<footer><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32" loading="lazy">Misree Chai</a>'
-            f'<nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="visit.html">Visit</a>'
+            f'<nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a>'
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
 
@@ -593,7 +605,7 @@ def build_index():
 <section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="story panel"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="1400" height="1054">
 <div><h2>Named for the sugar that sweetens the cup</h2>
 <p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></div></section>
-<section class="sec-pad" id="rewards" style="padding-top:0;scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><h2>Join our Rewards Program</h2>
+<section class="sec-pad" id="rewards" style="padding-top:0;scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><h2><a href="rewards.html">Join our Rewards Program</a></h2>
 <p>Download the Misree Chai app to order ahead, earn rewards on every visit, and hear about new drinks first.</p></div>
 <div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div></div></section>
 <section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></div></section>
@@ -686,6 +698,24 @@ def build_visit():
     return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps and directions.", body)
 
 
+def build_rewards():
+    steps = [("1", "Get the app", "Download the Misree Chai app and create your free account."),
+             ("2", "Order or check in", "Order ahead in the app, or show it at the counter when you pay."),
+             ("3", "Earn rewards", "Every visit counts toward rewards you can use at either cafe.")]
+    st = "".join(f'<li><span class="num">{n}</span><div><h3>{t}</h3><p>{d}</p></div></li>' for n, t, d in steps)
+    body = f'''{header("rewards")}<main>
+<div class="phead"><div class="wrap"><h1>Rewards</h1><p>Join our Rewards Program through the Misree Chai app.</p></div></div>
+<section class="sec-pad" style="padding-top:16px"><div class="wrap rwrap">
+<div class="panel rhero"><img src="{img("chai-cheers")}" alt="Two glasses of chai raised over bun maska and a crepe" width="1400" height="1054">
+<div><h2>Every cup brings you closer to the next one</h2><p>Order ahead, skip the line, earn rewards on every visit, and hear about new drinks first.</p>
+<div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div></div>
+<div class="panel"><h2>How it works</h2><ol class="steps">{st}</ol></div>
+<div class="promo"><div><h2>Hungry now?</h2><p>Order on the website for pickup at Jersey City or Jackson Heights.</p></div><a class="btn" href="order.html">Start an order</a></div>
+</div></section>
+</main>{footer()}'''
+    return page("Rewards · Misree Chai", "Join the Misree Chai Rewards Program: get the app, order ahead and earn rewards at both cafes.", body)
+
+
 # Block-print wallpaper and ornaments, drawn as SVG so they stay crisp and tiny.
 def buta(cx, cy, s, bg):
     g = f'<g transform="translate({cx} {cy}) scale({s})">'
@@ -736,7 +766,7 @@ def write_ornaments(out):
 
 os.makedirs(OUT, exist_ok=True)
 write_ornaments(OUT)
-for name, fn in [("index.html", build_index), ("menu.html", build_menu), ("order.html", build_order), ("visit.html", build_visit)]:
+for name, fn in [("index.html", build_index), ("menu.html", build_menu), ("order.html", build_order), ("visit.html", build_visit), ("rewards.html", build_rewards)]:
     with open(os.path.join(OUT, name), "w") as fh:
         fh.write(fn())
 print("built", OUT)
