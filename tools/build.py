@@ -362,6 +362,57 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
 .top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.14);color:#fff}
 .top.over:not(.solid) .btn{background:#fff7e8;color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* order page: app-style layout on a plain background */
+.opage{background:var(--bg)}
+.opage .wrap{max-width:1320px}
+.obar{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;padding:22px 0 20px}
+.obar .wrap{display:grid;gap:16px}
+.obar .eyebrow{color:#e9cf8f;margin-bottom:4px}
+.obar h1{font-size:clamp(1.9rem,6vw,2.6rem)}
+.demo-note{font-size:.8rem;color:rgba(255,245,230,.66);margin-top:6px}
+.ocontrols{display:grid;gap:12px}
+.lbl{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,245,230,.7);margin-bottom:6px}
+.obar .seg{background:rgba(255,255,255,.08);padding:4px;gap:4px}
+.obar .seg button{color:#fff;min-height:52px;padding:8px 12px}
+.obar .seg button span{color:rgba(255,245,230,.6)}
+.obar .seg button[aria-pressed="true"]{background:#fff7e8;color:var(--ink);box-shadow:none}
+.obar .seg button[aria-pressed="true"] span{color:var(--muted)}
+.obar select{background:#fff7e8;border-color:transparent;min-height:60px}
+@media (max-width:899px){.obar .eyebrow{display:none}.obar{padding:16px 0 14px}.obar .wrap{gap:12px}.obar h1{font-size:1.7rem}.demo-note{font-size:.74rem;margin-top:4px}
+  .obar .seg button{min-height:46px;padding:6px 10px}.obar .seg button b{font-size:.92rem}.obar .seg button span{font-size:.72rem}.obar select{min-height:46px;padding:8px 12px}.lbl{margin-bottom:4px;font-size:.66rem}
+  .opage .chips .wrap{padding-block:8px}.opage .chips a{padding:7px 13px;font-size:.86rem}}
+@media (min-width:900px){.obar{padding:30px 0}.obar .wrap{grid-template-columns:1fr auto;align-items:end;gap:32px}.ocontrols{grid-template-columns:400px 220px}}
+.opage .chips{background:var(--bg)}
+.oside{display:none}
+.olayout{padding-top:4px}
+.osec{padding-top:22px}
+.osec h2{font-size:1.45rem;padding-bottom:8px;border-bottom:1.5px solid var(--ink);margin-bottom:14px}
+.osec h2::before{display:none!important}
+.oitem{box-shadow:none;border:1px solid var(--line);transition:border-color .15s}
+.oitem:hover{border-color:var(--gold)}
+.oitem>span:first-child{display:flex;flex-direction:column;min-width:0}
+@media (min-width:640px){
+  .ogrid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+  .oitem{display:flex;flex-direction:column;align-items:stretch;padding:0}
+  .oitem .ph{order:-1}
+  .oitem img{width:100%;height:auto;aspect-ratio:4/3}
+  .oitem>span:first-child{flex:1;padding:12px 14px 14px}
+  .oitem .p{margin-top:auto;padding-top:8px}
+  .oitem .plus{right:10px;bottom:10px}
+  .oitem .qtyb{left:10px;top:10px}
+}
+@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 330px;gap:32px;padding-top:12px}.cart{top:calc(var(--hh) + 74px);border:1px solid var(--line);box-shadow:none}}
+@media (min-width:1200px){
+  .opage .chips{display:none}
+  .olayout{grid-template-columns:170px minmax(0,1fr) 330px}
+  .oside{display:flex;flex-direction:column;position:sticky;top:calc(var(--hh) + 34px);align-self:start;padding-top:22px}
+  .oside a{text-decoration:none;color:var(--muted);padding:9px 0 9px 14px;border-left:2px solid var(--line);font-weight:500}
+  .oside a:hover{color:var(--ink)}
+  .oside a[aria-current]{color:var(--ink);border-color:var(--rose)}
+  .cart{top:calc(var(--hh) + 34px);margin-top:22px}
+}
+.cart header{border-bottom:1px solid var(--line)}
+.cart .foot:empty{display:none}
 /* sharp, editorial buttons */
 .btn{text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:600}
 .cartbar,.cartbar *{letter-spacing:normal}
@@ -371,11 +422,11 @@ JS = r"""
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy
-const chips=document.querySelectorAll('.chips a');
+const chips=document.querySelectorAll('.chips a, .oside a');
 if(chips.length){
-  const map=new Map([...chips].map(a=>[a.getAttribute('href').slice(1),a]));
-  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){chips.forEach(t=>t.removeAttribute('aria-current'));const a=map.get(e.target.id);
-    if(a){a.setAttribute('aria-current','true');const w=a.parentElement;w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}}}),{rootMargin:'-30% 0px -60% 0px'});
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
+    chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===e.target.id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
+      const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})}),{rootMargin:'-18% 0px -72% 0px'});
   document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
 }
 // visit page location switcher
@@ -597,13 +648,14 @@ def build_order():
     data = json.dumps(dict(items=items, stores=stores)).replace("</", "<\\/")
     seg = "".join(f'<button type="button" data-store="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
     chips = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
-    body = f'''{header("order")}<main>
-<div class="demo" role="note"><b>Demo preview.</b> Orders aren't sent to the cafe yet and no card is charged.</div>
-<div class="wrap ptitle"><p class="eyebrow">Pickup</p><h1>Order online</h1>
-<div class="setup"><div><p class="field" style="margin-bottom:6px">Pick up from</p><div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
-<label class="field">Pickup time<select id="pickup"><option>ASAP (about 15 min)</option></select></label></div></div>
+    side = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
+    body = f'''{header("order")}<main class="opage">
+<section class="obar"><div class="wrap"><div><p class="eyebrow">Pickup order</p><h1>Order online</h1>
+<p class="demo-note">Demo preview: orders aren't sent to the cafe yet and no card is charged.</p></div>
+<div class="ocontrols"><div><span class="lbl">Pick up from</span><div class="seg" role="group" aria-label="Pickup location">{seg}</div></div>
+<label><span class="lbl">Pickup time</span><select id="pickup"><option>ASAP (about 15 min)</option></select></label></div></div></section>
 <nav class="chips" aria-label="Order sections"><div class="wrap">{chips}</div></nav>
-<div class="wrap olayout"><div>{secs}</div>
+<div class="wrap olayout"><nav class="oside" aria-label="Menu sections"><p class="eyebrow">Menu</p>{side}</nav><div class="omenu">{secs}</div>
 <aside class="cart" id="cart" aria-label="Your order"><header><h2 id="c-title">Your order</h2><button class="x" type="button" aria-label="Close order">✕</button></header>
 <div class="body" id="c-body"></div><div class="foot" id="c-foot"></div></aside></div></main>
 <div class="scrim" id="scrim" hidden></div>
