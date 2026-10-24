@@ -1,372 +1,333 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Menu · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#fbf8f3"><meta name="description" content="The full Misree Chai menu: drinks, crepes, bowls and bakery."><meta property="og:image" content="assets/img/chai-cheers.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"><style>
-/* Simple modern cafe: warm white, olive from the logo, near-black ink. Mobile first. */
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Menu · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#faf6ef"><meta name="description" content="The full Misree Chai menu: drinks, crepes, bowls and bakery."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"><style>
+/* Misree Chai: one small system. Warm white, near-black ink, olive accent from the logo.
+   Type: 34/24/18/16/14. Radius: 16 cards, 12 controls. Spacing on an 4px grid. Mobile first. */
 :root{
-  --bg:#f5ecdc; --surface:#fffaf2; --soft:#efe4d0; --ink:#2b1d14; --muted:#6e6253; --line:#e6d9c3;
-  --olive:#5f5820; --olive-soft:#ece5cc; --on-ink:#ffffff; --rose:#9a4434; --gold:#c9a55a; --night:#2b1d14;
-  --hh:60px; --tab:64px; --safe-b:env(safe-area-inset-bottom,0px);
-  --font:"Jost","Futura","Century Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --r:14px; --r-sm:10px; --shadow:0 1px 2px rgba(29,27,22,.05),0 8px 24px rgba(29,27,22,.07);
+  --bg:#faf6ef; --surface:#ffffff; --soft:#f2ece2; --ink:#221a14; --muted:#6b6258; --line:#e9e1d4; --line-2:#d9cfc0;
+  --accent:#5f5820; --night:#221a14;
+  --hh:56px; --tab:62px; --safe-b:env(safe-area-inset-bottom,0px); --gut:20px;
+  --font:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:16px; --r-sm:12px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
-a{color:inherit}
-img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto}
 button{font:inherit;color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-weight:400;line-height:1.08;letter-spacing:-.015em;margin:0;text-wrap:balance}
-h1{font-size:clamp(2.4rem,9vw,4.6rem);font-weight:300}
-h2{font-size:clamp(1.8rem,6vw,2.8rem);font-weight:300}
-p{margin:0}
-.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--olive);margin-bottom:10px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:400;letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
+h1{font-size:34px}
+h2{font-size:24px}
+h3{font-size:18px;font-weight:500}
 .muted{color:var(--muted)}
-:focus-visible{outline:2.5px solid var(--olive);outline-offset:2px;border-radius:var(--r)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:var(--r);border:0;
-  background:var(--ink);color:var(--on-ink);text-decoration:none;font-weight:500;font-size:1rem;cursor:pointer;transition:transform .15s,opacity .15s}
-.btn:active{transform:scale(.97)}
-.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
-.btn.olive{background:var(--olive)}
+.small{font-size:14px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border:0;border-radius:var(--r-sm);
+  background:var(--ink);color:#fff;font-size:15px;font-weight:500;white-space:nowrap;cursor:pointer;transition:transform .12s,opacity .12s}
+.btn:active{transform:scale(.98)}
+.btn.sec{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
 .btn.block{width:100%}
 .btn[disabled]{opacity:.4;cursor:not-allowed}
-section.pad{padding-block:48px}
-@media (min-width:760px){section.pad{padding-block:80px}}
-.head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:20px}
-.head a{font-weight:500;color:var(--olive);text-decoration:none;white-space:nowrap;padding:10px 0}
+.sec-pad{padding-block:40px}
+.shead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.shead a{font-size:15px;font-weight:500;color:var(--accent);padding:8px 0}
+@media (min-width:900px){
+  :root{--hh:68px;--tab:0px;--gut:32px}
+  h1{font-size:48px} h2{font-size:32px}
+  .sec-pad{padding-block:72px}
+  .shead{margin-bottom:24px}
+}
 
 /* header */
-.top{position:sticky;top:0;z-index:30;background:rgba(255,250,242,.95);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
-.top .wrap{display:flex;align-items:center;gap:20px;height:var(--hh)}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:1.3rem;letter-spacing:.01em}
-.brand img{width:36px;height:36px;border-radius:50%;border:1px solid var(--line)}
-.brand small{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.top{position:sticky;top:0;z-index:30;background:rgba(250,246,239,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:var(--hh)}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:500}
+.brand img{width:32px;height:32px;border-radius:50%;border:1px solid var(--line)}
 .nav{display:none;gap:4px;margin-left:auto}
-.nav a{text-decoration:none;padding:8px 14px;border-radius:var(--r);color:var(--muted);font-weight:500;font-size:.95rem}
+.nav a{padding:8px 12px;border-radius:10px;font-size:15px;color:var(--muted)}
 .nav a:hover{color:var(--ink)}
 .nav a[aria-current]{color:var(--ink);background:var(--soft)}
-.top .btn{min-height:40px;padding:0 18px;font-size:.92rem;margin-left:auto}
-@media (min-width:900px){:root{--hh:72px;--tab:0px}.nav{display:flex}.top .btn{margin-left:8px}}
+.top .btn{display:none;height:40px;font-size:14px}
+@media (min-width:900px){.nav{display:flex}.top .btn{display:inline-flex}}
+.top.over{position:fixed;left:0;right:0;transition:background .25s,border-color .25s,color .25s}
+.top.over:not(.solid){background:transparent;border-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
+.top.over:not(.solid) .brand img{border-color:transparent}
+.top.over:not(.solid) .nav a{color:rgba(255,255,255,.85)}
+.top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.15);color:#fff}
+.top.over:not(.solid) .btn{background:#fff;color:var(--ink)}
 
-/* bottom tab bar (phones and tablets) */
+/* bottom tab bar on phones */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.96);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:0 env(safe-area-inset-right,0px) var(--safe-b) env(safe-area-inset-left,0px)}
-.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:var(--tab);text-decoration:none;color:var(--muted);font-size:.7rem;font-weight:500}
-.tabbar svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.tabbar a[aria-current]{color:var(--olive)}
-.tabbar a.order span{background:var(--ink);color:#fff;width:46px;height:30px;border-radius:var(--r);display:grid;place-items:center}
-.tabbar a.order svg{width:19px;height:19px}
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:0 env(safe-area-inset-right,0px) var(--safe-b) env(safe-area-inset-left,0px)}
+.tabbar a{height:var(--tab);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;color:#8c8379}
+.tabbar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current]{color:var(--ink)}
+.tabbar a[aria-current] svg{stroke-width:2.1}
 @media (min-width:900px){.tabbar{display:none}}
 
-/* home */
-.hero{padding-block:24px 40px}
-.hero .wrap{display:grid;gap:24px}
-.hero .lede{font-size:1.1rem;color:var(--muted);max-width:38ch;margin:14px 0 22px}
-.hero .ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hero figure{margin:0;position:relative}
-.hero figure img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r)}
-.hero .chip{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.94);border-radius:var(--r);padding:10px 14px;font-size:.85rem;box-shadow:var(--shadow)}
-.hero .chip b{display:block;font-weight:600}
-@media (min-width:860px){.hero{padding-block:56px 72px}.hero .wrap{grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}.hero .ctas{display:flex}.hero figure img{aspect-ratio:5/4}}
+/* home hero: one full-screen photo */
+.hero{position:relative;height:calc(100svh - var(--tab) - var(--safe-b));min-height:520px;max-height:980px;display:flex;align-items:flex-end;
+  color:#fff;background:var(--night);overflow:hidden;isolation:isolate}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:36% center;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,12,6,.5) 0%,rgba(20,12,6,0) 24%,rgba(20,12,6,.2) 50%,rgba(20,12,6,.86) 100%)}
+.hero .wrap{width:100%;padding-bottom:32px}
+.kicker{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:8px}
+.hero h1{font-size:52px;font-weight:300;line-height:1}
+.hero .lede{color:rgba(255,255,255,.88);max-width:32ch;margin:12px 0 24px}
+.hero .ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px}
+.hero .btn{background:#fff;color:var(--ink)}
+.hero .btn.ghost{background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media (min-width:900px){.hero .wrap{padding-bottom:80px}.hero h1{font-size:96px}.hero .lede{font-size:18px}}
 
-.cats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cat{position:relative;display:block;aspect-ratio:1;overflow:hidden;text-decoration:none;color:#fff;isolation:isolate;border:1.5px solid var(--gold)}
-.cat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .5s}
-.cat:hover img{transform:scale(1.05)}
-.cat::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 45%,rgba(24,14,6,.8))}
-.cat b{position:absolute;left:12px;right:12px;bottom:26px;font-weight:500;font-size:1.08rem;line-height:1.2}
-.cat span{position:absolute;left:12px;bottom:9px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#ecd59a}
-@media (min-width:760px){.cats{grid-template-columns:repeat(3,1fr);gap:16px}.cat{aspect-ratio:4/3}.cat b{font-size:1.4rem;left:18px;bottom:34px}.cat span{left:18px;bottom:14px}}
-.picks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pick{background:var(--surface);border:1.5px solid var(--line);overflow:hidden;text-decoration:none;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.pick img{width:100%;aspect-ratio:1;object-fit:cover}
-.pick div{text-align:left}
-.pick div{padding:12px 14px 14px}
-.pick b{font-weight:500;display:block;line-height:1.25}
-.pick span{color:var(--muted);font-size:.9rem}
-@media (min-width:900px){.picks{grid-template-columns:repeat(4,1fr);gap:20px}}
+/* swipeable rows on phones, grids on desktop */
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);
+  margin-inline:calc(var(--gut) * -1);padding:0 var(--gut) 4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{flex:none;scroll-snap-align:start}
+.cat{width:128px}
+.cat img,.pick img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:var(--r);background:var(--soft)}
+.cat b,.pick b{display:block;margin-top:8px;font-size:15px;font-weight:500;line-height:1.3}
+.cat span,.pick span{font-size:14px;color:var(--muted)}
+.pick{width:160px}
+.pick .ph{position:relative}
+.pick i{position:absolute;right:8px;bottom:8px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;
+  font-style:normal;font-size:20px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.strip img{width:220px;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
+@media (min-width:900px){
+  .rail{display:grid;overflow:visible;margin:0;padding:0;gap:20px}
+  .rail.cats{grid-template-columns:repeat(6,1fr)}
+  .rail.picks{grid-template-columns:repeat(4,1fr)}
+  .rail.strip{grid-template-columns:repeat(6,1fr)}
+  .cat,.pick{width:auto}
+  .strip img{width:100%}
+}
 
-.promo{display:grid;gap:20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;border:1.5px solid rgba(201,165,90,.5);color:#fff;border-radius:var(--r);padding:28px 22px;overflow:hidden}
-.promo .eyebrow{color:#d8cf98}
-.promo p.muted{color:rgba(255,255,255,.72);margin:10px 0 20px}
+/* home sections */
+.promo{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;border-radius:var(--r);padding:28px 24px}
+.promo p{color:rgba(255,255,255,.75);margin:8px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
-.promo img{border-radius:var(--r);width:100%;max-width:none;aspect-ratio:4/3;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:6px}
-@media (min-width:860px){.promo{grid-template-columns:1fr 1fr;align-items:center;padding:48px;gap:48px}}
-
-.story{display:grid;gap:24px}
-.story img{border-radius:var(--r);width:100%;max-width:420px;justify-self:center;aspect-ratio:4/5;object-fit:cover;outline:1.5px solid var(--gold);outline-offset:8px}
-.story p.muted{margin-top:14px;max-width:52ch}
-@media (min-width:860px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}}
-
-.app{background:var(--surface);border:1.5px solid var(--gold);border-radius:var(--r);padding:28px 22px;display:grid;gap:24px}
-.app p.muted{margin:10px 0 20px;max-width:44ch}
+@media (min-width:900px){.promo{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:44px 48px}.promo p{margin-bottom:0}}
+.story{display:grid;gap:20px}
+.story img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--r)}
+.story p{color:var(--muted);margin-top:12px;max-width:52ch}
+@media (min-width:900px){.story{grid-template-columns:1fr 1fr;gap:56px;align-items:center}.story img{aspect-ratio:4/3}}
+.app{background:var(--soft);border-radius:var(--r);padding:28px 24px;display:grid;gap:20px}
+.app p{color:var(--muted);margin-top:8px;max-width:44ch}
 .stores{display:flex;gap:10px;flex-wrap:wrap}
-.store{display:inline-flex;flex-direction:column;justify-content:center;min-width:150px;min-height:52px;padding:8px 18px;border-radius:var(--r);background:var(--ink);color:#fff;text-decoration:none;line-height:1.15}
-.store small{font-size:.72rem;opacity:.8}
-.store b{font-weight:500;font-size:1.1rem}
-.store[aria-disabled="true"]{opacity:.45}
-.perks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.perks div{background:rgba(255,255,255,.75);border-radius:var(--r);padding:14px}
-.perks b{display:block;font-weight:500}
-.perks span{font-size:.88rem;color:var(--muted)}
-@media (min-width:860px){.app{grid-template-columns:1.1fr 1fr;padding:48px;gap:48px;align-items:center}}
-
+.store{display:inline-flex;flex-direction:column;justify-content:center;height:52px;padding:0 18px;border-radius:var(--r-sm);background:var(--ink);color:#fff;line-height:1.15}
+.store small{font-size:11px;opacity:.75}
+.store b{font-size:16px;font-weight:500}
+.store[aria-disabled="true"]{opacity:.4}
+@media (min-width:900px){.app{grid-template-columns:1fr auto;align-items:center;padding:44px 48px}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .locs{display:grid;gap:12px}
-.loc{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
-.loc h3{font-size:1.4rem}
-.loc .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.loc .acts .btn{min-height:44px;flex:1 1 auto;font-size:.92rem;padding:0 16px}
+.loc{padding:20px}
+.loc p{font-size:15px;color:var(--muted);margin-top:2px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;padding-block:28px 36px;font-size:.88rem;color:rgba(255,245,230,.7)}
-footer .wrap{display:grid;gap:14px}
-footer nav{display:flex;flex-wrap:wrap;gap:4px 18px}
-footer nav a{text-decoration:none;padding:6px 0;color:#fff4e2}
+footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:rgba(255,248,236,.66);font-size:14px;padding-block:32px 40px}
+footer .wrap{display:grid;gap:16px}
+footer .brand{color:#fff}
+footer nav{display:flex;flex-wrap:wrap;gap:2px 20px}
+footer nav a{color:#fff8ec;padding:6px 0}
 
-/* page titles */
-.ptitle{padding-block:28px 8px}
-.ptitle p.muted{margin-top:10px;max-width:46ch}
-@media (min-width:760px){.ptitle{padding-block:56px 16px}}
-
-/* sticky chips (menu + order) */
-.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(245,236,220,.97);border-bottom:1px solid var(--line)}
+/* page heads and sticky section tabs */
+.phead{padding-block:24px 16px}
+.phead p{margin-top:6px;color:var(--muted)}
+@media (min-width:900px){.phead{padding-block:48px 24px}}
+.chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(250,246,239,.95);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .chips .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 .chips .wrap::-webkit-scrollbar{display:none}
-.chips a{flex:0 0 auto;text-decoration:none;font-weight:500;font-size:.92rem;padding:9px 16px;border-radius:var(--r);background:var(--soft);color:var(--muted)}
-.chips a[aria-current="true"]{background:var(--ink);color:#fff}
+.chips a{flex:none;height:36px;display:inline-flex;align-items:center;padding:0 14px;border-radius:999px;background:var(--soft);color:var(--muted);font-size:14px;font-weight:500}
+.chips a[aria-current]{background:var(--ink);color:#fff}
 
-/* menu list */
-.mlist{max-width:1040px;margin:0 auto}
-.mgroup{background:var(--surface);border:1.5px solid var(--line);margin-top:24px;scroll-margin-top:calc(var(--hh) + 64px)}
-.mbanner{position:relative;aspect-ratio:16/8;overflow:hidden;background:var(--night);color:#fff;isolation:isolate;border-bottom:3px solid var(--gold)}
-.mbanner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.mbanner::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,14,6,.05) 30%,rgba(24,14,6,.78))}
-.mbanner div{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;align-items:end;gap:12px}
-.mbanner h2{font-size:clamp(2rem,8vw,3.2rem)}
-.mbanner h2::before{background-image:url(assets/img/orn-light.svg)!important}
-.mbanner span{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#ecd59a;white-space:nowrap;padding-bottom:6px}
-.mbody{padding:6px 18px 14px}
-.mgroup h3{font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--olive);margin:20px 0 2px;padding-bottom:8px;border-bottom:1.5px solid var(--ink);scroll-margin-top:calc(var(--hh) + 64px)}
-.mlist ul{list-style:none;margin:0;padding:0;display:grid}
-.mlist li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.mlist li:hover .n{color:var(--rose)}
-.mlist li img{width:64px;height:64px;object-fit:cover}
-.mlist .l{display:flex;align-items:baseline;gap:8px}
-.mlist .n{font-size:1.1rem;line-height:1.25;transition:color .15s}
-.mlist .dots{flex:1;min-width:16px;border-bottom:1.5px dotted #c8b79a;transform:translateY(-4px)}
-.mlist .p{font-weight:500;font-variant-numeric:tabular-nums}
-.mlist small{display:block;color:var(--muted);font-size:.86rem;line-height:1.35;margin-top:2px}
-@media (min-width:760px){.mbanner{aspect-ratio:16/5}.mbanner div{left:28px;right:28px;bottom:20px}.mbody{padding:8px 28px 22px}.mlist ul{grid-template-columns:1fr 1fr;column-gap:40px}}
-.note{font-size:.85rem;color:var(--muted);text-align:center;margin:28px auto 0;max-width:52ch}
+/* item rows: text left, photo right (menu and order) */
+.rows{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 84px;gap:16px;align-items:center;width:100%;padding:14px 0;border:0;border-bottom:1px solid var(--line);
+  background:none;text-align:left;cursor:pointer}
+.row .n{display:block;font-size:16px;font-weight:500;line-height:1.3}
+.row small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px;font-size:14px;line-height:1.4;color:var(--muted)}
+.row .p{display:block;margin-top:6px;font-size:15px}
+.row .ph{position:relative}
+.row img{width:84px;height:84px;object-fit:cover;border-radius:var(--r-sm);background:var(--soft)}
+.row .add{position:absolute;right:-6px;bottom:-6px;width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;
+  font-size:19px;line-height:1;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.row .qtyb{position:absolute;left:-6px;top:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--ink);color:#fff;
+  font-size:12px;font-weight:600;display:grid;place-items:center}
 
-/* order */
-.demo{background:var(--olive-soft);color:var(--ink);font-size:.86rem;text-align:center;padding:9px 16px}
-.demo b{font-weight:600}
-.setup{display:grid;gap:12px;margin-top:18px}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--soft);padding:5px;border-radius:var(--r)}
-.seg button{border:0;background:none;border-radius:var(--r);padding:10px 8px;cursor:pointer;text-align:left;min-height:56px}
-.seg button b{display:block;font-weight:500;font-size:.98rem}
-.seg button span{font-size:.78rem;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--surface);box-shadow:var(--shadow)}
-.field{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--muted)}
-select,input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;min-height:48px;width:100%}
-select:focus,input:focus,textarea:focus{outline:none;border-color:var(--olive)}
-@media (min-width:760px){.setup{grid-template-columns:1.6fr 1fr;align-items:end}}
-.olayout{display:grid;gap:32px;padding-bottom:32px}
-@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 360px;align-items:start}}
-.osec{padding-top:24px}
-.osec h2{font-size:1.5rem;font-weight:400;margin-bottom:10px}
-.ogrid{display:grid;gap:10px}
-@media (min-width:640px){.ogrid{grid-template-columns:1fr 1fr}}
-.oitem{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:14px;align-items:center;background:var(--surface);border:0;border-radius:var(--r);padding:12px 12px 12px 16px;text-align:left;cursor:pointer;box-shadow:var(--shadow);width:100%}
-.oitem .n{font-size:1.04rem;line-height:1.3;display:block}
-.oitem small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);font-size:.84rem;line-height:1.35;margin-top:2px}
-.oitem .p{display:block;margin-top:6px;font-weight:500}
-.oitem .ph{position:relative}
-.oitem img{width:96px;height:96px;border-radius:var(--r);object-fit:cover}
-.oitem .plus{position:absolute;right:-4px;bottom:-4px;width:34px;height:34px;border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow);display:grid;place-items:center;font-size:1.4rem;line-height:1}
-.oitem .qtyb{position:absolute;left:-6px;top:-6px;min-width:26px;height:26px;border-radius:var(--r);background:var(--olive);color:#fff;font-size:.8rem;font-weight:600;display:grid;place-items:center;padding:0 7px}
+/* menu page */
+.mgroup{padding-top:28px;scroll-margin-top:calc(var(--hh) + 60px)}
+.mgroup>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px}
+.mgroup>header span{font-size:14px;color:var(--muted)}
+.mgroup h3{margin:20px 0 0;font-size:14px;font-weight:500;color:var(--accent);scroll-margin-top:calc(var(--hh) + 60px)}
+.mbanner{display:none}
+.note{font-size:14px;color:var(--muted);text-align:center;margin:32px auto 0;max-width:46ch}
+.endcta{display:flex;justify-content:center;margin:20px 0 48px}
+@media (min-width:900px){
+  .mgroup{padding-top:48px}
+  .mbanner{display:block;margin-bottom:20px}
+  .mbanner img{width:100%;aspect-ratio:16/5;object-fit:cover;border-radius:var(--r)}
+  .mgroup .rows{display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+}
+
+/* order page */
+.obar{padding:20px 0 12px}
+.obar .demo{font-size:13px;color:var(--muted);margin-top:4px}
+.psum{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);text-align:left;cursor:pointer}
+.psum svg{flex:none;width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.psum b{display:block;font-weight:500}
+.psum>span{min-width:0;flex:1}
+.psum span span{display:block;font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psum em{margin-left:auto;font-style:normal;font-size:14px;font-weight:500;color:var(--accent)}
+.lbl{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+.seg{display:grid;gap:8px}
+.seg button{display:block;width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);text-align:left;cursor:pointer}
+.seg button b{display:block;font-weight:500}
+.seg button span{font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.seg button.is-near b::after{content:"Closest";margin-left:8px;font-size:12px;font-weight:500;color:var(--accent)}
+select,input,textarea{width:100%;min-height:48px;padding:12px 14px;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm)}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--muted)}
+.ocontrols{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;gap:18px;background:var(--surface);border-radius:20px 20px 0 0;
+  padding:20px var(--gut) calc(20px + var(--safe-b));transform:translateY(105%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s}
+.ocontrols.open{transform:none;visibility:visible}
+.olayout{display:grid;gap:24px;padding-bottom:32px}
+.oside{display:none}
+.osec{padding-top:24px;scroll-margin-top:calc(var(--hh) + 60px)}
+.osec h2{font-size:20px;font-weight:500;margin-bottom:2px}
+@media (min-width:900px){
+  .obar{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;padding:32px 0}
+  .obar .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
+  .obar .demo{color:rgba(255,248,236,.66)}
+  .psum,.ocontrols .phd,#pdone{display:none}
+  .ocontrols{position:static;transform:none;visibility:visible;transition:none;background:none;padding:0;border-radius:0;grid-template-columns:400px 200px;gap:12px;align-items:end}
+  .ocontrols .lbl{color:rgba(255,248,236,.66)}
+  .ocontrols .seg{grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:rgba(255,255,255,.1);border-radius:var(--r-sm)}
+  .ocontrols .seg button{border:0;background:none;color:#fff;padding:8px 12px;border-radius:9px;box-shadow:none}
+  .ocontrols .seg button span{color:rgba(255,248,236,.6)}
+  .ocontrols .seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+  .ocontrols .seg button[aria-pressed="true"] span{color:var(--muted)}
+  .ocontrols select{height:58px;border:0}
+  .osec h2{font-size:24px;font-weight:400;margin-bottom:14px}
+  .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+  .ogrid .row{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;transition:border-color .15s}
+  .ogrid .row:hover{border-color:var(--line-2)}
+  .ogrid .row .ph{order:-1}
+  .ogrid .row img{width:100%;height:auto;aspect-ratio:4/3;border-radius:0}
+  .ogrid .row .txt{display:flex;flex-direction:column;flex:1;padding:12px 14px 14px}
+  .ogrid .row .p{margin-top:auto;padding-top:8px}
+  .ogrid .row .add{right:10px;bottom:10px}
+  .ogrid .row .qtyb{left:10px;top:10px}
+}
+@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 340px;gap:32px;padding-top:8px}}
+@media (min-width:1200px){
+  .opage .chips{display:none}
+  .olayout{grid-template-columns:170px minmax(0,1fr) 340px}
+  .oside{display:flex;flex-direction:column;position:sticky;top:calc(var(--hh) + 24px);align-self:start;padding-top:24px}
+  .oside a{padding:9px 0 9px 14px;border-left:2px solid var(--line);color:var(--muted);font-weight:500}
+  .oside a[aria-current]{color:var(--ink);border-color:var(--ink)}
+}
 
 /* cart: sidebar on desktop, bottom sheet on phones */
-.cart{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
-.cart header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 12px}
-.cart header h2{font-size:1.4rem;font-weight:400}
-.cart .x{border:0;background:var(--soft);border-radius:var(--r);min-width:40px;height:40px;cursor:pointer;font-size:1.1rem}
-.cart .body{padding:0 20px;overflow:auto;flex:1}
-.cart .foot{padding:14px 20px 20px;border-top:1px solid var(--line)}
-.cline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cart{background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
+.cart header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.cart header h2{font-size:20px;font-weight:500}
+.x{width:36px;height:36px;border:0;border-radius:50%;background:var(--soft);font-size:15px;cursor:pointer}
+.cart .body{flex:1;overflow:auto;padding:0 20px}
+.cart .foot{padding:16px 20px 20px;border-top:1px solid var(--line)}
+.cart .foot:empty{display:none}
+.cline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .cline b{font-weight:500}
-.cline small{color:var(--muted);font-size:.82rem;grid-column:1}
-.step{display:inline-flex;align-items:center;gap:2px;background:var(--soft);border-radius:var(--r);margin-top:6px;width:max-content}
-.step button{border:0;background:none;width:36px;height:34px;cursor:pointer;font-size:1.1rem}
-.step span{min-width:18px;text-align:center;font-size:.92rem}
-.sum{display:grid;grid-template-columns:1fr auto;gap:4px;font-size:.92rem;color:var(--muted);margin-bottom:14px}
-.sum b{color:var(--ink);font-weight:600;font-size:1.05rem}
-.empty{color:var(--muted);text-align:center;padding:28px 0}
-.form{display:grid;gap:12px;padding-bottom:6px}
-.paybox{border:1.5px dashed var(--line);border-radius:var(--r);padding:14px;font-size:.85rem;color:var(--muted)}
-.paybox .row{display:grid;grid-template-columns:1fr 90px;gap:8px;margin-top:8px}
-.done{text-align:center;padding:12px 0 6px}
-.done .tick{width:64px;height:64px;border-radius:var(--r);background:var(--olive);color:#fff;display:grid;place-items:center;margin:4px auto 14px;font-size:1.8rem}
-.done h3{font-size:1.5rem;margin-bottom:6px}
-.back{border:0;background:none;color:var(--olive);font-weight:500;cursor:pointer;padding:8px 0}
-@media (min-width:1000px){.cart{position:sticky;top:calc(var(--hh) + 80px);max-height:calc(100vh - var(--hh) - 100px)}.cart .x{display:none}.cartbar{display:none!important}}
+.cline small{grid-column:1;font-size:13px;color:var(--muted)}
+.step{display:inline-flex;align-items:center;width:max-content;margin-top:8px;background:var(--soft);border-radius:999px}
+.step button{width:36px;height:34px;border:0;background:none;font-size:17px;cursor:pointer}
+.step span{min-width:18px;text-align:center;font-size:15px}
+.sum{display:grid;grid-template-columns:1fr auto;gap:4px;margin-bottom:16px;font-size:15px;color:var(--muted)}
+.sum b{color:var(--ink);font-weight:500;font-size:17px;margin-top:4px}
+.empty{padding:32px 0;text-align:center;color:var(--muted)}
+.form{display:grid;gap:14px;padding-bottom:8px}
+.paybox{display:grid;gap:8px;padding:14px;border:1px dashed var(--line-2);border-radius:var(--r-sm);font-size:14px;color:var(--muted)}
+.paybox .rowx{display:grid;grid-template-columns:1fr 96px;gap:8px}
+.done{text-align:center;padding:20px 0 8px}
+.done .tick{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:24px}
+.done h3{font-size:22px;font-weight:400;margin-bottom:6px}
+.back{padding:12px 0;border:0;background:none;color:var(--accent);font-weight:500;cursor:pointer}
+@media (min-width:1000px){
+  .cart{position:sticky;top:calc(var(--hh) + 24px);margin-top:24px;max-height:calc(100vh - var(--hh) - 48px);border:1px solid var(--line);border-radius:var(--r)}
+  .cart .x{display:none}
+  .cartbar{display:none!important}
+}
 @media (max-width:999px){
-  .cart{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:var(--r);max-height:min(88vh,calc(100% - 40px));transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding-bottom:var(--safe-b);visibility:hidden}
+  .cart{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:88vh;border-radius:20px 20px 0 0;padding-bottom:var(--safe-b);
+    transform:translateY(105%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s}
   .cart.open{transform:none;visibility:visible}
 }
-.cartbar{position:fixed;left:12px;right:12px;bottom:calc(var(--tab) + var(--safe-b) + 10px);z-index:35;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:var(--ink);color:#fff;border:0;border-radius:var(--r);min-height:56px;padding:0 18px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:500}
-.cartbar .ct{background:rgba(255,255,255,.16);border-radius:var(--r);padding:3px 10px;font-size:.85rem}
+.cartbar{position:fixed;left:var(--gut);right:var(--gut);bottom:calc(var(--tab) + var(--safe-b) + 10px);z-index:35;height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0 18px;border:0;border-radius:14px;background:var(--ink);color:#fff;font-weight:500;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.cartbar .ct{padding:2px 10px;border-radius:999px;background:rgba(255,255,255,.16);font-size:14px}
 .has-cartbar{padding-bottom:calc(var(--tab) + var(--safe-b) + 80px)}
-.toast{position:fixed;left:50%;bottom:calc(var(--tab) + var(--safe-b) + 78px);transform:translateX(-50%);z-index:80;white-space:nowrap;}
+.scrim{position:fixed;inset:0;z-index:55;background:rgba(20,14,8,.42)}
+.toast{position:fixed;left:50%;bottom:calc(var(--tab) + var(--safe-b) + 78px);transform:translateX(-50%);z-index:80;white-space:nowrap;
+  padding:10px 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 @media (min-width:1000px){.toast{bottom:28px}}
-.scrim{position:fixed;inset:0;z-index:55;background:rgba(20,18,14,.45)}
 
-/* item sheet (order) and quick view (menu) */
-.sheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,18,14,.5)}
-.sheet .box{background:var(--surface);width:100%;max-width:520px;max-height:92vh;border-radius:var(--r);overflow:auto;padding-bottom:var(--safe-b);animation:up .25s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
-.sheet .box>img{width:100%;aspect-ratio:16/11;object-fit:cover;flex:none}
-.sheet .in{padding:18px 20px 8px}
-.sheet h3{font-size:1.6rem}
-.sheet .price{font-weight:500;font-size:1.1rem;margin-top:4px}
-.sheet .desc{color:var(--muted);margin-top:8px}
-.sheet fieldset{border:0;padding:0;margin:18px 0 0}
-.sheet legend{font-weight:600;font-size:.9rem;margin-bottom:8px}
+/* bottom sheets: item details and menu quick view */
+.sheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgba(20,14,8,.45)}
+.sheet .box{position:relative;display:flex;flex-direction:column;width:100%;max-width:520px;max-height:90vh;overflow:auto;background:var(--surface);
+  border-radius:20px 20px 0 0;padding-bottom:var(--safe-b);animation:up .22s ease-out}
+.sheet .box>img{flex:none;width:100%;aspect-ratio:16/10;object-fit:cover}
+.sheet .in{padding:20px var(--gut) 8px}
+.sheet h3{font-size:24px;font-weight:400}
+.sheet .price{margin-top:4px;font-size:17px;font-weight:500}
+.sheet .desc{margin-top:8px;color:var(--muted)}
+.sheet fieldset{margin:20px 0 0;padding:0;border:0}
+.sheet legend{margin-bottom:10px;font-size:15px;font-weight:500}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
 .opts label{position:relative}
 .opts input{position:absolute;opacity:0;width:1px;height:1px;min-height:0}
-.opts span{display:block;padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--line);font-size:.92rem;cursor:pointer}
-.opts input:checked+span{border-color:var(--ink);background:var(--ink);color:#fff}
-.opts input:focus-visible+span{outline:2.5px solid var(--olive);outline-offset:2px}
-.sheet .bar{position:sticky;bottom:0;background:var(--surface);display:flex;gap:10px;align-items:center;padding:14px 20px 16px;border-top:1px solid var(--line);margin-top:auto}
+.opts span{display:block;padding:9px 16px;border:1px solid var(--line-2);border-radius:999px;font-size:15px;cursor:pointer}
+.opts input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.opts input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.sheet .bar{position:sticky;bottom:0;display:flex;align-items:center;gap:10px;margin-top:auto;padding:14px var(--gut) 16px;background:var(--surface);border-top:1px solid var(--line)}
 .sheet .bar .step{margin:0}
 .sheet .bar .btn{flex:1}
-.sheet .close{position:absolute;margin:12px;width:40px;height:40px;border-radius:var(--r);border:0;background:rgba(255,255,255,.92);cursor:pointer;font-size:1.1rem;box-shadow:var(--shadow);z-index:1}
-@media (min-width:600px){.sheet{align-items:center;padding:24px}.sheet .box{border-radius:var(--r);max-height:88vh}}
-@keyframes up{from{transform:translateY(40px);opacity:.5}}
+.sheet .close{position:absolute;top:12px;right:12px;z-index:1;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.94);font-size:15px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.15)}
+@media (min-width:600px){.sheet{align-items:center;padding:24px}.sheet .box{border-radius:20px;max-height:88vh}}
+@keyframes up{from{transform:translateY(32px);opacity:.6}}
 
-/* visit */
-.loc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--soft);padding:5px;border-radius:var(--r);margin:18px 0 14px}
-.loc-tab{border:0;background:none;border-radius:var(--r);padding:10px 12px;text-align:left;cursor:pointer;min-height:56px}
-.loc-tab b{display:block;font-weight:500}
-.loc-tab span{font-size:.78rem;color:var(--muted)}
-.loc-tab[aria-selected="true"]{background:var(--surface);box-shadow:var(--shadow)}
-.bigmap{position:relative;height:min(62vh,560px);min-height:320px;border-radius:var(--r);overflow:hidden;background:var(--soft)}
+/* visit page */
+.ltabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:12px;background:var(--soft);border-radius:var(--r-sm)}
+.loc-tab{height:44px;border:0;border-radius:9px;background:none;font-weight:500;color:var(--muted);cursor:pointer}
+.loc-tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bigmap{position:relative;height:320px;overflow:hidden;border-radius:var(--r);background:var(--soft)}
 .bigmap iframe,.bigmap .map-fallback{position:absolute;inset:0;width:100%;height:100%;border:0}
 .bigmap .map-fallback img{width:100%;height:100%;object-fit:cover;opacity:.35}
-.bigmap .map-fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--surface);padding:10px 16px;border-radius:var(--r);font-size:.88rem;text-align:center;max-width:80%;box-shadow:var(--shadow)}
-.mapbar{display:grid;gap:14px;background:var(--surface);padding:20px;border-radius:var(--r);box-shadow:var(--shadow)}
-.mapbar h3{font-size:1.35rem}
-.mapbar .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media (min-width:760px){.mapbar{grid-template-columns:1fr auto;align-items:center;padding:24px 28px}.mapbar .acts{display:flex}}
-.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none}
-.strip img{flex:0 0 auto;width:min(260px,64vw);aspect-ratio:4/5;object-fit:cover;border-radius:var(--r);scroll-snap-align:start}
-/* closest cafe badge (order page) */
-.seg button.is-near b::after{content:"Closest";display:inline-block;margin-left:6px;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--rose);border-radius:var(--r);padding:2px 7px;vertical-align:middle}
-/* ornaments */
-.band{height:30px;background:var(--night) url(assets/img/border.svg) repeat-x center/auto 30px}
-.head h2::before,.ptitle h1::before,.mgroup h2::before,.osec h2::before{content:"";display:block;width:96px;height:18px;background:url(assets/img/orn.svg) no-repeat left center/contain;margin-bottom:10px}
-.mgroup h2::before{margin-inline:0}
-.ptitle h1::before{width:120px;height:22px}
-.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:8px 18px 18px}
-/* full-screen landing photo */
-.fhero{position:relative;height:calc(100svh - var(--tab) - var(--safe-b));min-height:540px;max-height:1100px;color:#fff;display:flex;align-items:flex-end;overflow:hidden;background:var(--night);isolation:isolate}
-.fhero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:36% center;z-index:-2}
-.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(24,14,6,.6) 0%,rgba(24,14,6,.08) 28%,rgba(24,14,6,.3) 52%,rgba(24,14,6,.9) 100%)}
-.fhero .frame{position:absolute;inset:calc(var(--hh) + env(safe-area-inset-top,0px) + 8px) 12px 12px;border:1.5px solid rgba(225,195,125,.75);border-radius:var(--r);pointer-events:none}
-.fhero .frame::before{content:"";position:absolute;inset:6px;border:1px solid rgba(225,195,125,.4);border-radius:var(--r)}
-.fh-in{position:relative;text-align:center;padding-bottom:44px;width:100%}
-.fh-in .orn-l{display:block;width:150px;height:26px;margin:0 auto 14px;background:url(assets/img/orn-light.svg) no-repeat center/contain}
-.fh-in .eyebrow{color:#e9cf8f}
-.fh-in h1{font-size:clamp(3.6rem,17vw,8.5rem);font-weight:300;letter-spacing:-.01em;line-height:.95}
-.fh-in .lede{font-size:1.08rem;max-width:34ch;margin:14px auto 24px;opacity:.92}
-.fh-in .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.fh-in .btn{background:#fff7e8;color:var(--ink);min-width:150px}
-.fh-in .btn.line{background:rgba(255,255,255,.08);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75);backdrop-filter:blur(4px)}
-@media (min-width:900px){.fhero .frame{inset:calc(var(--hh) + 16px) 24px 24px;border-radius:var(--r)}.fh-in{padding-bottom:80px}}
-.top.over{position:fixed;left:0;right:0;transition:background .3s,border-color .3s}
-.top.over:not(.solid){background:transparent;border-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff}
-.top.over:not(.solid) .brand small,.top.over:not(.solid) .nav a{color:rgba(255,255,255,.85)}
-.top.over:not(.solid) .nav a[aria-current]{background:rgba(255,255,255,.14);color:#fff}
-.top.over:not(.solid) .btn{background:#fff7e8;color:var(--ink)}
+.bigmap .map-fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:80%;padding:10px 14px;border-radius:var(--r-sm);background:var(--surface);font-size:14px;text-align:center}
+.mapinfo{margin-top:12px;padding:20px}
+.mapinfo p{font-size:15px;color:var(--muted);margin-top:2px}
+@media (min-width:900px){
+  .ltabs{max-width:420px}
+  .bigmap{height:520px}
+  .mapinfo{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 28px}
+  .mapinfo .acts{margin-top:0;display:flex}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-/* order page: app-style layout on a plain background */
-.opage{background:var(--bg)}
-.opage .wrap{max-width:1320px}
-.obar{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;padding:22px 0 20px}
-.obar .wrap{display:grid;gap:16px}
-.obar .eyebrow{color:#e9cf8f;margin-bottom:4px}
-.obar h1{font-size:clamp(1.9rem,6vw,2.6rem)}
-.demo-note{font-size:.8rem;color:rgba(255,245,230,.66);margin-top:6px}
-.ocontrols{display:grid;gap:12px}
-.lbl{display:block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,245,230,.7);margin-bottom:6px}
-.obar .seg{background:rgba(255,255,255,.08);padding:4px;gap:4px}
-.obar .seg button{color:#fff;min-height:52px;padding:8px 12px}
-.obar .seg button span{color:rgba(255,245,230,.6)}
-.obar .seg button[aria-pressed="true"]{background:#fff7e8;color:var(--ink);box-shadow:none}
-.obar .seg button[aria-pressed="true"] span{color:var(--muted)}
-.obar select{background:#fff7e8;border-color:transparent;min-height:60px}
-@media (max-width:899px){.obar .eyebrow{display:none}.obar{padding:16px 0 14px}.obar .wrap{gap:12px}.obar h1{font-size:1.7rem}.demo-note{font-size:.74rem;margin-top:4px}
-  .ocontrols{grid-template-columns:minmax(0,1fr) 112px;gap:8px}.lbl{display:none}.obar .seg button{min-height:44px;padding:6px 8px;text-align:center}.obar .seg button b{font-size:.86rem}.obar .seg button span{display:none}.obar select{min-height:52px;padding:8px 10px;font-size:15px}
-  .opage .chips .wrap{padding-block:8px}.opage .chips a{padding:7px 13px;font-size:.86rem}}
-@media (min-width:900px){.obar{padding:30px 0}.obar .wrap{grid-template-columns:1fr auto;align-items:end;gap:32px}.ocontrols{grid-template-columns:400px 220px}}
-.opage .chips{background:var(--bg)}
-.oside{display:none}
-.olayout{padding-top:4px}
-.osec{padding-top:22px}
-.osec h2{font-size:1.45rem;padding-bottom:8px;border-bottom:1.5px solid var(--ink);margin-bottom:14px}
-.osec h2::before{display:none!important}
-.oitem{box-shadow:none;border:1px solid var(--line);transition:border-color .15s}
-.oitem:hover{border-color:var(--gold)}
-.oitem>span:first-child{display:flex;flex-direction:column;min-width:0}
-@media (min-width:0px){
-  .ogrid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-  .oitem{display:flex;flex-direction:column;align-items:stretch;padding:0}
-  .oitem .ph{order:-1}
-  .oitem img{width:100%;height:auto;aspect-ratio:4/3}
-  .oitem>span:first-child{flex:1;padding:12px 14px 14px}
-  .oitem .p{margin-top:auto;padding-top:8px}
-  .oitem .plus{right:10px;bottom:10px}
-  .oitem .qtyb{left:10px;top:10px}
-}
-@media (min-width:1000px){.olayout{grid-template-columns:minmax(0,1fr) 330px;gap:32px;padding-top:12px}.cart{top:calc(var(--hh) + 74px);border:1px solid var(--line);box-shadow:none}}
-@media (min-width:1200px){
-  .opage .chips{display:none}
-  .olayout{grid-template-columns:170px minmax(0,1fr) 330px}
-  .oside{display:flex;flex-direction:column;position:sticky;top:calc(var(--hh) + 34px);align-self:start;padding-top:22px}
-  .oside a{text-decoration:none;color:var(--muted);padding:9px 0 9px 14px;border-left:2px solid var(--line);font-weight:500}
-  .oside a:hover{color:var(--ink)}
-  .oside a[aria-current]{color:var(--ink);border-color:var(--rose)}
-  .cart{top:calc(var(--hh) + 34px);margin-top:22px}
-}
-.cart header{border-bottom:1px solid var(--line)}
-.cart .foot:empty{display:none}
-@media (max-width:639px){.ogrid{grid-template-columns:1fr 1fr;gap:10px}.osec{padding-top:18px}.osec h2{font-size:1.25rem;margin-bottom:10px}
-  .oitem>span:first-child{padding:10px 11px 12px}.oitem .n{font-size:.95rem}.oitem small{font-size:.76rem}.oitem .p{font-size:.95rem}.oitem .plus{width:32px;height:32px;right:8px;bottom:8px}}
-/* rounded corners: photos clip to their cards */
-.btn,.chips a,.seg,.seg button,.loc-tab,.loc-tabs,select,input,textarea,.step,.oside a,.store,.cart .x,.toast,.cartbar,.oitem .plus,.oitem .qtyb,.tabbar a.order span{border-radius:var(--r-sm)}
-.mgroup,.oitem,.cat,.pick,.loc,.app,.promo,.cart,.mlist li img,.oitem img{overflow:hidden}
-.mgroup,.cat,.pick,.oitem,.loc,.app,.promo{border-radius:var(--r)}
-.mlist li img,.story img,.promo img{border-radius:var(--r-sm)}
-.oitem .ph img{border-radius:0}
-.oside a{border-radius:0}
-.cart{border-radius:var(--r)}
-@media (max-width:999px){.cart{border-radius:20px 20px 0 0}}
-.sheet .box{border-radius:20px 20px 0 0}
-@media (min-width:600px){.sheet .box{border-radius:20px}}
-.band{border-radius:0}
-/* sharp, editorial buttons */
-.btn{text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:600}
-.cartbar,.cartbar *{letter-spacing:normal}
-</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img src="assets/img/logo.png" alt="" width="36" height="36">misree <small>chai</small></a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html" aria-current="page">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>Menu</a><a href="order.html" class=order><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
-<div class="wrap ptitle"><p class="eyebrow">Served at both cafes</p><h1>Menu</h1></div>
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32">Misree Chai</a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html" aria-current="page">Menu</a><a href="index.html#rewards">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="index.html#rewards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
+<div class="wrap phead"><h1>Menu</h1><p>Served at both cafes. Tap an item for a photo.</p></div>
 <nav class="chips" aria-label="Menu sections"><div class="wrap"><a href="#drinks">Drinks</a><a href="#crepes">Crepes</a><a href="#bowls">Bowls</a><a href="#bakery">Bakery</a></div></nav>
-<div class="wrap"><div class="mlist"><section class="mgroup" id="drinks" data-sec><div class="mbanner"><img src="assets/img/milk-tea-pour.jpg" alt="" loading="lazy" width="1400" height="1054"><div><h2>Drinks</h2><span>13 items</span></div></div><div class="mbody"><h3 id="chai">Chai & Coffee</h3><ul><li data-qv data-title="Masala Chai" data-price="$4.00" data-img="assets/img/masala-chai.jpg" data-desc="Slow-brewed with whole spices." role="button" tabindex="0"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Masala Chai</span><span class="dots"></span><span class="p">$4.00</span></span><small>Slow-brewed with whole spices.</small></span></li><li data-qv data-title="Zafrani Chai" data-price="$3.49" data-img="assets/img/zafrani-chai.jpg" data-desc="Saffron chai, sweetened the old way." role="button" tabindex="0"><img src="assets/img/sm/zafrani-chai.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Zafrani Chai</span><span class="dots"></span><span class="p">$3.49</span></span><small>Saffron chai, sweetened the old way.</small></span></li><li data-qv data-title="South Indian Coffee" data-price="$4.00" data-img="assets/img/south-indian-coffee.jpg" data-desc="Strong filter coffee with frothed milk." role="button" tabindex="0"><img src="assets/img/sm/south-indian-coffee.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">South Indian Coffee</span><span class="dots"></span><span class="p">$4.00</span></span><small>Strong filter coffee with frothed milk.</small></span></li></ul><h3 id="kulfi">Kulfi Milk Tea</h3><ul><li data-qv data-title="Falooda Kulfi" data-price="$7.49" data-img="assets/img/falooda-kulfi.jpg" data-desc="Falooda-inspired creamy milk tea." role="button" tabindex="0"><img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Falooda Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span><small>Falooda-inspired creamy milk tea.</small></span></li><li data-qv data-title="Mango Kulfi" data-price="$7.49" data-img="assets/img/mango-kulfi.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/mango-kulfi.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Mango Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span></span></li><li data-qv data-title="Pista Kulfi" data-price="$7.49" data-img="assets/img/pista-kulfi.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/pista-kulfi.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Pista Kulfi</span><span class="dots"></span><span class="p">$7.49</span></span></span></li></ul><h3 id="teas">Milk & Fruit Teas</h3><ul><li data-qv data-title="Classic Milk Tea" data-price="$6.49" data-img="assets/img/classic-milk-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/classic-milk-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Classic Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></span></li><li data-qv data-title="Taro Milk Tea" data-price="$6.49" data-img="assets/img/taro-milk-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/taro-milk-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Taro Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></span></li><li data-qv data-title="Strawberry Milk Tea" data-price="$6.49" data-img="assets/img/strawberry-milk-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/strawberry-milk-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Strawberry Milk Tea</span><span class="dots"></span><span class="p">$6.49</span></span></span></li><li data-qv data-title="Mango Fruit Tea" data-price="$5.49" data-img="assets/img/mango-fruit-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/mango-fruit-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Mango Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></span></li><li data-qv data-title="Strawberry Fruit Tea" data-price="$5.49" data-img="assets/img/strawberry-fruit-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/strawberry-fruit-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Strawberry Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></span></li><li data-qv data-title="Peach Fruit Tea" data-price="$5.49" data-img="assets/img/peach-fruit-tea.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/peach-fruit-tea.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Peach Fruit Tea</span><span class="dots"></span><span class="p">$5.49</span></span></span></li><li data-qv data-title="Lychee Refresher" data-price="$5.99" data-img="assets/img/lychee-refresher.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/lychee-refresher.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Lychee Refresher</span><span class="dots"></span><span class="p">$5.99</span></span></span></li></ul></div></section><section class="mgroup" id="crepes" data-sec><div class="mbanner"><img src="assets/img/crepe-griddle.jpg" alt="" loading="lazy" width="1400" height="1054"><div><h2>Crepes</h2><span>6 items</span></div></div><div class="mbody"><ul><li data-qv data-title="Triple Chocolate Crepe" data-price="$14.00" data-img="assets/img/triple-chocolate-crepe.jpg" data-desc="Kinder Bueno, Ferrero, Nutella and chocolate chips." role="button" tabindex="0"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Triple Chocolate Crepe</span><span class="dots"></span><span class="p">$14.00</span></span><small>Kinder Bueno, Ferrero, Nutella and chocolate chips.</small></span></li><li data-qv data-title="Nutella Crepe" data-price="$13.99" data-img="assets/img/nutella-crepe.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/nutella-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Nutella Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></span></li><li data-qv data-title="Royal Pistachio Crepe" data-price="$13.99" data-img="assets/img/royal-pistachio-crepe.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/royal-pistachio-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Royal Pistachio Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></span></li><li data-qv data-title="Fudge Brownie Crepe" data-price="$12.99" data-img="assets/img/fudge-brownie-crepe.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/fudge-brownie-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Fudge Brownie Crepe</span><span class="dots"></span><span class="p">$12.99</span></span></span></li><li data-qv data-title="Oreo Crepe" data-price="$13.99" data-img="assets/img/oreo-crepe.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/oreo-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Oreo Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></span></li><li data-qv data-title="Mix Berries Crepe" data-price="$13.99" data-img="assets/img/mix-berries-crepe.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/mix-berries-crepe.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Mix Berries Crepe</span><span class="dots"></span><span class="p">$13.99</span></span></span></li></ul></div></section><section class="mgroup" id="bowls" data-sec><div class="mbanner"><img src="assets/img/nutella-acai-bowl.jpg" alt="" loading="lazy" width="1400" height="1054"><div><h2>Bowls</h2><span>4 items</span></div></div><div class="mbody"><ul><li data-qv data-title="Nutella Acai Bowl" data-price="$12.99" data-img="assets/img/nutella-acai-bowl.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/nutella-acai-bowl.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Nutella Acai Bowl</span><span class="dots"></span><span class="p">$12.99</span></span></span></li><li data-qv data-title="Almond Lover Bowl" data-price="$13.99" data-img="assets/img/almond-lover-bowl.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/almond-lover-bowl.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Almond Lover Bowl</span><span class="dots"></span><span class="p">$13.99</span></span></span></li><li data-qv data-title="Coconut Honey Bowl" data-price="$13.99" data-img="assets/img/coconut-honey-bowl.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/coconut-honey-bowl.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Coconut Honey Bowl</span><span class="dots"></span><span class="p">$13.99</span></span></span></li><li data-qv data-title="Protein Bowl" data-price="$12.99" data-img="assets/img/protein-bowl.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/protein-bowl.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Protein Bowl</span><span class="dots"></span><span class="p">$12.99</span></span></span></li></ul></div></section><section class="mgroup" id="bakery" data-sec><div class="mbanner"><img src="assets/img/bun-maska.jpg" alt="" loading="lazy" width="1400" height="1054"><div><h2>Bakery</h2><span>3 items</span></div></div><div class="mbody"><ul><li data-qv data-title="Bun Maska" data-price="$4.49" data-img="assets/img/bun-maska.jpg" data-desc="Soft bun with a thick layer of butter." role="button" tabindex="0"><img src="assets/img/sm/bun-maska.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Bun Maska</span><span class="dots"></span><span class="p">$4.49</span></span><small>Soft bun with a thick layer of butter.</small></span></li><li data-qv data-title="Butter Croissant" data-price="$4.00" data-img="assets/img/butter-croissant.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/butter-croissant.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Butter Croissant</span><span class="dots"></span><span class="p">$4.00</span></span></span></li><li data-qv data-title="Nutella Croissant" data-price="$5.00" data-img="assets/img/nutella-croissant.jpg" data-desc="" role="button" tabindex="0"><img src="assets/img/sm/nutella-croissant.jpg" alt="" loading="lazy" width="64" height="64"><span><span class="l"><span class="n">Nutella Croissant</span><span class="dots"></span><span class="p">$5.00</span></span></span></li></ul></div></section>
-<p class="note">Tap an item to see a photo. Prices are from the cafe's online ordering menu and may differ in store.</p>
-<div style="display:flex;justify-content:center;margin:24px 0 48px"><a class="btn" href="order.html">Order for pickup</a></div></div></div></main>
-<div class="band" aria-hidden="true"></div><footer><div class="wrap"><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order for pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Misree Chai · Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><div class="sheet" id="qv" hidden role="dialog" aria-modal="true" aria-labelledby="qv-t"><div class="box" style="position:relative"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
+<div class="wrap"><section class="mgroup" id="drinks" data-sec><div class="mbanner"><img src="assets/img/milk-tea-pour.jpg" alt="" loading="lazy" width="1400" height="1054"></div><header><h2>Drinks</h2><span>13 items</span></header><h3 id="chai">Chai & Coffee</h3><ul class="rows"><li><button class="row" type="button" data-qv data-title="Masala Chai" data-price="$4.00" data-img="assets/img/masala-chai.jpg" data-desc="Slow-brewed with whole spices."><span class="txt"><span class="n">Masala Chai</span><small>Slow-brewed with whole spices.</small><span class="p">$4.00</span></span><span class="ph"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Zafrani Chai" data-price="$3.49" data-img="assets/img/zafrani-chai.jpg" data-desc="Saffron chai, sweetened the old way."><span class="txt"><span class="n">Zafrani Chai</span><small>Saffron chai, sweetened the old way.</small><span class="p">$3.49</span></span><span class="ph"><img src="assets/img/sm/zafrani-chai.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="South Indian Coffee" data-price="$4.00" data-img="assets/img/south-indian-coffee.jpg" data-desc="Strong filter coffee with frothed milk."><span class="txt"><span class="n">South Indian Coffee</span><small>Strong filter coffee with frothed milk.</small><span class="p">$4.00</span></span><span class="ph"><img src="assets/img/sm/south-indian-coffee.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul><h3 id="kulfi">Kulfi Milk Tea</h3><ul class="rows"><li><button class="row" type="button" data-qv data-title="Falooda Kulfi" data-price="$7.49" data-img="assets/img/falooda-kulfi.jpg" data-desc="Falooda-inspired creamy milk tea."><span class="txt"><span class="n">Falooda Kulfi</span><small>Falooda-inspired creamy milk tea.</small><span class="p">$7.49</span></span><span class="ph"><img src="assets/img/sm/falooda-kulfi.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Mango Kulfi" data-price="$7.49" data-img="assets/img/mango-kulfi.jpg" data-desc=""><span class="txt"><span class="n">Mango Kulfi</span><span class="p">$7.49</span></span><span class="ph"><img src="assets/img/sm/mango-kulfi.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Pista Kulfi" data-price="$7.49" data-img="assets/img/pista-kulfi.jpg" data-desc=""><span class="txt"><span class="n">Pista Kulfi</span><span class="p">$7.49</span></span><span class="ph"><img src="assets/img/sm/pista-kulfi.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul><h3 id="teas">Milk & Fruit Teas</h3><ul class="rows"><li><button class="row" type="button" data-qv data-title="Classic Milk Tea" data-price="$6.49" data-img="assets/img/classic-milk-tea.jpg" data-desc=""><span class="txt"><span class="n">Classic Milk Tea</span><span class="p">$6.49</span></span><span class="ph"><img src="assets/img/sm/classic-milk-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Taro Milk Tea" data-price="$6.49" data-img="assets/img/taro-milk-tea.jpg" data-desc=""><span class="txt"><span class="n">Taro Milk Tea</span><span class="p">$6.49</span></span><span class="ph"><img src="assets/img/sm/taro-milk-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Strawberry Milk Tea" data-price="$6.49" data-img="assets/img/strawberry-milk-tea.jpg" data-desc=""><span class="txt"><span class="n">Strawberry Milk Tea</span><span class="p">$6.49</span></span><span class="ph"><img src="assets/img/sm/strawberry-milk-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Mango Fruit Tea" data-price="$5.49" data-img="assets/img/mango-fruit-tea.jpg" data-desc=""><span class="txt"><span class="n">Mango Fruit Tea</span><span class="p">$5.49</span></span><span class="ph"><img src="assets/img/sm/mango-fruit-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Strawberry Fruit Tea" data-price="$5.49" data-img="assets/img/strawberry-fruit-tea.jpg" data-desc=""><span class="txt"><span class="n">Strawberry Fruit Tea</span><span class="p">$5.49</span></span><span class="ph"><img src="assets/img/sm/strawberry-fruit-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Peach Fruit Tea" data-price="$5.49" data-img="assets/img/peach-fruit-tea.jpg" data-desc=""><span class="txt"><span class="n">Peach Fruit Tea</span><span class="p">$5.49</span></span><span class="ph"><img src="assets/img/sm/peach-fruit-tea.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Lychee Refresher" data-price="$5.99" data-img="assets/img/lychee-refresher.jpg" data-desc=""><span class="txt"><span class="n">Lychee Refresher</span><span class="p">$5.99</span></span><span class="ph"><img src="assets/img/sm/lychee-refresher.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul></section><section class="mgroup" id="crepes" data-sec><div class="mbanner"><img src="assets/img/crepe-griddle.jpg" alt="" loading="lazy" width="1400" height="1054"></div><header><h2>Crepes</h2><span>6 items</span></header><ul class="rows"><li><button class="row" type="button" data-qv data-title="Triple Chocolate Crepe" data-price="$14.00" data-img="assets/img/triple-chocolate-crepe.jpg" data-desc="Kinder Bueno, Ferrero, Nutella and chocolate chips."><span class="txt"><span class="n">Triple Chocolate Crepe</span><small>Kinder Bueno, Ferrero, Nutella and chocolate chips.</small><span class="p">$14.00</span></span><span class="ph"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Nutella Crepe" data-price="$13.99" data-img="assets/img/nutella-crepe.jpg" data-desc=""><span class="txt"><span class="n">Nutella Crepe</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/nutella-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Royal Pistachio Crepe" data-price="$13.99" data-img="assets/img/royal-pistachio-crepe.jpg" data-desc=""><span class="txt"><span class="n">Royal Pistachio Crepe</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/royal-pistachio-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Fudge Brownie Crepe" data-price="$12.99" data-img="assets/img/fudge-brownie-crepe.jpg" data-desc=""><span class="txt"><span class="n">Fudge Brownie Crepe</span><span class="p">$12.99</span></span><span class="ph"><img src="assets/img/sm/fudge-brownie-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Oreo Crepe" data-price="$13.99" data-img="assets/img/oreo-crepe.jpg" data-desc=""><span class="txt"><span class="n">Oreo Crepe</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/oreo-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Mix Berries Crepe" data-price="$13.99" data-img="assets/img/mix-berries-crepe.jpg" data-desc=""><span class="txt"><span class="n">Mix Berries Crepe</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/mix-berries-crepe.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul></section><section class="mgroup" id="bowls" data-sec><div class="mbanner"><img src="assets/img/nutella-acai-bowl.jpg" alt="" loading="lazy" width="1400" height="1054"></div><header><h2>Bowls</h2><span>4 items</span></header><ul class="rows"><li><button class="row" type="button" data-qv data-title="Nutella Acai Bowl" data-price="$12.99" data-img="assets/img/nutella-acai-bowl.jpg" data-desc=""><span class="txt"><span class="n">Nutella Acai Bowl</span><span class="p">$12.99</span></span><span class="ph"><img src="assets/img/sm/nutella-acai-bowl.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Almond Lover Bowl" data-price="$13.99" data-img="assets/img/almond-lover-bowl.jpg" data-desc=""><span class="txt"><span class="n">Almond Lover Bowl</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/almond-lover-bowl.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Coconut Honey Bowl" data-price="$13.99" data-img="assets/img/coconut-honey-bowl.jpg" data-desc=""><span class="txt"><span class="n">Coconut Honey Bowl</span><span class="p">$13.99</span></span><span class="ph"><img src="assets/img/sm/coconut-honey-bowl.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Protein Bowl" data-price="$12.99" data-img="assets/img/protein-bowl.jpg" data-desc=""><span class="txt"><span class="n">Protein Bowl</span><span class="p">$12.99</span></span><span class="ph"><img src="assets/img/sm/protein-bowl.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul></section><section class="mgroup" id="bakery" data-sec><div class="mbanner"><img src="assets/img/bun-maska.jpg" alt="" loading="lazy" width="1400" height="1054"></div><header><h2>Bakery</h2><span>3 items</span></header><ul class="rows"><li><button class="row" type="button" data-qv data-title="Bun Maska" data-price="$4.49" data-img="assets/img/bun-maska.jpg" data-desc="Soft bun with a thick layer of butter."><span class="txt"><span class="n">Bun Maska</span><small>Soft bun with a thick layer of butter.</small><span class="p">$4.49</span></span><span class="ph"><img src="assets/img/sm/bun-maska.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Butter Croissant" data-price="$4.00" data-img="assets/img/butter-croissant.jpg" data-desc=""><span class="txt"><span class="n">Butter Croissant</span><span class="p">$4.00</span></span><span class="ph"><img src="assets/img/sm/butter-croissant.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li><li><button class="row" type="button" data-qv data-title="Nutella Croissant" data-price="$5.00" data-img="assets/img/nutella-croissant.jpg" data-desc=""><span class="txt"><span class="n">Nutella Croissant</span><span class="p">$5.00</span></span><span class="ph"><img src="assets/img/sm/nutella-croissant.jpg" alt="" loading="lazy" width="84" height="84"></span></button></li></ul></section>
+<p class="note">Prices are from the cafe's online ordering menu and may differ in store.</p>
+<div class="endcta"><a class="btn" href="order.html">Order for pickup</a></div></div></main>
+<footer><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32" loading="lazy">Misree Chai</a><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><div class="sheet" id="qv" hidden role="dialog" aria-modal="true" aria-labelledby="qv-t"><div class="box"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
 <div class="in"><h3 id="qv-t"></h3><p class="price"></p><p class="desc"></p></div><div class="bar"><a class="btn block" href="order.html">Order for pickup</a></div></div></div><script>
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
