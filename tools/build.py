@@ -392,6 +392,21 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .mapinfo .acts{margin-top:0;display:flex}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* white reading panels over the wallpaper */
+:root{--pp:16px}
+@media (min-width:900px){:root{--pp:28px}}
+.panel,.mgroup,.osec{background:#fff;border-radius:var(--r);padding:var(--pp);box-shadow:0 1px 3px rgba(34,26,20,.06)}
+.mgroup,.osec{margin-top:16px}
+.panel .rail{margin-inline:calc(var(--pp) * -1);padding-inline:var(--pp);scroll-padding-inline:var(--pp)}
+@media (min-width:900px){.panel .rail{margin-inline:0;padding-inline:0}}
+.panel .card,.mgroup .card{box-shadow:none}
+.story.panel{gap:16px}
+.app{background:#fff}
+.mapinfo{background:#fff}
+.ltabs{background:#fff}
+.ltabs .loc-tab[aria-selected="true"]{background:var(--ink);color:#fff}
+@media (min-width:900px){.oside{background:#fff;border-radius:var(--r);padding:16px;margin-top:16px}}
+
 """
 
 JS = r"""
@@ -569,17 +584,17 @@ def build_index():
 <div class="wrap"><p class="kicker">Jersey City · Jackson Heights</p><h1>Misree Chai</h1>
 <p class="lede">Masala chai, kulfi milk tea, crepes and acai bowls, made fresh every day.</p>
 <div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn ghost" href="menu.html">View menu</a></div></div></section>
-<section class="sec-pad"><div class="wrap"><div class="shead"><h2>Menu</h2><a href="menu.html">See all</a></div><div class="rail cats">{cats}</div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="shead"><h2>Start here</h2><a href="order.html">Order</a></div><div class="rail picks">{picks}</div></div></section>
+<section class="sec-pad"><div class="wrap"><div class="panel"><div class="shead"><h2>Menu</h2><a href="menu.html">See all</a></div><div class="rail cats">{cats}</div></div></div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Start here</h2><a href="order.html">Order</a></div><div class="rail picks">{picks}</div></div></div></section>
 <section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="promo"><div><h2>Skip the line</h2>
 <p>Order ahead and pick up at Jersey City or Jackson Heights.</p></div><a class="btn" href="order.html">Start an order</a></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap story"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="1400" height="1054">
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="story panel"><img src="{img("misri")}" alt="Misri rock sugar beside a glass of chai" loading="lazy" width="1400" height="1054">
 <div><h2>Named for the sugar that sweetens the cup</h2>
-<p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></section>
+<p>Misri is crystallized rock sugar, stirred into chai and passed around after meals across South Asia. Misree Chai brings that ritual to Jersey City and Jackson Heights, alongside the milk teas, crepes and bowls our neighbors keep coming back for.</p></div></div></div></section>
 <section class="sec-pad" id="rewards" style="padding-top:0;scroll-margin-top:var(--hh)"><div class="wrap"><div class="app"><div><h2>Join our Rewards Program</h2>
 <p>Download the Misree Chai app to order ahead, earn rewards on every visit, and hear about new drinks first.</p></div>
 <div class="stores">{store_btn(APP_STORE, "Download on the", "App Store")}{store_btn(PLAY_STORE, "Get it on", "Google Play")}</div></div></div></section>
-<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="shead"><h2>Visit</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></section>
+<section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit</h2><a href="visit.html">Map</a></div>{loc_cards()}</div></div></section>
 </main>{footer()}'''
     return page("Misree Chai", "Misree Chai: chai, kulfi milk tea, crepes and bowls in Jersey City and Jackson Heights. Order online for pickup.", body, True)
 
@@ -664,7 +679,7 @@ def build_visit():
 <iframe id="loc-map" src="{L0["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
 <div class="card mapinfo"><div><h3 id="loc-name">Misree Chai · {L0["name"]}</h3><p id="loc-l1">{L0["line1"]}, {L0["line2"]}</p><p id="loc-meta">Open daily · {L0["phone"]}</p></div>
 <div class="acts"><a class="btn sec" id="loc-dir" href="{L0["dir"]}" target="_blank" rel="noopener">Directions</a><a class="btn" id="loc-order" href="order.html?store={L0["id"]}">Order pickup</a></div></div></div>
-<section class="sec-pad"><div class="wrap"><div class="shead"><h2>Inside Misree</h2><a href="{INSTA}" target="_blank" rel="noopener">Instagram</a></div><div class="rail strip">{strip}</div></div></section>
+<section class="sec-pad"><div class="wrap"><div class="panel"><div class="shead"><h2>Inside Misree</h2><a href="{INSTA}" target="_blank" rel="noopener">Instagram</a></div><div class="rail strip">{strip}</div></div></div></section>
 </main>{footer()}'''
     return page("Visit · Misree Chai", "Find Misree Chai in Jersey City and Jackson Heights: maps and directions.", body)
 
