@@ -308,7 +308,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
   .ogrid .row{grid-template-columns:minmax(0,1fr) 104px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:border-color .15s,box-shadow .15s}
   .ogrid .row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(34,26,20,.08)}
-  .ogrid .row img{width:104px;height:104px}
+  .ogrid .row img,.ogrid .row .noimg{width:104px;height:104px}
   .ogrid .row .txt{align-self:stretch;display:flex;flex-direction:column}
   .ogrid .row .p{margin-top:auto;padding-top:6px}
 }
@@ -342,6 +342,10 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .form{display:grid;gap:14px;padding-bottom:8px}
 .paybox{display:grid;gap:8px;padding:14px;border:1px dashed var(--line-2);border-radius:var(--r-sm);font-size:14px;color:var(--muted)}
 .paybox .rowx{display:grid;grid-template-columns:1fr 96px;gap:8px}
+.ccf{min-height:48px;padding:0 12px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm)}
+.ccf iframe{width:100%!important;height:46px!important;border:0}
+.err{color:#b3261e;font-size:14px}
+.row .noimg{display:block;width:84px;height:84px;border-radius:var(--r-sm);background:var(--soft) url(assets/img/logo.png) center/36px no-repeat}
 .done{text-align:center;padding:20px 0 8px}
 .done .tick{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:24px}
 .done h3{font-size:22px;font-weight:400;margin-bottom:6px}
@@ -489,14 +493,13 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 JS = r"""
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
-// menu + order chips scrollspy
-const chips=document.querySelectorAll('.chips a, .oside a');
-if(chips.length){
-  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
+// menu + order chips scrollspy (armSpy runs again after the order page swaps in a live menu)
+let spy;function armSpy(){const chips=document.querySelectorAll('.chips a, .oside a');spy&&spy.disconnect();if(!chips.length)return;
+  spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
     chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===e.target.id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
       const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})}),{rootMargin:'-18% 0px -72% 0px'});
-  document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
-}
+  document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s))}
+armSpy();
 // visit page location switcher
 const ltabs=document.querySelectorAll('.loc-tab');
 ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach(x=>x.setAttribute('aria-selected',x===t));
@@ -518,38 +521,69 @@ if(qv){
 }
 """
 
-# Demo ordering: everything stays in the browser. Nothing is sent or charged.
+# Ordering: shows the built-in demo menu until /api/menu answers with a cafe's live Clover menu (see api/ and README).
 ORDER_JS = r"""
 const D=JSON.parse(document.getElementById('menu-data').textContent);
-const ITEMS=new Map(D.items.map(i=>[i.id,i]));
+let ITEMS=new Map(D.items.map(i=>[i.id,i]));
 const $=s=>document.querySelector(s);
 const money=n=>'$'+n.toFixed(2);
+const slug=s=>s.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const state={store:D.stores[0].id,cart:[],view:'cart'};
 const want=new URLSearchParams(location.search).get('store');if(D.stores.some(s=>s.id===want))state.store=want;
 const store=()=>D.stores.find(s=>s.id===state.store);
+// Live menus come from each cafe's Clover through /api/menu. Until a cafe's keys are set (or on a plain static host),
+// the request fails or answers live:false and the built-in demo menu stays.
+const LIVE={};let live=null;
+const DEMO={menu:$('.omenu').innerHTML,chips:$('.oside').innerHTML,items:ITEMS,note:$('.obar .demo').textContent};
 const segs=document.querySelectorAll('.seg button');
-const setStore=id=>{state.store=id;segs.forEach(b=>b.setAttribute('aria-pressed',b.dataset.store===id));render()};
+const setStore=id=>{state.store=id;segs.forEach(b=>b.setAttribute('aria-pressed',b.dataset.store===id));render();loadLive(id)};
 segs.forEach(b=>b.addEventListener('click',()=>setStore(b.dataset.store)));
+async function loadLive(id){
+  let m=LIVE[id];
+  if(m===undefined){try{const r=await fetch('/api/menu?store='+encodeURIComponent(id));m=r.ok?await r.json():null}catch{m=null}
+    LIVE[id]=m&&m.live?m:null;m=LIVE[id]}
+  if(id!==state.store||m===live)return;
+  if(state.cart.length&&(live||m)){state.cart=[];state.view='cart';toast('Your bag was cleared for this cafe’s menu')}
+  live=m;m?showMenu(m):showDemo();render()}
+const row=it=>`<button class="row" type="button" data-add="${it.id}" aria-label="${esc(it.name)}, ${money(it.price)}"><span class="txt"><span class="n">${esc(it.name)}</span>${it.desc?`<small>${esc(it.desc)}</small>`:''}<span class="p">${money(it.price)}</span></span>`+
+  `<span class="ph">${it.sm?`<img src="${it.sm}" alt="" loading="lazy" width="84" height="84">`:'<span class="noimg" aria-hidden="true"></span>'}<span class="add" aria-hidden="true">+</span><span class="qtyb" hidden></span></span></button>`;
+function showMenu(m){
+  ITEMS=new Map();let secs='',chips='';
+  m.categories.forEach(c=>{const sid='o-'+slug(c.name||c.id);chips+=`<a href="#${sid}">${esc(c.name)}</a>`;
+    secs+=`<section class="osec" id="${sid}" data-sec><h2>${esc(c.name)}</h2><div class="ogrid">${c.items.map(i=>{const ph=D.photos.includes(slug(i.name))?slug(i.name):null;
+      const it={id:i.id,name:i.name,price:i.price/100,desc:i.desc,img:ph&&'assets/img/'+ph+'.jpg',sm:ph&&'assets/img/sm/'+ph+'.jpg',
+        opts:i.opts.map(g=>({...g,mods:g.mods.map(x=>({...x,price:x.price/100}))}))};ITEMS.set(it.id,it);return row(it)}).join('')}</div></section>`});
+  $('.omenu').innerHTML=secs;document.querySelectorAll('.chips .wrap, .oside').forEach(n=>n.innerHTML=chips);
+  const note=$('.obar .demo');note.hidden=m.env==='production';note.textContent='Test mode. Orders go to a Clover test store and no real card is charged.';armSpy()}
+function showDemo(){ITEMS=DEMO.items;$('.omenu').innerHTML=DEMO.menu;document.querySelectorAll('.chips .wrap, .oside').forEach(n=>n.innerHTML=DEMO.chips);
+  const note=$('.obar .demo');note.hidden=false;note.textContent=DEMO.note;armSpy()}
 // pickup times: ASAP plus 15 minute slots for the next 3 hours
 const sel=$('#pickup');const now=new Date();now.setMinutes(Math.ceil((now.getMinutes()+20)/15)*15,0,0);
 for(let i=0;i<12;i++){const t=new Date(now.getTime()+i*9e5);const o=document.createElement('option');o.textContent=t.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});sel.append(o)}
-// item sheet
+// item sheet. Option groups: max 1 shows as one-choice buttons, otherwise as checkboxes; min is how many are required.
 const sheet=$('#sheet');let cur=null,qty=1,lastBtn=null;
-const lineTotal=()=>cur?cur.price*qty:0;
-const sync=()=>{$('#s-qty').textContent=qty;$('#s-add').textContent='Add '+qty+' to order · '+money(lineTotal())};
-function openItem(id,btn){cur=ITEMS.get(id);qty=1;lastBtn=btn;
-  sheet.querySelector('img').src=cur.img;sheet.querySelector('img').alt=cur.name;$('#s-name').textContent=cur.name;$('#s-price').textContent=money(cur.price);
+const chosen=()=>cur.opts.flatMap((g,gi)=>[...sheet.querySelectorAll(`[name=o${gi}]:checked`)].map(i=>g.mods[i.value]));
+const unit=()=>cur.price+chosen().reduce((a,m)=>a+m.price,0);
+const sync=()=>{$('#s-qty').textContent=qty;$('#s-add').textContent='Add '+qty+' to order · '+money(unit()*qty)};
+function openItem(id,btn){cur=ITEMS.get(id);qty=1;lastBtn=btn;const im=sheet.querySelector('img');
+  im.hidden=!cur.img;if(cur.img){im.src=cur.img;im.alt=cur.name}$('#s-name').textContent=cur.name;$('#s-price').textContent=money(cur.price);
   $('#s-desc').textContent=cur.desc;$('#s-desc').hidden=!cur.desc;
-  $('#s-opts').innerHTML=cur.opts.map((g,gi)=>`<fieldset><legend>${g[0]}</legend><div class="opts">${g[1].map((o,oi)=>`<label><input type="radio" name="o${gi}" value="${o}"${oi?'':' checked'}><span>${o}</span></label>`).join('')}</div></fieldset>`).join('');
+  $('#s-opts').innerHTML=cur.opts.map((g,gi)=>{const one=g.max===1,hint=one?'':g.min?`Choose at least ${g.min}`:g.max?`Up to ${g.max}`:'';
+    return `<fieldset><legend>${esc(g.name)}${hint?` <small class="muted">${hint}</small>`:''}</legend><div class="opts">${g.mods.map((o,oi)=>
+      `<label><input type="${one?'radio':'checkbox'}" name="o${gi}" value="${oi}"${one&&g.min&&!oi?' checked':''}><span>${esc(o.name)}${o.price?' +'+money(o.price):''}</span></label>`).join('')}</div></fieldset>`}).join('');
   $('#s-note').value='';sync();sheet.hidden=false;document.body.style.overflow='hidden';sheet.querySelector('.close').focus()}
 function closeItem(){sheet.hidden=true;if(!cartOpen())document.body.style.overflow='';lastBtn&&lastBtn.focus()}
-document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>openItem(b.dataset.add,b)));
+$('.omenu').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b)openItem(b.dataset.add,b)});
 sheet.addEventListener('click',e=>{if(e.target===sheet)closeItem()});sheet.querySelector('.close').addEventListener('click',closeItem);
+sheet.addEventListener('change',sync);
 $('#s-minus').addEventListener('click',()=>{qty=Math.max(1,qty-1);sync()});$('#s-plus').addEventListener('click',()=>{qty=Math.min(20,qty+1);sync()});
 $('#s-add').addEventListener('click',()=>{
-  const opts=[...sheet.querySelectorAll('input[type=radio]:checked')].map(i=>i.value).filter(v=>!/^Regular/.test(v));
-  const note=$('#s-note').value.trim();const key=cur.id+'|'+opts.join(',')+'|'+note;
-  const hit=state.cart.find(l=>l.key===key);if(hit)hit.qty+=qty;else state.cart.push({key,id:cur.id,qty,opts,note});
+  for(const [gi,g] of cur.opts.entries()){const n=sheet.querySelectorAll(`[name=o${gi}]:checked`).length;
+    if(n<g.min)return toast(g.max===1?`Choose a ${g.name.toLowerCase()}`:`Choose at least ${g.min} for ${g.name}`);
+    if(g.max&&n>g.max)return toast(`Choose up to ${g.max} for ${g.name}`)}
+  const mods=chosen(),names=mods.map(m=>m.name).filter(v=>!/^Regular/.test(v)),note=$('#s-note').value.trim();
+  const key=cur.id+'|'+mods.map(m=>m.id||m.name).join(',')+'|'+note;
+  const hit=state.cart.find(l=>l.key===key);if(hit)hit.qty+=qty;else state.cart.push({key,id:cur.id,qty,mods,names,note,unit:unit()});
   state.view='cart';closeItem();render();toast(cur.name+' added')});
 // cart
 const cart=$('#cart'),scrim=$('#scrim'),bar=$('#cartbar');
@@ -561,11 +595,38 @@ const pick=$('#pick'),pickOpen=()=>pick.classList.contains('open');
 const openPick=()=>{pick.classList.add('open');scrim.hidden=false;document.body.style.overflow='hidden';pick.querySelector('[aria-pressed=true]')?.focus()};
 const closePick=()=>{pick.classList.remove('open');if(!cartOpen()){scrim.hidden=true;document.body.style.overflow=''}if(pick.dataset.o){delete pick.dataset.o;$('#psum').focus()}};
 $('#psum').addEventListener('click',()=>{pick.dataset.o=1;openPick()});$('#pdone').addEventListener('click',closePick);
+const pickup=()=>sel.selectedIndex?sel.value:'ASAP';
 function syncPick(){const s=store();$('#ps-store').textContent='Pickup at '+s.name;$('#ps-meta').textContent=s.line1+' · '+(sel.selectedIndex?sel.value:'ASAP (~15 min)')}
 sel.addEventListener('change',syncPick);
 bar.addEventListener('click',openCart);scrim.addEventListener('click',()=>pickOpen()?closePick():closeCart());cart.querySelector('.x').addEventListener('click',closeCart);
 addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!sheet.hidden)closeItem();else if(pickOpen())closePick();else if(cartOpen())closeCart()});
-const totals=()=>{const sub=state.cart.reduce((s,l)=>s+ITEMS.get(l.id).price*l.qty,0);const tax=Math.round(sub*store().tax*100)/100;return{sub,tax,total:sub+tax,count:state.cart.reduce((s,l)=>s+l.qty,0)}};
+const totals=()=>{const sub=state.cart.reduce((s,l)=>s+l.unit*l.qty,0);const tax=Math.round(sub*store().tax*100)/100;return{sub,tax,total:sub+tax,count:state.cart.reduce((s,l)=>s+l.qty,0)}};
+const sumHtml=(sub,tax,total,label)=>`<div class="sum"><span>Subtotal</span><span>${money(sub)}</span><span>${label}</span><span>${money(tax)}</span><b>Total</b><b>${money(total)}</b></div>`;
+// what the server needs to rebuild the order in Clover; prices are never sent, Clover prices it
+const wire=()=>state.cart.map(l=>({itemId:l.id,qty:l.qty,modIds:l.mods.map(m=>m.id).filter(Boolean),note:l.note}));
+// Clover's exact tax and total for the checkout screen
+async function quote(){const k=JSON.stringify([state.store,wire()]);if(state.qk===k)return;state.qk=k;
+  try{const r=await fetch('/api/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({store:state.store,lines:wire()})});const q=await r.json();
+    if(!r.ok||q.total==null||state.qk!==k)return;const el=$('#c-foot .sum');if(el)el.outerHTML=sumHtml(q.subtotal/100,q.tax/100,q.total/100,'Tax');
+    const b=$('#c-place');if(b)b.textContent='Place order · '+money(q.total/100)}catch{}}
+// Clover's card fields: the card number goes straight from these frames to Clover, never through our server
+let CL=null;
+const loadSdk=src=>new Promise((ok,no)=>{if(window.Clover)return ok();const t=document.createElement('script');t.src=src;t.onload=ok;t.onerror=no;document.head.append(t)});
+async function mountCard(p){try{await loadSdk(p.sdk);if(!CL||CL.key!==p.key)CL={key:p.key,c:new Clover(p.key,{merchantId:p.merchantId})};
+    const els=CL.c.elements(),st={body:{fontFamily:'Jost, sans-serif',fontSize:'16px'}};
+    [['CARD_NUMBER','#cc-num'],['CARD_DATE','#cc-date'],['CARD_CVV','#cc-cvv'],['CARD_POSTAL_CODE','#cc-zip']].forEach(([t,s])=>{if(document.querySelector(s))els.create(t,st).mount(s)})}
+  catch{payErr("The card form didn't load. Please refresh the page and try again.")}}
+const payErr=m=>{const e=$('#cc-err');if(e){e.textContent=m;e.hidden=!m;if(m)e.scrollIntoView({block:'nearest'})}};
+async function placeLive(f,btn){
+  const label=btn.textContent;btn.disabled=true;btn.textContent='Placing order…';payErr('');
+  try{if(!CL)throw new Error("The card form didn't load. Please refresh the page and try again.");
+    const t=await CL.c.createToken();const errs=Object.values(t.errors||{}).filter(Boolean);if(errs.length||!t.token)throw new Error(errs[0]||'Please check your card details.');
+    const r=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({store:state.store,lines:wire(),name:f.name.value.trim(),phone:f.phone.value.trim(),pickup:pickup(),token:t.token})});
+    const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Something went wrong. You have not been charged.');
+    state.no=j.number;state.paid=j.total!=null?j.total/100:null;state.real=true;state.name=f.name.value.trim();
+    state.time=sel.selectedIndex?'at '+sel.value:'in about 15 minutes';state.view='done';render();cart.scrollIntoView({block:'nearest'})}
+  catch(e){payErr(e.message);btn.disabled=false;btn.textContent=label}}
 function render(){
   const t=totals(),body=$('#c-body'),foot=$('#c-foot'),s=store();syncPick();
   document.querySelectorAll('[data-add]').forEach(b=>{const n=state.cart.filter(l=>l.id===b.dataset.add).reduce((a,l)=>a+l.qty,0);const q=b.querySelector('.qtyb');q.hidden=!n;q.textContent=n});
@@ -573,27 +634,31 @@ function render(){
   $('#cb-count').textContent=t.count+(t.count===1?' item':' items');$('#cb-total').textContent=money(t.total);
   $('#c-title').textContent=state.view==='checkout'?'Checkout':state.view==='done'?'Order placed':'Your order';
   if(state.view==='done'){body.innerHTML=`<div class="done"><div class="tick" aria-hidden="true">✓</div><h3>Thanks, ${esc(state.name)}!</h3>
-    <p class="muted">Order #${state.no} for pickup at Misree Chai ${s.name}, ${s.line1}. Ready ${esc(state.time)}.</p>
-    <p class="muted small" style="margin-top:12px">This is a demo, so no order was sent and no card was charged.</p></div>`;
+    <p class="muted">Order #${esc(state.no)} for pickup at Misree Chai ${s.name}, ${s.line1}. Ready ${esc(state.time)}.</p>
+    <p class="muted small" style="margin-top:12px">${state.real?`It's been sent to the cafe.${state.paid!=null?' Total charged: '+money(state.paid)+'.':''}`:'This is a demo, so no order was sent and no card was charged.'}</p></div>`;
     foot.innerHTML='<button class="btn block" type="button" id="c-new">Start a new order</button>';
-    $('#c-new').onclick=()=>{state.cart=[];state.view='cart';render();if(cartOpen())closeCart()};return}
+    $('#c-new').onclick=()=>{state.cart=[];state.view='cart';state.real=false;state.qk=null;render();if(cartOpen())closeCart()};return}
   if(!state.cart.length){body.innerHTML='<p class="empty">Your bag is empty.<br>Tap any item to add it.</p>';foot.innerHTML='';state.view='cart';return}
-  const sum=`<div class="sum"><span>Subtotal</span><span>${money(t.sub)}</span><span>Est. tax</span><span>${money(t.tax)}</span><b>Total</b><b>${money(t.total)}</b></div>`;
   if(state.view==='checkout'){
+    const pay=live&&live.pay;
+    const box=pay?`<div class="paybox">Card<div class="ccf" id="cc-num"></div><div class="rowx"><div class="ccf" id="cc-date"></div><div class="ccf" id="cc-cvv"></div></div><div class="ccf" id="cc-zip"></div><p class="err" id="cc-err" hidden role="alert"></p></div>`
+      :live?`<div class="paybox">Online payment for this cafe isn't switched on yet.</div>`
+      :`<div class="paybox">Payment (demo, nothing is charged)<input aria-label="Card number" inputmode="numeric" placeholder="Card number" style="margin-top:8px"><div class="rowx"><input aria-label="Expiry" placeholder="MM / YY" inputmode="numeric"><input aria-label="CVC" placeholder="CVC" inputmode="numeric"></div></div>`;
     body.innerHTML=`<button class="back" type="button" id="c-back">← Back to order</button>
     <p class="muted small" style="margin-bottom:14px">Pickup at <b style="color:var(--ink);font-weight:500">${s.name}</b>, ${s.line1} · ${esc(sel.value)}</p>
     <form class="form" id="c-form" novalidate><label class="field">Name<input name="name" autocomplete="given-name" required placeholder="Your name"></label>
-    <label class="field">Phone, for a text when it's ready<input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555-0123"></label>
-    <div class="paybox">Payment (demo, nothing is charged)<input aria-label="Card number" inputmode="numeric" placeholder="Card number" style="margin-top:8px"><div class="rowx"><input aria-label="Expiry" placeholder="MM / YY" inputmode="numeric"><input aria-label="CVC" placeholder="CVC" inputmode="numeric"></div></div></form>`;
-    foot.innerHTML=sum+`<button class="btn block" type="submit" form="c-form">Place order · ${money(t.total)}</button>`;
+    <label class="field">Phone, for a text when it's ready<input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555-0123"></label>${box}</form>`;
+    foot.innerHTML=sumHtml(t.sub,t.tax,t.total,'Est. tax')+`<button class="btn block" type="submit" form="c-form" id="c-place"${live&&!pay?' disabled':''}>Place order · ${money(t.total)}</button>`;
     $('#c-back').onclick=()=>{state.view='cart';render()};
-    $('#c-form').addEventListener('submit',e=>{e.preventDefault();const n=e.target.name;if(!n.value.trim()){n.focus();n.style.borderColor='#b3261e';return}
+    if(pay)mountCard(pay);if(live){state.qk=null;quote()}
+    $('#c-form').addEventListener('submit',e=>{e.preventDefault();const f=e.target,n=f.name;if(!n.value.trim()){n.focus();n.style.borderColor='#b3261e';return}
+      if(pay)return placeLive(f,$('#c-place'));
       state.name=n.value.trim();state.no=1000+Math.floor(Math.random()*9000);state.time=sel.selectedIndex?'at '+sel.value:'in about 15 minutes';state.view='done';render();
       cart.scrollIntoView({block:'nearest'})});return}
-  body.innerHTML=state.cart.map((l,i)=>{const it=ITEMS.get(l.id);const extra=[...l.opts,l.note&&('“'+esc(l.note)+'”')].filter(Boolean).join(' · ');
-    return `<div class="cline"><b>${it.name}</b><span>${money(it.price*l.qty)}</span>${extra?`<small>${extra}</small>`:''}
+  body.innerHTML=state.cart.map((l,i)=>{const it=ITEMS.get(l.id);const extra=[...l.names.map(esc),l.note&&('“'+esc(l.note)+'”')].filter(Boolean).join(' · ');
+    return `<div class="cline"><b>${esc(it.name)}</b><span>${money(l.unit*l.qty)}</span>${extra?`<small>${extra}</small>`:''}
     <div class="step" style="grid-column:1"><button type="button" aria-label="Remove one" data-dec="${i}">${l.qty>1?'−':'×'}</button><span>${l.qty}</span><button type="button" aria-label="Add one" data-inc="${i}">+</button></div></div>`}).join('');
-  foot.innerHTML=sum+`<button class="btn block" type="button" id="c-go">Checkout</button>`;
+  foot.innerHTML=sumHtml(t.sub,t.tax,t.total,'Est. tax')+`<button class="btn block" type="button" id="c-go">Checkout</button>`;
   body.querySelectorAll('[data-inc]').forEach(b=>b.onclick=()=>{state.cart[b.dataset.inc].qty++;render()});
   body.querySelectorAll('[data-dec]').forEach(b=>b.onclick=()=>{const l=state.cart[b.dataset.dec];if(--l.qty<1)state.cart.splice(b.dataset.dec,1);render();if(!state.cart.length&&cartOpen())closeCart()});
   $('#c-go').onclick=()=>{state.view='checkout';render()};
@@ -605,7 +670,7 @@ setStore(state.store);
 const rad=x=>x*Math.PI/180,dist=(a,b,c,d)=>Math.sin(rad(c-a)/2)**2+Math.cos(rad(a))*Math.cos(rad(c))*Math.sin(rad(d-b)/2)**2;
 if(!want&&navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>{const {latitude:a,longitude:b}=p.coords;
   const n=[...D.stores].sort((x,y)=>dist(a,b,x.lat,x.lng)-dist(a,b,y.lat,y.lng))[0];
-  segs.forEach(x=>x.classList.toggle('is-near',x.dataset.store===n.id));setStore(n.id)},()=>{},{timeout:10000,maximumAge:600000});
+  segs.forEach(x=>x.classList.toggle('is-near',x.dataset.store===n.id));if(n.id!==state.store)setStore(n.id)},()=>{},{timeout:10000,maximumAge:600000});
 """
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">'
@@ -720,11 +785,13 @@ def build_order():
         rows = ""
         for n, p, im, d in c["items"]:
             iid = slug(n)
-            items.append(dict(id=iid, name=n, price=float(p), img=img(im), desc=d, opts=OPTIONS[c["opts"]]))
+            items.append(dict(id=iid, name=n, price=float(p), img=img(im), sm=sm(im), desc=d,
+                              opts=[dict(id=None, name=g, min=1, max=1, mods=[dict(id=None, name=o, price=0) for o in os_]) for g, os_ in OPTIONS[c["opts"]]]))
             rows += item_row(n, p, im, d, f'data-add="{iid}" aria-label="{esc(n)}, ${p}"', add=True)
         secs += f'<section class="osec" id="o-{c["slug"]}" data-sec><h2>{c["name"]}</h2><div class="ogrid">{rows}</div></section>'
     stores = [dict(id=L["id"], name=L["name"], line1=L["line1"], tax=L["tax"], lat=L["lat"], lng=L["lng"]) for L in LOCATIONS]
-    data = json.dumps(dict(items=items, stores=stores)).replace("</", "<\\/")
+    photos = sorted({im for c in CATS for _, _, im, _ in c["items"]})
+    data = json.dumps(dict(items=items, stores=stores, photos=photos)).replace("</", "<\\/")
     seg = "".join(f'<button type="button" data-store="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
     chips = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
     body = f'''{header("order")}<main class="opage">
