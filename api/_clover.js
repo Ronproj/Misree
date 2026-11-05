@@ -77,6 +77,9 @@ function normalizeMenu(cats, items, groups) {
     id: c.id, name: c.name,
     items: sellable.filter(i => ((i.categories && i.categories.elements) || []).some(x => x.id === c.id)).map(shape),
   })).filter(c => c.items.length);
+  // Items with no category would otherwise never show; list them under a catch-all section.
+  const loose = sellable.filter(i => !((i.categories && i.categories.elements) || []).some(x => cats.some(c => c.id === x.id)));
+  if (loose.length) out.push({ id: 'uncategorized', name: out.length ? 'More' : 'Menu', items: loose.map(shape) });
   return { categories: out };
 }
 
