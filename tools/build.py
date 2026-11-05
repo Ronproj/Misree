@@ -308,7 +308,8 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
   .ogrid .row{grid-template-columns:minmax(0,1fr) 104px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:border-color .15s,box-shadow .15s}
   .ogrid .row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(34,26,20,.08)}
-  .ogrid .row img,.ogrid .row .noimg{width:104px;height:104px}
+  .ogrid .row img{width:104px;height:104px}
+  .ogrid .row.noph{min-height:104px}
   .ogrid .row .txt{align-self:stretch;display:flex;flex-direction:column}
   .ogrid .row .p{margin-top:auto;padding-top:6px}
 }
@@ -342,10 +343,26 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .form{display:grid;gap:14px;padding-bottom:8px}
 .paybox{display:grid;gap:8px;padding:14px;border:1px dashed var(--line-2);border-radius:var(--r-sm);font-size:14px;color:var(--muted)}
 .paybox .rowx{display:grid;grid-template-columns:1fr 96px;gap:8px}
-.ccf{min-height:48px;padding:0 12px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm)}
-.ccf iframe{width:100%!important;height:46px!important;border:0}
+.payc{display:grid;gap:14px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
+.payc .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;font-weight:500;color:var(--ink)}
+.payc .hd span{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--muted)}
+.payc .hd svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.payc .rowx{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.ccf{position:relative;height:48px;padding:0 14px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.ccf.focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.ccf.bad{border-color:#b3261e}
+.ccf iframe{display:block;width:100%!important;height:46px!important;border:0}
+.payc .hint{margin-top:-6px;font-size:13px;color:#b3261e}
+.payc .clover-footer{display:flex!important;align-items:center;justify-content:space-between;gap:8px;padding:0!important;background:none!important;border-radius:0!important;text-align:left!important}
+.payc .clover-footer *{font-family:inherit!important;font-size:12px!important;font-weight:400!important;color:var(--muted)!important}
+.payc .clover-secure-payments{display:inline-flex!important;align-items:center;gap:4px;line-height:1!important}
+.payc .clover-footer img{display:inline-block!important;margin:0!important;max-width:none!important;width:auto!important;height:12px!important}
+.payc .clover-footer .clover-privacy-link{text-decoration:underline}
 .err{color:#b3261e;font-size:14px}
-.row .noimg{display:block;width:84px;height:84px;border-radius:var(--r-sm);background:var(--soft) url(assets/img/logo.png) center/36px no-repeat}
+.ogrid .row.noph,.row.noph{grid-template-columns:minmax(0,1fr) auto;align-items:end}
+.row.noph .ph{width:auto;height:auto}
+.row.noph .add{position:static;display:grid;width:36px;height:36px;background:var(--soft);box-shadow:none}
+.row.noph .qtyb{left:auto;right:28px;top:-8px}
 .done{text-align:center;padding:20px 0 8px}
 .done .tick{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:24px}
 .done h3{font-size:22px;font-weight:400;margin-bottom:6px}
@@ -545,12 +562,19 @@ async function loadLive(id){
   if(id!==state.store||m===live)return;
   if(state.cart.length&&(live||m)){state.cart=[];state.view='cart';toast('Your bag was cleared for this cafe’s menu')}
   live=m;m?showMenu(m):showDemo();render()}
-const row=it=>`<button class="row" type="button" data-add="${it.id}" aria-label="${esc(it.name)}, ${money(it.price)}"><span class="txt"><span class="n">${esc(it.name)}</span>${it.desc?`<small>${esc(it.desc)}</small>`:''}<span class="p">${money(it.price)}</span></span>`+
-  `<span class="ph">${it.sm?`<img src="${it.sm}" alt="" loading="lazy" width="84" height="84">`:'<span class="noimg" aria-hidden="true"></span>'}<span class="add" aria-hidden="true">+</span><span class="qtyb" hidden></span></span></button>`;
+const row=it=>`<button class="row${it.sm?'':' noph'}" type="button" data-add="${it.id}" aria-label="${esc(it.name)}, ${money(it.price)}"><span class="txt"><span class="n">${esc(it.name)}</span>${it.desc?`<small>${esc(it.desc)}</small>`:''}<span class="p">${money(it.price)}</span></span>`+
+  `<span class="ph">${it.sm?`<img src="${it.sm}" alt="" loading="lazy" width="84" height="84">`:''}<span class="add" aria-hidden="true">+</span><span class="qtyb" hidden></span></span></button>`;
+// Clover has no item photos, so match each item to our photo set by name: exact, then all words of a photo name, then a general keyword.
+const PHOTO_KEYS=[[/kulfi/,'mango-kulfi'],[/falooda/,'falooda-kulfi'],[/taro/,'taro-milk-tea'],[/fruit tea|refresher|lemonade/,'peach-fruit-tea'],[/milk ?tea|boba|bubble/,'classic-milk-tea'],
+  [/chai|karak/,'masala-chai'],[/coff?ee?\b|latte|cappuccino|espresso|mocha/,'south-indian-coffee'],[/crepe/,'nutella-crepe'],[/bowl|acai/,'protein-bowl'],
+  [/croissant/,'butter-croissant'],[/bun|maska|toast/,'bun-maska']];
+function photoFor(name){const s=slug(name);if(D.photos.includes(s))return s;const w=new Set(s.split('-'));
+  const hit=D.photos.filter(p=>p.split('-').every(x=>w.has(x))).sort((a,b)=>b.length-a.length)[0];if(hit)return hit;
+  const n=name.toLowerCase();const k=PHOTO_KEYS.find(([re])=>re.test(n));return k&&D.photos.includes(k[1])?k[1]:null}
 function showMenu(m){
   ITEMS=new Map();let secs='',chips='';
   m.categories.forEach(c=>{const sid='o-'+slug(c.name||c.id);chips+=`<a href="#${sid}">${esc(c.name)}</a>`;
-    secs+=`<section class="osec" id="${sid}" data-sec><h2>${esc(c.name)}</h2><div class="ogrid">${c.items.map(i=>{const ph=D.photos.includes(slug(i.name))?slug(i.name):null;
+    secs+=`<section class="osec" id="${sid}" data-sec><h2>${esc(c.name)}</h2><div class="ogrid">${c.items.map(i=>{const ph=photoFor(i.name);
       const it={id:i.id,name:i.name,price:i.price/100,desc:i.desc,img:ph&&'assets/img/'+ph+'.jpg',sm:ph&&'assets/img/sm/'+ph+'.jpg',
         opts:i.opts.map(g=>({...g,mods:g.mods.map(x=>({...x,price:x.price/100}))}))};ITEMS.set(it.id,it);return row(it)}).join('')}</div></section>`});
   $('.omenu').innerHTML=secs;document.querySelectorAll('.chips .wrap, .oside').forEach(n=>n.innerHTML=chips);
@@ -613,9 +637,21 @@ async function quote(){const k=JSON.stringify([state.store,wire()]);if(state.qk=
 let CL=null;
 const loadSdk=src=>new Promise((ok,no)=>{if(window.Clover)return ok();const t=document.createElement('script');t.src=src;t.onload=ok;t.onerror=no;document.head.append(t)});
 async function mountCard(p){try{await loadSdk(p.sdk);if(!CL||CL.key!==p.key)CL={key:p.key,c:new Clover(p.key,{merchantId:p.merchantId})};
-    const els=CL.c.elements(),st={body:{fontFamily:'Jost, sans-serif',fontSize:'16px'}};
-    [['CARD_NUMBER','#cc-num'],['CARD_DATE','#cc-date'],['CARD_CVV','#cc-cvv'],['CARD_POSTAL_CODE','#cc-zip']].forEach(([t,s])=>{if(document.querySelector(s))els.create(t,st).mount(s)})}
+    const els=CL.c.elements(),F='Jost, -apple-system, "Segoe UI", Roboto, sans-serif';
+    // the frames are Clover's; these styles make their inputs sit flush inside our boxes and drop Clover's own labels
+    const st={body:{margin:'0',padding:'0',fontFamily:F,fontSize:'16px',color:'#221a14',background:'transparent'},
+      input:{margin:'0',padding:'0',width:'100%',height:'46px',border:'0',outline:'none',boxShadow:'none',background:'transparent',fontFamily:F,fontSize:'16px',color:'#221a14'},
+      'input::placeholder':{color:'#9a9086'},label:{display:'none'},'.checkoutElements':{margin:'0',padding:'0'}};
+    [['CARD_NUMBER','#cc-num'],['CARD_DATE','#cc-date'],['CARD_CVV','#cc-cvv'],['CARD_POSTAL_CODE','#cc-zip']].forEach(([t,s])=>{const box=document.querySelector(s);if(!box)return;
+      const el=els.create(t,st);el.mount(s);
+      el.addEventListener('focus',()=>box.classList.add('focus'));
+      el.addEventListener('blur',ev=>{box.classList.remove('focus');const r=ev&&ev[t]||{};box.classList.toggle('bad',!!(r.touched&&r.error));cardHint(ev)});
+      el.addEventListener('change',ev=>{const r=ev&&ev[t]||{};if(!r.error)box.classList.remove('bad');cardHint(ev)})})
+    // Clover adds its "Secure payments" footer to the end of the page; keep it, but inside the payment box
+    const mv=()=>{const f=document.querySelector('body>.clover-footer'),c=$('.payc');if(f&&c)c.append(f);return !!f};if(!mv())setTimeout(mv,800)}
   catch{payErr("The card form didn't load. Please refresh the page and try again.")}}
+// one short line under the card boxes for whichever field Clover says is wrong
+function cardHint(ev){const h=$('#cc-hint');if(!h||!ev)return;const bad=Object.values(ev).find(r=>r&&r.touched&&r.error);h.textContent=bad?bad.error:'';h.hidden=!bad}
 const payErr=m=>{const e=$('#cc-err');if(e){e.textContent=m;e.hidden=!m;if(m)e.scrollIntoView({block:'nearest'})}};
 async function placeLive(f,btn){
   const label=btn.textContent;btn.disabled=true;btn.textContent='Placing order…';payErr('');
@@ -641,7 +677,10 @@ function render(){
   if(!state.cart.length){body.innerHTML='<p class="empty">Your bag is empty.<br>Tap any item to add it.</p>';foot.innerHTML='';state.view='cart';return}
   if(state.view==='checkout'){
     const pay=live&&live.pay;
-    const box=pay?`<div class="paybox">Card<div class="ccf" id="cc-num"></div><div class="rowx"><div class="ccf" id="cc-date"></div><div class="ccf" id="cc-cvv"></div></div><div class="ccf" id="cc-zip"></div><p class="err" id="cc-err" hidden role="alert"></p></div>`
+    const box=pay?`<div class="payc"><div class="hd">Payment</div>
+      <label class="field">Card number<div class="ccf" id="cc-num"></div></label>
+      <div class="rowx"><label class="field">Expiry<div class="ccf" id="cc-date"></div></label><label class="field">CVV<div class="ccf" id="cc-cvv"></div></label><label class="field">ZIP<div class="ccf" id="cc-zip"></div></label></div>
+      <p class="hint" id="cc-hint" hidden></p><p class="err" id="cc-err" hidden role="alert"></p></div>`
       :live?`<div class="paybox">Online payment for this cafe isn't switched on yet.</div>`
       :`<div class="paybox">Payment (demo, nothing is charged)<input aria-label="Card number" inputmode="numeric" placeholder="Card number" style="margin-top:8px"><div class="rowx"><input aria-label="Expiry" placeholder="MM / YY" inputmode="numeric"><input aria-label="CVC" placeholder="CVC" inputmode="numeric"></div></div>`;
     body.innerHTML=`<button class="back" type="button" id="c-back">← Back to order</button>
