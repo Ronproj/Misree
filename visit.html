@@ -469,11 +469,14 @@ footer .brand .wm{height:44px}
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy (armSpy runs again after the order page swaps in a live menu)
-let spy;function armSpy(){const chips=document.querySelectorAll('.chips a, .oside a');spy&&spy.disconnect();if(!chips.length)return;
-  spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
-    chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===e.target.id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
-      const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})}),{rootMargin:'-18% 0px -72% 0px'});
-  document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s))}
+let spy;function armSpy(){const chips=document.querySelectorAll('.chips a, .oside a');if(!chips.length)return;
+  // the current section is the last one whose top has passed just under the sticky header and tabs
+  const secs=[...document.querySelectorAll('[data-sec]')];let curId=null;
+  const pick=()=>{const line=innerHeight*.28;let id=secs[0]&&secs[0].id;for(const s of secs){if(s.getBoundingClientRect().top<=line)id=s.id;else break}
+    if(id===curId)return;curId=id;chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
+      const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})};
+  let raf=0;const on=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;pick()})};
+  spy&&removeEventListener('scroll',spy);spy=on;addEventListener('scroll',on,{passive:true});pick()}
 armSpy();
 // visit page location switcher
 const ltabs=document.querySelectorAll('.loc-tab');
