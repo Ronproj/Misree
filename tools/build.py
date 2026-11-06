@@ -28,40 +28,67 @@ def store_btn(url, small, big):
         return f'<a class="store" href="{url}" target="_blank" rel="noopener"><small>{small}</small><b>{big}</b></a>'
     return f'<span class="store" aria-disabled="true" title="Link coming soon"><small>{small}</small><b>{big}</b></span>'
 
-# Menu data from the cafe's DoorDash / Uber Eats listings and misreechai.com search snippets.
-# opts names an entry in OPTIONS (the demo ordering choices for that category).
+# Menu data from the cafe's in-store menu board (Misree Chai NY, photo sent by Ron on 2026-11-06).
+# Item: (name, price, photo or None, description[, options key]). A category's opts names its default entry in OPTIONS.
+# Acai bowl prices aren't printed on the board; the bowls keep their delivery-app prices until the cafe confirms them.
 CATS = [
-    dict(slug="chai", name="Chai & Coffee", opts="hot",
-         items=[("Masala Chai", "4.00", "masala-chai", "Slow-brewed with whole spices."), ("Zafrani Chai", "3.49", "zafrani-chai", "Saffron chai, sweetened the old way."),
-                ("South Indian Coffee", "4.00", "south-indian-coffee", "Strong filter coffee with frothed milk.")]),
-    dict(slug="kulfi", name="Kulfi Milk Tea", opts="iced",
-         items=[("Falooda Kulfi", "7.49", "falooda-kulfi", "Falooda-inspired creamy milk tea."),
-                ("Mango Kulfi", "7.49", "mango-kulfi", ""), ("Pista Kulfi", "7.49", "pista-kulfi", "")]),
-    dict(slug="teas", name="Milk & Fruit Teas", opts="iced",
-         items=[("Classic Milk Tea", "6.49", "classic-milk-tea", ""), ("Taro Milk Tea", "6.49", "taro-milk-tea", ""),
-                ("Strawberry Milk Tea", "6.49", "strawberry-milk-tea", ""), ("Mango Fruit Tea", "5.49", "mango-fruit-tea", ""),
-                ("Strawberry Fruit Tea", "5.49", "strawberry-fruit-tea", ""), ("Peach Fruit Tea", "5.49", "peach-fruit-tea", ""),
-                ("Lychee Refresher", "5.99", "lychee-refresher", "")]),
-    dict(slug="crepes", name="Crepes", opts="food",
-         items=[("Triple Chocolate Crepe", "14.00", "triple-chocolate-crepe", "Kinder Bueno, Ferrero, Nutella and chocolate chips."),
-                ("Nutella Crepe", "13.99", "nutella-crepe", ""), ("Royal Pistachio Crepe", "13.99", "royal-pistachio-crepe", ""),
-                ("Fudge Brownie Crepe", "12.99", "fudge-brownie-crepe", ""), ("Oreo Crepe", "13.99", "oreo-crepe", ""),
-                ("Mix Berries Crepe", "13.99", "mix-berries-crepe", "")]),
-    dict(slug="bowls", name="Bowls", opts="food",
-         items=[("Nutella Acai Bowl", "12.99", "nutella-acai-bowl", ""), ("Almond Lover Bowl", "13.99", "almond-lover-bowl", ""),
-                ("Coconut Honey Bowl", "13.99", "coconut-honey-bowl", ""), ("Protein Bowl", "12.99", "protein-bowl", "")]),
-    dict(slug="bakery", name="Bakery", opts="food",
-         items=[("Bun Maska", "4.49", "bun-maska", "Soft bun with a thick layer of butter."), ("Butter Croissant", "4.00", "butter-croissant", ""),
-                ("Nutella Croissant", "5.00", "nutella-croissant", "")]),
+    dict(slug="chai", name="Tea & Coffee", opts="hot",
+         items=[("Irani Chai", "2.50", "chai-cheers", ""), ("Zafrani Chai", "3.00", "zafrani-chai", "Saffron chai."),
+                ("Masala Chai", "3.50", "masala-chai", "Slow-brewed with whole spices."),
+                ("Coffee", "3.00", "south-indian-coffee", ""), ("Hot Chocolate", "3.00", None, "", "none")]),
+    dict(slug="milktea", name="Milk Tea", opts="boba",
+         items=[("Mango Kulfi Milk Tea", "7.00", "mango-kulfi", ""), ("Falooda Kulfi Milk Tea", "7.00", "falooda-kulfi", ""),
+                ("Pista Kulfi Milk Tea", "7.00", "pista-kulfi", ""), ("Taro Milk Tea", "6.00", "taro-milk-tea", ""),
+                ("Classic Milk Tea", "6.00", "classic-milk-tea", ""), ("Strawberry Milk Tea", "6.00", "strawberry-milk-tea", ""),
+                ("Honeydew Milk Tea", "6.00", None, ""), ("Mango Milk Tea", "6.00", None, ""), ("Watermelon Milk Tea", "6.00", None, "")]),
+    dict(slug="fruittea", name="Fruit Tea", opts="boba",
+         items=[("Passion Fruit Tea", "5.00", None, ""), ("Strawberry Fruit Tea", "5.00", "strawberry-fruit-tea", ""),
+                ("Mango Fruit Tea", "5.00", "mango-fruit-tea", ""), ("Peach Fruit Tea", "5.00", "peach-fruit-tea", "")]),
+    dict(slug="refreshers", name="Refreshers", opts="cold",
+         items=[("Passion Fruit Lime", "5.00", None, ""), ("Blue Raz Sparkler", "5.00", None, ""), ("Pink Berry", "5.00", None, ""),
+                ("Lychee Refresher", "5.00", "lychee-refresher", ""), ("Virgin Mojito", "5.00", None, ""),
+                ("Kiwi Guava Sparkler", "5.00", None, ""), ("Jaljeera Refresher", "5.00", None, "")]),
+    dict(slug="shakes", name="Milkshakes", opts="none",
+         items=[("Oreo Milkshake", "8.00", None, ""), ("Ferrero Rocher Milkshake", "8.00", None, ""), ("Lotus Biscoff Milkshake", "8.00", None, ""),
+                ("Nutella Milkshake", "8.00", None, ""), ("Brownie Milkshake", "8.00", None, ""), ("KitKat Milkshake", "8.00", None, ""),
+                ("Vanilla Caramel Milkshake", "8.00", None, ""), ("Dubai Kunafa Milkshake", "8.00", None, "")]),
+    dict(slug="crepes", name="Crepes", opts="none",
+         items=[("Nutella Crepe", "10.00", "nutella-crepe", "Nutella, strawberry, banana."),
+                ("Fudge Brownie Crepe", "10.00", "fudge-brownie-crepe", "Brownies, strawberries, Nutella."),
+                ("Oreo Crepe", "10.00", "oreo-crepe", "Oreo cookie crumble, Nutella, banana."),
+                ("Royal Pistachio Crepe", "10.00", "royal-pistachio-crepe", "Nutella, pistachio, banana."),
+                ("Marshmallow Crunch Crepe", "10.00", None, "Biscoff, marshmallow, Nutella."),
+                ("Triple Chocolate Crepe", "13.00", "triple-chocolate-crepe", "Kinder Bueno, Ferrero, Nutella."),
+                ("Dubai Kunafa Crepe", "13.00", None, "Strawberry, kunafa, pistachio, Nutella.")]),
+    dict(slug="bowls", name="Acai Bowls", opts="none",
+         items=[("Nutella Bowl", "12.99", "nutella-acai-bowl", "Acai blended, granola, strawberry, banana."),
+                ("Almond Lover Bowl", "13.99", "almond-lover-bowl", "Acai blended, almond, granola, strawberry, blueberry."),
+                ("Coconut Honey Bowl", "13.99", "coconut-honey-bowl", "Acai blended, granola, strawberry, blueberry, honey, coconut."),
+                ("Protein Bowl", "12.99", "protein-bowl", "Acai blended, granola, peanut butter, banana.")]),
+    dict(slug="bakery", name="Bakery", opts="none",
+         items=[("Butter Croissant", "4.00", "butter-croissant", ""), ("Osmania Biscuits (3 pc)", "2.00", None, "Hyderabadi tea biscuits."),
+                ("Bun Maska", "3.00", "bun-maska", "Soft bun with a thick layer of butter.", "jam")]),
 ]
+SWEET = ("Sweetness", 1, 1, [("Regular", 0), ("Less sweet", 0), ("No sugar", 0)])
+ICE = ("Ice", 1, 1, [("Regular ice", 0), ("Light ice", 0), ("No ice", 0)])
+TOPPINGS = ("Toppings", 0, 3, [(t, 0) for t in ["Tapioca pearls", "Lychee popping pearls", "Strawberry popping pearls", "Mango popping pearls",
+            "Energy popping pearls", "Pineapple jelly", "Lychee jelly", "Strawberry jelly", "Rainbow jelly", "Mango jelly", "Coconut jelly"]])
+# Option groups: (name, min, max, [(choice, extra price)]). These drive the demo order page; live ordering uses Clover's own modifiers.
 OPTIONS = {
-    "hot": [("Sweetness", ["Regular", "Less sweet", "No sugar"])],
-    "iced": [("Sweetness", ["Regular", "Less sweet", "No sugar"]), ("Ice", ["Regular ice", "Light ice", "No ice"])],
-    "food": [],
+    "hot": [SWEET],
+    "boba": [SWEET, ICE, TOPPINGS],
+    "cold": [ICE],
+    "jam": [("Add jam", 0, 1, [("Strawberry jam", 0.50), ("Pineapple jam", 0.50)])],
+    "none": [],
 }
-GROUPS = [("drinks", "Drinks", ["chai", "kulfi", "teas"]), ("crepes", "Crepes", ["crepes"]),
-          ("bowls", "Bowls", ["bowls"]), ("bakery", "Bakery", ["bakery"])]
+GROUPS = [("drinks", "Drinks", ["chai", "milktea", "fruittea", "refreshers", "shakes"]), ("crepes", "Crepes", ["crepes"]),
+          ("bowls", "Acai Bowls", ["bowls"]), ("bakery", "Bakery", ["bakery"])]
 BYSLUG = {c["slug"]: c for c in CATS}
+
+def items_of(c):
+    """Yield (name, price, photo, desc, options key) for a category; the options key falls back to the category's."""
+    for t in c["items"]:
+        yield (*t[:4], t[4] if len(t) > 4 else c["opts"])
 
 def img(name): return f"assets/img/{name}.jpg"
 def sm(name): return f"assets/img/sm/{name}.jpg"
@@ -531,7 +558,7 @@ if(qv){
   let last=null;const close=()=>{qv.hidden=true;document.body.style.overflow='';last&&last.focus()};
   document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click()}}));
   document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('click',()=>{last=c;const d=c.dataset;
-    qv.querySelector('img').src=d.img;qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
+    const qi=qv.querySelector('img');qi.hidden=!d.img;if(d.img)qi.src=d.img;qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
     qv.querySelector('.desc').textContent=d.desc||'';qv.hidden=false;document.body.style.overflow='hidden';qv.querySelector('.close').focus()}));
   qv.addEventListener('click',e=>{if(e.target===qv)close()});qv.querySelector('.close').addEventListener('click',close);
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!qv.hidden)close()});
@@ -746,7 +773,7 @@ def footer():
     return (f'<footer><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32" loading="lazy">Misree Chai</a>'
             f'<nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a>'
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
-            f'<p>Jersey City &amp; Jackson Heights. Prices are from the cafe\'s online ordering menu and may change. Photos are styled representations.</p></div></footer>')
+            f'<p>Jersey City &amp; Jackson Heights. Prices are from the cafe\'s in-store menu and may change. Photos are styled representations.</p></div></footer>')
 
 def loc_plain():
     def one(L):
@@ -791,8 +818,9 @@ MENU_BANNERS = {"drinks": "milk-tea-pour", "crepes": "crepe-griddle", "bowls": "
 
 def item_row(n, p, im, d, attrs, add=False):
     extra = '<span class="add" aria-hidden="true">+</span><span class="qtyb" hidden></span>' if add else ""
-    return (f'<button class="row" type="button" {attrs}><span class="txt"><span class="n">{n}</span>{f"<small>{d}</small>" if d else ""}<span class="p">${p}</span></span>'
-            f'<span class="ph"><img src="{sm(im)}" alt="" loading="lazy" width="84" height="84">{extra}</span></button>')
+    pic = f'<img src="{sm(im)}" alt="" loading="lazy" width="84" height="84">' if im else ""
+    return (f'<button class="row{"" if im else " noph"}" type="button" {attrs}><span class="txt"><span class="n">{n}</span>{f"<small>{d}</small>" if d else ""}<span class="p">${p}</span></span>'
+            f'<span class="ph">{pic}{extra}</span></button>')
 
 def build_menu():
     chips = "".join(f'<a href="#{g}">{name}</a>' for g, name, _ in GROUPS)
@@ -802,8 +830,8 @@ def build_menu():
         for sl in slugs:
             c = BYSLUG[sl]
             sub = f'<h3 class="msub" id="{sl}">{c["name"]}</h3>' if len(slugs) > 1 else ""
-            rows = "".join(f'<li><button class="mi" type="button" data-qv data-title="{esc(n)}" data-price="${p}" data-img="{img(im)}" data-desc="{esc(d)}">'
-                           f'<span class="mt"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>{f"<small>{d}</small>" if d else ""}</button></li>' for n, p, im, d in c["items"])
+            rows = "".join(f'<li><button class="mi" type="button" data-qv data-title="{esc(n)}" data-price="${p}" data-img="{img(im) if im else ''}" data-desc="{esc(d)}">'
+                           f'<span class="mt"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>{f"<small>{d}</small>" if d else ""}</button></li>' for n, p, im, d, _ in items_of(c))
             lists += f'{sub}<ul class="mlist">{rows}</ul>'
         count = sum(len(BYSLUG[sl]["items"]) for sl in slugs)
         secs += (f'<section class="mgroup" id="{g}" data-sec><div class="mban"><img src="{img(MENU_BANNERS[g])}" alt="" loading="lazy" width="1400" height="1054"><div><h2>{name}</h2><span>{count} items</span></div></div>'
@@ -812,7 +840,7 @@ def build_menu():
 <div class="phead"><div class="wrap"><h1>Menu</h1><p>Served at both cafes. Tap any item to see a photo.</p></div></div>
 <nav class="chips" aria-label="Menu sections"><div class="wrap">{chips}</div></nav>
 <div class="wrap">{secs}
-<p class="note">Prices are from the cafe's online ordering menu and may differ in store.</p>
+<p class="note">Prices are from the in-store menu and may change.</p>
 <div class="endcta"><a class="btn" href="order.html">Order for pickup</a></div></div></main>
 {footer()}{QV}'''
     return page("Menu · Misree Chai", "The full Misree Chai menu: drinks, crepes, bowls and bakery.", body)
@@ -822,14 +850,14 @@ def build_order():
     secs = ""
     for c in CATS:
         rows = ""
-        for n, p, im, d in c["items"]:
+        for n, p, im, d, ok in items_of(c):
             iid = slug(n)
-            items.append(dict(id=iid, name=n, price=float(p), img=img(im), sm=sm(im), desc=d,
-                              opts=[dict(id=None, name=g, min=1, max=1, mods=[dict(id=None, name=o, price=0) for o in os_]) for g, os_ in OPTIONS[c["opts"]]]))
+            items.append(dict(id=iid, name=n, price=float(p), img=im and img(im), sm=im and sm(im), desc=d,
+                              opts=[dict(id=None, name=g, min=mn, max=mx, mods=[dict(id=None, name=o, price=pr) for o, pr in ch]) for g, mn, mx, ch in OPTIONS[ok]]))
             rows += item_row(n, p, im, d, f'data-add="{iid}" aria-label="{esc(n)}, ${p}"', add=True)
         secs += f'<section class="osec" id="o-{c["slug"]}" data-sec><h2>{c["name"]}</h2><div class="ogrid">{rows}</div></section>'
     stores = [dict(id=L["id"], name=L["name"], line1=L["line1"], tax=L["tax"], lat=L["lat"], lng=L["lng"]) for L in LOCATIONS]
-    photos = sorted({im for c in CATS for _, _, im, _ in c["items"]})
+    photos = sorted({t[2] for c in CATS for t in items_of(c) if t[2]})
     data = json.dumps(dict(items=items, stores=stores, photos=photos)).replace("</", "<\\/")
     seg = "".join(f'<button type="button" data-store="{L["id"]}" aria-pressed="false"><b>{L["name"]}</b><span>{L["line1"]}</span></button>' for L in LOCATIONS)
     chips = "".join(f'<a href="#o-{c["slug"]}">{c["name"]}</a>' for c in CATS)
