@@ -96,11 +96,12 @@ def slug(s): return s.lower().replace(" ", "-").replace("&", "and")
 def esc(s): return html.escape(s, quote=True)
 
 CSS = r"""
-/* Misree Chai: one small system. Warm white, near-black ink, olive accent from the logo.
+/* Misree Chai: one small system, themed on the cafe's menu board: cream paper, olive ink, pale engraved flowers.
    Type: 34/24/18/16/14. Radius: 16 cards, 12 controls. Spacing on an 4px grid. Mobile first. */
 :root{
-  --bg:#faf6ef; --surface:#ffffff; --soft:#f2ece2; --ink:#221a14; --muted:#6b6258; --line:#e9e1d4; --line-2:#d9cfc0;
-  --accent:#5f5820; --night:#221a14;
+  --bg:#f6f2e6; --surface:#fffdf8; --soft:#efe9d8; --ink:#2f2b14; --muted:#6c6748; --line:#e7e0cc; --line-2:#d5ccb1;
+  --accent:#5b5320; --night:#46411d;
+  --display:"Tulpen One","Jost",sans-serif;
   --hh:56px; --tab:62px; --safe-b:env(safe-area-inset-bottom,0px); --gut:20px;
   --font:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:6px; --r-sm:4px;
@@ -109,7 +110,7 @@ CSS = r"""
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
@@ -205,7 +206,7 @@ h3{font-size:18px;font-weight:500}
 }
 
 /* home sections */
-.promo{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;border-radius:var(--r);padding:28px 24px}
+.promo{background:url(assets/img/art/sprig-2-d.png) right -60px bottom -40px/340px auto no-repeat,var(--night);color:#fff;border-radius:var(--r);padding:28px 24px}
 .promo p{color:rgba(255,255,255,.75);margin:8px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
 @media (min-width:900px){.promo{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:44px 48px}.promo p{margin-bottom:0}}
@@ -228,14 +229,14 @@ h3{font-size:18px;font-weight:500}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:rgba(255,248,236,.66);font-size:14px;padding-block:32px 40px}
+footer{background:url(assets/img/art/border-d.png) center top/auto 70px repeat-x,var(--night);padding-top:96px!important;color:rgba(255,248,236,.66);font-size:14px;padding-block:32px 40px}
 footer .wrap{display:grid;gap:16px}
 footer .brand{color:#fff}
 footer nav{display:flex;flex-wrap:wrap;gap:2px 20px}
 footer nav a{color:#fff8ec;padding:6px 0}
 
 /* page heads and sticky section tabs */
-.phead{padding-block:28px 22px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.phead{padding-block:28px 22px;background:url(assets/img/art/sprig-2-d.png) right -80px center/auto 170% no-repeat,url(assets/img/art/sprig-1-d.png) left -120px center/auto 150% no-repeat,var(--night);color:#fff}
 .phead p{margin-top:6px;color:rgba(255,248,236,.72)}
 @media (min-width:900px){.phead{padding-block:48px 24px}}
 .chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(250,246,239,.95);
@@ -289,7 +290,7 @@ footer nav a{color:#fff8ec;padding:6px 0}
 }
 
 /* order page */
-.obar{padding:24px 0 20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.obar{padding:24px 0 20px;background:url(assets/img/art/sprig-1-d.png) left -120px center/auto 160% no-repeat,var(--night);color:#fff}
 .obar .demo{font-size:13px;color:rgba(255,248,236,.72);margin-top:4px}
 .obar .psum{border-color:transparent;color:var(--ink)}
 .psum{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);
@@ -317,7 +318,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .osec{padding-top:24px;scroll-margin-top:calc(var(--hh) + 60px)}
 .osec h2{font-size:20px;font-weight:500;margin-bottom:2px}
 @media (min-width:900px){
-  .obar{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;padding:32px 0}
+  .obar{background:url(assets/img/art/sprig-2-d.png) right -60px center/auto 170% no-repeat,url(assets/img/art/sprig-1-d.png) left -140px center/auto 150% no-repeat,var(--night);color:#fff;padding:32px 0}
   .obar .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
   .obar .demo{color:rgba(255,248,236,.66)}
   .psum,.ocontrols .phd,#pdone{display:none}
@@ -532,6 +533,27 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .promo a:not(.btn){color:#fff;text-decoration:underline;text-underline-offset:3px}
 @media (min-width:900px){.lps{grid-template-columns:1fr 1fr;gap:40px}.lp+.lp{padding-top:0;border-top:0;padding-left:40px;border-left:1px solid var(--line)}}
 
+
+/* menu-board theme: engraved flowers in the page margins, the board's tall lettering for headings */
+body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:contain}
+body::before{left:-90px;top:calc(var(--hh) + 10px);width:460px;height:280px;background-image:url(assets/img/art/sprig-1-l.png)}
+body::after{right:-80px;bottom:calc(var(--tab) + 10px);width:500px;height:280px;background-image:url(assets/img/art/sprig-2-l.png);background-position:right bottom}
+@media (min-width:900px){body::after{bottom:-10px}}
+h1,.phead h1,.hero h1{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:1}
+.phead h1,.obar h1{font-size:64px}
+.hero h1{font-size:84px}
+.osec h2,.mban h2,.panel>h2,.panel h2,.sec h2,.promo h2,.app h2{font-family:var(--display);font-weight:400;font-size:46px;line-height:1;letter-spacing:.01em}
+.osec h2{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.osec h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+.msub{font-family:var(--display);font-size:38px;font-weight:400;color:var(--accent)}
+.msub i{font:normal 13px/1 var(--font);color:var(--accent)}
+.mi .n{text-transform:uppercase;letter-spacing:.12em;font-size:14px;font-weight:500;color:var(--ink)}
+.mi .p{font-weight:500}
+.brand .wm{display:block;height:42px;width:auto;border:0!important;border-radius:0!important}
+.top.over:not(.solid) .brand .wm{filter:brightness(0) invert(1)}
+footer .brand .wm{height:44px}
+.hero .hwm{width:min(300px,70vw);height:auto;margin-bottom:10px}
+@media (min-width:900px){.phead h1,.obar h1{font-size:80px}.osec h2,.mban h2,.panel h2,.sec h2{font-size:54px}}
 """
 
 JS = r"""
@@ -739,7 +761,7 @@ if(!want&&navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>{con
   segs.forEach(x=>x.classList.toggle('is-near',x.dataset.store===n.id));if(n.id!==state.store)setStore(n.id)},()=>{},{timeout:10000,maximumAge:600000});
 """
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tulpen+One&display=swap">'
 
 def page(title, desc, body, is_index=False, extra_js=""):
     head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#faf6ef">'
@@ -765,12 +787,12 @@ def header(current="home", over=False):
     cur = lambda k: ' aria-current="page"' if k == current else ""
     links = "".join(f'<a href="{h}"{cur(k)}>{"Join our Rewards Program" if k == "rewards" else t}</a>' for k, t, h in NAV if k != "order")
     tabs = "".join(f'<a href="{h}"{cur(k)}><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[k]}</svg>{t}</a>' for k, t, h in NAV)
-    return (f'<header class="top{" over" if over else ""}"><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32">Misree Chai</a>'
+    return (f'<header class="top{" over" if over else ""}"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark.png" alt="Misree Chai" width="404" height="219"></a>'
             f'<nav class="nav" aria-label="Main">{links}</nav><a class="btn" href="order.html"{cur("order")}>Order Online</a></div></header>'
             f'<nav class="tabbar" aria-label="Main">{tabs}</nav>')
 
 def footer():
-    return (f'<footer><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32" loading="lazy">Misree Chai</a>'
+    return (f'<footer><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark-light.png" alt="Misree Chai" width="404" height="219" loading="lazy"></a>'
             f'<nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a>'
             f'<a href="{INSTA}" target="_blank" rel="noopener">Instagram</a><a href="{DOORDASH}" target="_blank" rel="noopener">DoorDash</a><a href="{UBER}" target="_blank" rel="noopener">Uber Eats</a></nav>'
             f'<p>Jersey City &amp; Jackson Heights. Prices are from the cafe\'s in-store menu and may change. Photos are styled representations.</p></div></footer>')
@@ -794,7 +816,7 @@ def build_index():
     body = f'''{header("home", over=True)}
 <main>
 <section class="hero"><img src="{img("chai-pour")}" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high">
-<div class="wrap"><img class="hlogo" src="assets/img/logo.png" alt="" width="64" height="64"><h1>Misree Chai</h1>
+<div class="wrap"><h1><img class="hwm" src="assets/img/art/wordmark-light.png" alt="Misree Chai" width="404" height="219"></h1>
 <p class="lede">Chai house and crepe bar in Jersey City and Jackson Heights.</p>
 <div class="ctas"><a class="btn" href="order.html">Order pickup</a><a class="btn ghost" href="menu.html">View menu</a></div></div></section>
 <section class="sec-pad"><div class="wrap"><div class="panel intro"><p class="eyebrow">Welcome</p>
@@ -829,7 +851,7 @@ def build_menu():
         lists = ""
         for sl in slugs:
             c = BYSLUG[sl]
-            sub = f'<h3 class="msub" id="{sl}">{c["name"]}</h3>' if len(slugs) > 1 else ""
+            sub = f'<h3 class="msub" id="{sl}"><i aria-hidden="true">✦</i>{c["name"]}<i aria-hidden="true">✦</i></h3>' if len(slugs) > 1 else ""
             rows = "".join(f'<li><button class="mi" type="button" data-qv data-title="{esc(n)}" data-price="${p}" data-img="{img(im) if im else ''}" data-desc="{esc(d)}">'
                            f'<span class="mt"><span class="n">{n}</span><span class="dots"></span><span class="p">${p}</span></span>{f"<small>{d}</small>" if d else ""}</button></li>' for n, p, im, d, _ in items_of(c))
             lists += f'{sub}<ul class="mlist">{rows}</ul>'
