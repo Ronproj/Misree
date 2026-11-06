@@ -1,9 +1,10 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Visit · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#faf6ef"><meta name="description" content="Find Misree Chai in Jersey City and Jackson Heights: maps and directions."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"><style>
-/* Misree Chai: one small system. Warm white, near-black ink, olive accent from the logo.
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Visit · Misree Chai</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#faf6ef"><meta name="description" content="Find Misree Chai in Jersey City and Jackson Heights: maps and directions."><meta property="og:image" content="assets/img/chai-pour.jpg"><link rel="icon" href="assets/img/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tulpen+One&display=swap"><style>
+/* Misree Chai: one small system, themed on the cafe's menu board: cream paper, olive ink, pale engraved flowers.
    Type: 34/24/18/16/14. Radius: 16 cards, 12 controls. Spacing on an 4px grid. Mobile first. */
 :root{
-  --bg:#faf6ef; --surface:#ffffff; --soft:#f2ece2; --ink:#221a14; --muted:#6b6258; --line:#e9e1d4; --line-2:#d9cfc0;
-  --accent:#5f5820; --night:#221a14;
+  --bg:#f6f2e6; --surface:#fffdf8; --soft:#efe9d8; --ink:#2f2b14; --muted:#6c6748; --line:#e7e0cc; --line-2:#d5ccb1;
+  --accent:#5b5320; --night:#46411d;
+  --display:"Tulpen One","Jost",sans-serif;
   --hh:56px; --tab:62px; --safe-b:env(safe-area-inset-bottom,0px); --gut:20px;
   --font:"Jost",system-ui,-apple-system,"Segoe UI",sans-serif;
   --r:6px; --r-sm:4px;
@@ -12,7 +13,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hh) + 64px)}
-body{margin:0;background:var(--bg) url(assets/img/wallpaper.svg) repeat;background-size:120px 170px;color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;
   padding-bottom:calc(var(--tab) + var(--safe-b));-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
@@ -108,7 +109,7 @@ h3{font-size:18px;font-weight:500}
 }
 
 /* home sections */
-.promo{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;border-radius:var(--r);padding:28px 24px}
+.promo{background:url(assets/img/art/sprig-2-d.png) right -60px bottom -40px/340px auto no-repeat,var(--night);color:#fff;border-radius:var(--r);padding:28px 24px}
 .promo p{color:rgba(255,255,255,.75);margin:8px 0 20px}
 .promo .btn{background:#fff;color:var(--ink)}
 @media (min-width:900px){.promo{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:44px 48px}.promo p{margin-bottom:0}}
@@ -131,14 +132,14 @@ h3{font-size:18px;font-weight:500}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
 @media (min-width:760px){.locs{grid-template-columns:1fr 1fr;gap:20px}}
 
-footer{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:rgba(255,248,236,.66);font-size:14px;padding-block:32px 40px}
+footer{background:url(assets/img/art/border-d.png) center top/auto 70px repeat-x,var(--night);padding-top:96px!important;color:rgba(255,248,236,.66);font-size:14px;padding-block:32px 40px}
 footer .wrap{display:grid;gap:16px}
 footer .brand{color:#fff}
 footer nav{display:flex;flex-wrap:wrap;gap:2px 20px}
 footer nav a{color:#fff8ec;padding:6px 0}
 
 /* page heads and sticky section tabs */
-.phead{padding-block:28px 22px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.phead{padding-block:28px 22px;background:url(assets/img/art/sprig-2-d.png) right -80px center/auto 170% no-repeat,url(assets/img/art/sprig-1-d.png) left -120px center/auto 150% no-repeat,var(--night);color:#fff}
 .phead p{margin-top:6px;color:rgba(255,248,236,.72)}
 @media (min-width:900px){.phead{padding-block:48px 24px}}
 .chips{position:sticky;top:calc(var(--hh) + env(safe-area-inset-top,0px));z-index:20;background:rgba(250,246,239,.95);
@@ -192,7 +193,7 @@ footer nav a{color:#fff8ec;padding:6px 0}
 }
 
 /* order page */
-.obar{padding:24px 0 20px;background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff}
+.obar{padding:24px 0 20px;background:url(assets/img/art/sprig-1-d.png) left -120px center/auto 160% no-repeat,var(--night);color:#fff}
 .obar .demo{font-size:13px;color:rgba(255,248,236,.72);margin-top:4px}
 .obar .psum{border-color:transparent;color:var(--ink)}
 .psum{display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);
@@ -220,7 +221,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .osec{padding-top:24px;scroll-margin-top:calc(var(--hh) + 60px)}
 .osec h2{font-size:20px;font-weight:500;margin-bottom:2px}
 @media (min-width:900px){
-  .obar{background:var(--night) url(assets/img/wallpaper-dark.svg);background-size:120px 170px;color:#fff;padding:32px 0}
+  .obar{background:url(assets/img/art/sprig-2-d.png) right -60px center/auto 170% no-repeat,url(assets/img/art/sprig-1-d.png) left -140px center/auto 150% no-repeat,var(--night);color:#fff;padding:32px 0}
   .obar .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:32px}
   .obar .demo{color:rgba(255,248,236,.66)}
   .psum,.ocontrols .phd,#pdone{display:none}
@@ -239,6 +240,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
   .ogrid .row{grid-template-columns:minmax(0,1fr) 104px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:border-color .15s,box-shadow .15s}
   .ogrid .row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(34,26,20,.08)}
   .ogrid .row img{width:104px;height:104px}
+  .ogrid .row.noph{min-height:104px}
   .ogrid .row .txt{align-self:stretch;display:flex;flex-direction:column}
   .ogrid .row .p{margin-top:auto;padding-top:6px}
 }
@@ -272,6 +274,26 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .form{display:grid;gap:14px;padding-bottom:8px}
 .paybox{display:grid;gap:8px;padding:14px;border:1px dashed var(--line-2);border-radius:var(--r-sm);font-size:14px;color:var(--muted)}
 .paybox .rowx{display:grid;grid-template-columns:1fr 96px;gap:8px}
+.payc{display:grid;gap:14px;margin-top:4px;padding-top:16px;border-top:1px solid var(--line)}
+.payc .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;font-weight:500;color:var(--ink)}
+.payc .hd span{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--muted)}
+.payc .hd svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.payc .rowx{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.ccf{position:relative;height:48px;padding:0 14px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-sm);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.ccf.focus{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.ccf.bad{border-color:#b3261e}
+.ccf iframe{display:block;width:100%!important;height:46px!important;border:0}
+.payc .hint{margin-top:-6px;font-size:13px;color:#b3261e}
+.payc .clover-footer{display:flex!important;align-items:center;justify-content:space-between;gap:8px;padding:0!important;background:none!important;border-radius:0!important;text-align:left!important}
+.payc .clover-footer *{font-family:inherit!important;font-size:12px!important;font-weight:400!important;color:var(--muted)!important}
+.payc .clover-secure-payments{display:inline-flex!important;align-items:center;gap:4px;line-height:1!important}
+.payc .clover-footer img{display:inline-block!important;margin:0!important;max-width:none!important;width:auto!important;height:12px!important}
+.payc .clover-footer .clover-privacy-link{text-decoration:underline}
+.err{color:#b3261e;font-size:14px}
+.ogrid .row.noph,.row.noph{grid-template-columns:minmax(0,1fr) auto;align-items:end}
+.row.noph .ph{width:auto;height:auto}
+.row.noph .add{position:static;display:grid;width:36px;height:36px;background:var(--soft);box-shadow:none}
+.row.noph .qtyb{left:auto;right:28px;top:-8px}
 .done{text-align:center;padding:20px 0 8px}
 .done .tick{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:24px}
 .done h3{font-size:22px;font-weight:400;margin-bottom:6px}
@@ -414,7 +436,28 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .promo a:not(.btn){color:#fff;text-decoration:underline;text-underline-offset:3px}
 @media (min-width:900px){.lps{grid-template-columns:1fr 1fr;gap:40px}.lp+.lp{padding-top:0;border-top:0;padding-left:40px;border-left:1px solid var(--line)}}
 
-</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32">Misree Chai</a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="rewards.html">Join our Rewards Program</a><a href="visit.html" aria-current="page">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="rewards.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
+
+/* menu-board theme: engraved flowers in the page margins, the board's tall lettering for headings */
+body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:contain}
+body::before{left:-90px;top:calc(var(--hh) + 10px);width:460px;height:280px;background-image:url(assets/img/art/sprig-1-l.png)}
+body::after{right:-80px;bottom:calc(var(--tab) + 10px);width:500px;height:280px;background-image:url(assets/img/art/sprig-2-l.png);background-position:right bottom}
+@media (min-width:900px){body::after{bottom:-10px}}
+h1,.phead h1,.hero h1{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:1}
+.phead h1,.obar h1{font-size:64px}
+.hero h1{font-size:84px}
+.osec h2,.mban h2,.panel>h2,.panel h2,.sec h2,.promo h2,.app h2{font-family:var(--display);font-weight:400;font-size:46px;line-height:1;letter-spacing:.01em}
+.osec h2{display:flex;align-items:center;gap:14px;color:var(--accent)}
+.osec h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+.msub{font-family:var(--display);font-size:38px;font-weight:400;color:var(--accent)}
+.msub i{font:normal 13px/1 var(--font);color:var(--accent)}
+.mi .n{text-transform:uppercase;letter-spacing:.12em;font-size:14px;font-weight:500;color:var(--ink)}
+.mi .p{font-weight:500}
+.brand .wm{display:block;height:42px;width:auto;border:0!important;border-radius:0!important}
+.top.over:not(.solid) .brand .wm{filter:brightness(0) invert(1)}
+footer .brand .wm{height:44px}
+.hero .hwm{width:min(300px,70vw);height:auto;margin-bottom:10px}
+@media (min-width:900px){.phead h1,.obar h1{font-size:80px}.osec h2,.mban h2,.panel h2,.sec h2{font-size:54px}}
+</style></head><body><header class="top"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark.png" alt="Misree Chai" width="404" height="219"></a><nav class="nav" aria-label="Main"><a href="index.html">Home</a><a href="menu.html">Menu</a><a href="rewards.html">Join our Rewards Program</a><a href="visit.html" aria-current="page">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="rewards.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav><main>
 <div class="phead"><div class="wrap"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div></div>
 <div class="wrap"><div class="ltabs" role="tablist" aria-label="Choose a location"><button type="button" role="tab" class="loc-tab" aria-selected="true" data-loc="jersey-city" data-embed="https://www.google.com/maps?q=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306&z=16&output=embed" data-dir="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" data-l1="789 Newark Ave" data-l2="Jersey City, NJ 07306" data-phone="(856) 210-2029" data-name="Jersey City">Jersey City</button><button type="button" role="tab" class="loc-tab" aria-selected="false" data-loc="jackson-heights" data-embed="https://www.google.com/maps?q=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372&z=16&output=embed" data-dir="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372" data-l1="72-35 Broadway" data-l2="Jackson Heights, NY 11372" data-phone="" data-name="Jackson Heights">Jackson Heights</button></div>
 <div class="bigmap"><div class="map-fallback"><img src="assets/img/sm/cafe-interior.jpg" alt=""><span>The live Google Map loads here on the published site.</span></div>
@@ -422,17 +465,19 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 <div class="card mapinfo"><div><h3 id="loc-name">Misree Chai · Jersey City</h3><p id="loc-l1">789 Newark Ave, Jersey City, NJ 07306</p><p id="loc-meta">Open daily · (856) 210-2029</p></div>
 <div class="acts"><a class="btn sec" id="loc-dir" href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" target="_blank" rel="noopener">Directions</a><a class="btn" id="loc-order" href="order.html?store=jersey-city">Order pickup</a></div></div></div>
 <section class="sec-pad"><div class="wrap"><div class="panel"><div class="shead"><h2>Inside Misree</h2><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a></div><div class="rail strip"><img src="assets/img/sm/cafe-interior.jpg" alt="" loading="lazy" width="520" height="650"><img src="assets/img/sm/chai-cheers.jpg" alt="" loading="lazy" width="520" height="650"><img src="assets/img/sm/masala-chai.jpg" alt="" loading="lazy" width="520" height="650"><img src="assets/img/sm/triple-chocolate-crepe.jpg" alt="" loading="lazy" width="520" height="650"><img src="assets/img/sm/taro-milk-tea.jpg" alt="" loading="lazy" width="520" height="650"><img src="assets/img/sm/bun-maska.jpg" alt="" loading="lazy" width="520" height="650"></div></div></div></section>
-</main><footer><div class="wrap"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="" width="32" height="32" loading="lazy">Misree Chai</a><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Jersey City &amp; Jackson Heights. Prices are from the cafe's online ordering menu and may change. Photos are styled representations.</p></div></footer><script>
+</main><footer><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark-light.png" alt="Misree Chai" width="404" height="219" loading="lazy"></a><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Jersey City &amp; Jackson Heights. Prices are from the cafe's in-store menu and may change. Photos are styled representations.</p></div></footer><script>
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
-// menu + order chips scrollspy
-const chips=document.querySelectorAll('.chips a, .oside a');
-if(chips.length){
-  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;
-    chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===e.target.id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
-      const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})}),{rootMargin:'-18% 0px -72% 0px'});
-  document.querySelectorAll('[data-sec]').forEach(s=>spy.observe(s));
-}
+// menu + order chips scrollspy (armSpy runs again after the order page swaps in a live menu)
+let spy;function armSpy(){const chips=document.querySelectorAll('.chips a, .oside a');if(!chips.length)return;
+  // the current section is the last one whose top has passed just under the sticky header and tabs
+  const secs=[...document.querySelectorAll('[data-sec]')];let curId=null;
+  const pick=()=>{const line=innerHeight*.28;let id=secs[0]&&secs[0].id;for(const s of secs){if(s.getBoundingClientRect().top<=line)id=s.id;else break}
+    if(id===curId)return;curId=id;chips.forEach(a=>{const on=a.getAttribute('href').slice(1)===id;a.toggleAttribute('aria-current',on);if(on)a.setAttribute('aria-current','true');
+      const w=a.parentElement;if(on&&w.scrollWidth>w.clientWidth)w.scrollTo({left:a.offsetLeft-w.clientWidth/2+a.clientWidth/2,behavior:'smooth'})})};
+  let raf=0;const on=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;pick()})};
+  spy&&removeEventListener('scroll',spy);spy=on;addEventListener('scroll',on,{passive:true});pick()}
+armSpy();
 // visit page location switcher
 const ltabs=document.querySelectorAll('.loc-tab');
 ltabs.forEach(t=>t.addEventListener('click',()=>{const d=t.dataset;ltabs.forEach(x=>x.setAttribute('aria-selected',x===t));
@@ -447,7 +492,7 @@ if(qv){
   let last=null;const close=()=>{qv.hidden=true;document.body.style.overflow='';last&&last.focus()};
   document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click()}}));
   document.querySelectorAll('[data-qv]').forEach(c=>c.addEventListener('click',()=>{last=c;const d=c.dataset;
-    qv.querySelector('img').src=d.img;qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
+    const qi=qv.querySelector('img');qi.hidden=!d.img;if(d.img)qi.src=d.img;qv.querySelector('h3').textContent=d.title;qv.querySelector('.price').textContent=d.price;
     qv.querySelector('.desc').textContent=d.desc||'';qv.hidden=false;document.body.style.overflow='hidden';qv.querySelector('.close').focus()}));
   qv.addEventListener('click',e=>{if(e.target===qv)close()});qv.querySelector('.close').addEventListener('click',close);
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!qv.hidden)close()});
