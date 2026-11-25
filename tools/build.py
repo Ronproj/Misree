@@ -9,9 +9,9 @@ ARTIFACT = "--artifact" in sys.argv
 
 LOCATIONS = [
     dict(id="jersey-city", name="Jersey City", line1="789 Newark Ave", line2="Jersey City, NJ 07306",
-         query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029", tax=0.06625, lat=40.7353, lng=-74.0617),
+         query="Misree Chai, 789 Newark Ave, Jersey City, NJ 07306", phone="(856) 210-2029", photo="store-jersey-city", tax=0.06625, lat=40.7353, lng=-74.0617),
     dict(id="jackson-heights", name="Jackson Heights", line1="72-35 Broadway", line2="Jackson Heights, NY 11372",
-         query="Misree Chai NY, 72-35 Broadway, Jackson Heights, NY 11372", phone="", tax=0.08875, lat=40.7467, lng=-73.8935),
+         query="Misree Chai NY, 72-35 Broadway, Jackson Heights, NY 11372", phone="(347) 448-6367", photo="store-jackson-heights", tax=0.08875, lat=40.7467, lng=-73.8935),
 ]
 for L in LOCATIONS:
     L["embed"] = f"https://www.google.com/maps?q={quote_plus(L['query'])}&z=16&output=embed"
@@ -200,7 +200,7 @@ h3{font-size:18px;font-weight:500}
   .rail{display:grid;overflow:visible;margin:0;padding:0;gap:20px}
   .rail.cats{grid-template-columns:repeat(6,1fr)}
   .rail.picks{grid-template-columns:repeat(4,1fr)}
-  .rail.strip{grid-template-columns:repeat(6,1fr)}
+  .rail.strip{grid-template-columns:repeat(5,1fr)}
   .cat,.pick{width:auto}
   .strip img{width:100%}
 }
@@ -526,6 +526,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 
 .lps{display:grid;gap:20px}
 .lp+.lp{padding-top:20px;border-top:1px solid var(--line)}
+.lp img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 40%;border-radius:var(--r-sm);margin-bottom:14px}
 .lp h3{font-size:18px;font-weight:500}
 .lp p{color:var(--muted);font-size:15px;margin-top:2px}
 .lp .lk{display:flex;gap:20px;margin-top:10px}
@@ -850,7 +851,7 @@ def footer():
 def loc_plain():
     def one(L):
         meta = f'Open daily · {L["phone"]}' if L["phone"] else "Open daily"
-        return (f'<div class="lp"><h3>{L["name"]}</h3><p>{L["line1"]}, {L["line2"]}</p><p>{meta}</p>'
+        return (f'<div class="lp"><img src="{sm(L["photo"])}" alt="Misree Chai storefront in {L["name"]}" loading="lazy" width="480" height="640"><h3>{L["name"]}</h3><p>{L["line1"]}, {L["line2"]}</p><p>{meta}</p>'
                 f'<p class="lk"><a href="{L["dir"]}" target="_blank" rel="noopener">Directions</a><a href="order.html?store={L["id"]}">Order pickup</a></p></div>')
     return f'<div class="lps">{"".join(one(L) for L in LOCATIONS)}</div>'
 
@@ -886,7 +887,7 @@ def build_index():
 QV = '''<div class="sheet" id="qv" hidden role="dialog" aria-modal="true" aria-labelledby="qv-t"><div class="box"><button class="close" type="button" aria-label="Close">✕</button><img src="" alt="">
 <div class="in"><h3 id="qv-t"></h3><p class="price"></p><p class="desc"></p></div><div class="bar"><a class="btn block" href="order.html">Order for pickup</a></div></div></div>'''
 
-MENU_BANNERS = {"drinks": "milk-tea-pour", "crepes": "crepe-griddle", "bowls": "nutella-acai-bowl", "bakery": "bun-maska"}
+MENU_BANNERS = {"drinks": "milk-tea-pour", "crepes": "ferrero-crepe", "bowls": "nutella-acai-bowl", "bakery": "bun-maska"}
 
 def item_row(n, p, im, d, attrs, add=False):
     extra = '<span class="add" aria-hidden="true">+</span><span class="qtyb" hidden></span>' if add else ""
@@ -957,14 +958,14 @@ def build_order():
     return page("Order Online · Misree Chai", "Order Misree Chai online for pickup in Jersey City or Jackson Heights.", body, extra_js=ORDER_JS)
 
 def build_visit():
-    strip = "".join(f'<img src="{sm(n)}" alt="" loading="lazy" width="520" height="650">' for n in ["cafe-interior", "chai-cheers", "masala-chai", "triple-chocolate-crepe", "taro-milk-tea", "bun-maska"])
+    strip = "".join(f'<img src="{sm(n)}" alt="" loading="lazy" width="520" height="650">' for n in ["cafe-counter", "store-jersey-city", "ferrero-crepe", "loaded-pancakes", "store-jackson-heights"])
     L0 = LOCATIONS[0]
     tabs = "".join(f'<button type="button" role="tab" class="loc-tab" aria-selected="{"true" if i == 0 else "false"}" data-loc="{L["id"]}" data-embed="{L["embed"]}" data-dir="{L["dir"]}" '
                    f'data-l1="{esc(L["line1"])}" data-l2="{esc(L["line2"])}" data-phone="{L["phone"]}" data-name="{L["name"]}">{L["name"]}</button>' for i, L in enumerate(LOCATIONS))
     body = f'''{header("visit")}<main>
 <div class="phead"><div class="wrap"><h1>Visit</h1><p>Two cafes, one menu. Pick a location for the map and directions.</p></div></div>
 <div class="wrap"><div class="ltabs" role="tablist" aria-label="Choose a location">{tabs}</div>
-<div class="bigmap"><div class="map-fallback"><img src="{sm("cafe-interior")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
+<div class="bigmap"><div class="map-fallback"><img src="{sm("cafe-counter")}" alt=""><span>The live Google Map loads here on the published site.</span></div>
 <iframe id="loc-map" src="{L0["embed"]}" title="Google Map showing Misree Chai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
 <div class="card mapinfo"><div><h3 id="loc-name">Misree Chai · {L0["name"]}</h3><p id="loc-l1">{L0["line1"]}, {L0["line2"]}</p><p id="loc-meta">Open daily · {L0["phone"]}</p></div>
 <div class="acts"><a class="btn sec" id="loc-dir" href="{L0["dir"]}" target="_blank" rel="noopener">Directions</a><a class="btn" id="loc-order" href="order.html?store={L0["id"]}">Order pickup</a></div></div></div>
