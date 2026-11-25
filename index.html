@@ -457,7 +457,27 @@ h1,.phead h1,.hero h1{font-family:var(--display);font-weight:400;letter-spacing:
 footer .brand .wm{height:44px}
 .hero .hwm{width:min(300px,70vw);height:auto;margin-bottom:10px}
 @media (min-width:900px){.phead h1,.obar h1{font-size:80px}.osec h2,.mban h2,.panel h2,.sec h2{font-size:54px}}
-</style></head><body><header class="top over"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark.png" alt="Misree Chai" width="404" height="219"></a><nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="menu.html">Menu</a><a href="rewards.html">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="rewards.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav>
+
+/* scroll motion: on only when the head script adds .motion (never for reduced motion or old browsers).
+   .rv fades and rises in, .rvi is a photo that unveils from the top, .px photos drift slowly as the page scrolls. */
+.motion .rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.motion .rv.in{opacity:1;transform:none}
+.motion .rvi{clip-path:inset(0 0 100% 0);scale:1.12;transition:clip-path 1.1s cubic-bezier(.65,0,.25,1),scale 1.5s cubic-bezier(.2,.7,.2,1),transform .4s;transition-delay:var(--d,0s),var(--d,0s),0s}
+.motion .rvi.in{clip-path:inset(0 0 0 0);scale:1}
+.motion .px{scale:1.16;will-change:translate}
+.motion .px.rvi{scale:1.3}
+.motion .px.rvi.in{scale:1.16}
+.mban{overflow:hidden}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+@keyframes settle{from{transform:scale(1.12)}}
+.motion .hero>img{animation:settle 2.2s cubic-bezier(.2,.7,.2,1) both}
+.motion .hero .wrap>*,.motion .phead .wrap>*,.motion .obar .wrap>div>h1{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.motion .hero .wrap>:nth-child(1){animation-delay:.25s}
+.motion .hero .wrap>:nth-child(2){animation-delay:.4s}
+.motion .hero .wrap>:nth-child(3){animation-delay:.55s}
+.motion .phead .wrap>:nth-child(2){animation-delay:.12s}
+.motion .hero .wrap{will-change:opacity,translate}
+</style><script>if('IntersectionObserver'in window&&matchMedia('(prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('motion')</script></head><body><header class="top over"><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark.png" alt="Misree Chai" width="404" height="219"></a><nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="menu.html">Menu</a><a href="rewards.html">Join our Rewards Program</a><a href="visit.html">Visit</a></nav><a class="btn" href="order.html">Order Online</a></div></header><nav class="tabbar" aria-label="Main"><a href="index.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a><a href="menu.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg>Menu</a><a href="order.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>Order</a><a href="rewards.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>Rewards</a><a href="visit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Visit</a></nav>
 <main>
 <section class="hero"><img src="assets/img/chai-pour.jpg" alt="Chai being poured into small glasses" width="1400" height="1054" fetchpriority="high">
 <div class="wrap"><h1><img class="hwm" src="assets/img/art/wordmark-light.png" alt="Misree Chai" width="404" height="219"></h1>
@@ -475,6 +495,30 @@ footer .brand .wm{height:44px}
 <p>Order ahead for pickup, or join our <a href="rewards.html">Rewards Program</a> to earn on every visit.</p></div><a class="btn" href="order.html">Start an order</a></div></div></section>
 <section class="sec-pad" style="padding-top:0"><div class="wrap"><div class="panel"><div class="shead"><h2>Visit us</h2><a href="visit.html">Map</a></div><div class="lps"><div class="lp"><h3>Jersey City</h3><p>789 Newark Ave, Jersey City, NJ 07306</p><p>Open daily · (856) 210-2029</p><p class="lk"><a href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai%2C+789+Newark+Ave%2C+Jersey+City%2C+NJ+07306" target="_blank" rel="noopener">Directions</a><a href="order.html?store=jersey-city">Order pickup</a></p></div><div class="lp"><h3>Jackson Heights</h3><p>72-35 Broadway, Jackson Heights, NY 11372</p><p>Open daily</p><p class="lk"><a href="https://www.google.com/maps/dir/?api=1&destination=Misree+Chai+NY%2C+72-35+Broadway%2C+Jackson+Heights%2C+NY+11372" target="_blank" rel="noopener">Directions</a><a href="order.html?store=jackson-heights">Order pickup</a></p></div></div></div></div></section>
 </main><footer><div class="wrap"><a class="brand" href="index.html" aria-label="Misree Chai home"><img class="wm" src="assets/img/art/wordmark-light.png" alt="Misree Chai" width="404" height="219" loading="lazy"></a><nav aria-label="More"><a href="menu.html">Menu</a><a href="order.html">Order pickup</a><a href="rewards.html">Rewards</a><a href="visit.html">Visit</a><a href="https://www.instagram.com/misreechai/" target="_blank" rel="noopener">Instagram</a><a href="https://www.doordash.com/store/misree-chai-jersey-city-33169529/" target="_blank" rel="noopener">DoorDash</a><a href="https://www.ubereats.com/store/misree-chai/WD4OQXx5XaaWosChalkFYA" target="_blank" rel="noopener">Uber Eats</a></nav><p>Jersey City &amp; Jackson Heights. Prices are from the cafe's in-store menu and may change. Photos are styled representations.</p></div></footer><script>
+// scroll motion (see the .motion styles): reveal blocks as they enter, drift photos, ease the home hero out
+if(document.documentElement.classList.contains('motion')){
+  const $$=q=>document.querySelectorAll(q);
+  const RV='.intro>.eyebrow,.intro>h2,.intro>p:not(.eyebrow),.tile,.split>div>*,.promo,.shead,.lp,.mban>div,.msub,.mlist>li,.note,.endcta,.rhero>div>*,.panel>h2,.steps li,.bigmap,.mapinfo,.strip img,footer .wrap>*';
+  const RVI='.split>img,.rhero>img,.mban img';
+  $$(RV).forEach(e=>e.classList.add('rv'));$$(RVI).forEach(e=>e.classList.add('rvi'));
+  $$('.mban img,.tile img').forEach(e=>e.classList.add('px'));
+  // a photo is watched through its frame, since its own clip hides it from the observer until it is shown
+  const show=(t,i)=>{t.style.setProperty('--d',Math.min(i*.08,.48)+'s');t.classList.add('in');setTimeout(()=>t.style.removeProperty('--d'),1600)};
+  const who=new Map(),io=new IntersectionObserver(es=>{let i=0;
+    es.filter(e=>e.isIntersecting).flatMap(e=>(io.unobserve(e.target),who.get(e.target)))
+      .sort((a,b)=>a.compareDocumentPosition(b)&2?1:-1).forEach(t=>show(t,i++))},{rootMargin:'0px 0px -6% 0px'});
+  $$('.rv,.rvi').forEach(e=>{const o=e.classList.contains('rvi')?e.parentElement:e;who.has(o)?who.get(o).push(e):(who.set(o,[e]),io.observe(o))});
+  // parallax: only for photos on screen, at most once a frame
+  const live=new Set(),pio=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?live.add(e.target):live.delete(e.target)));
+  $$('.px').forEach(e=>pio.observe(e));
+  const hero=document.querySelector('.hero'),himg=hero&&hero.querySelector('img'),htxt=hero&&hero.querySelector('.wrap');
+  let raf=0,done=0;const tick=()=>{raf=0;const vh=innerHeight;
+    // at the very bottom, show whatever is left (the last footer line can sit below the reveal line)
+    if(!done&&scrollY+vh>=document.documentElement.scrollHeight-4){done=1;let i=0;$$('.rv:not(.in),.rvi:not(.in)').forEach(t=>{if(t.getBoundingClientRect().top<vh)show(t,i++)})}
+    live.forEach(e=>{const r=e.parentElement.getBoundingClientRect(),p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2);e.style.translate=`0 ${(p*r.height*.07).toFixed(1)}px`});
+    if(hero){const y=scrollY,h=hero.offsetHeight;if(y<h){himg.style.translate=`0 ${(y*.35).toFixed(1)}px`;htxt.style.translate=`0 ${(y*-.12).toFixed(1)}px`;htxt.style.opacity=Math.max(0,1-y/(h*.6)).toFixed(3)}}};
+  const req=()=>{if(!raf)raf=requestAnimationFrame(tick)};addEventListener('scroll',req,{passive:true});addEventListener('resize',req);req();
+}
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy (armSpy runs again after the order page swaps in a live menu)

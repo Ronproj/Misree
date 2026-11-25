@@ -554,9 +554,53 @@ h1,.phead h1,.hero h1{font-family:var(--display);font-weight:400;letter-spacing:
 footer .brand .wm{height:44px}
 .hero .hwm{width:min(300px,70vw);height:auto;margin-bottom:10px}
 @media (min-width:900px){.phead h1,.obar h1{font-size:80px}.osec h2,.mban h2,.panel h2,.sec h2{font-size:54px}}
+
+/* scroll motion: on only when the head script adds .motion (never for reduced motion or old browsers).
+   .rv fades and rises in, .rvi is a photo that unveils from the top, .px photos drift slowly as the page scrolls. */
+.motion .rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.motion .rv.in{opacity:1;transform:none}
+.motion .rvi{clip-path:inset(0 0 100% 0);scale:1.12;transition:clip-path 1.1s cubic-bezier(.65,0,.25,1),scale 1.5s cubic-bezier(.2,.7,.2,1),transform .4s;transition-delay:var(--d,0s),var(--d,0s),0s}
+.motion .rvi.in{clip-path:inset(0 0 0 0);scale:1}
+.motion .px{scale:1.16;will-change:translate}
+.motion .px.rvi{scale:1.3}
+.motion .px.rvi.in{scale:1.16}
+.mban{overflow:hidden}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+@keyframes settle{from{transform:scale(1.12)}}
+.motion .hero>img{animation:settle 2.2s cubic-bezier(.2,.7,.2,1) both}
+.motion .hero .wrap>*,.motion .phead .wrap>*,.motion .obar .wrap>div>h1{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.motion .hero .wrap>:nth-child(1){animation-delay:.25s}
+.motion .hero .wrap>:nth-child(2){animation-delay:.4s}
+.motion .hero .wrap>:nth-child(3){animation-delay:.55s}
+.motion .phead .wrap>:nth-child(2){animation-delay:.12s}
+.motion .hero .wrap{will-change:opacity,translate}
 """
 
 JS = r"""
+// scroll motion (see the .motion styles): reveal blocks as they enter, drift photos, ease the home hero out
+if(document.documentElement.classList.contains('motion')){
+  const $$=q=>document.querySelectorAll(q);
+  const RV='.intro>.eyebrow,.intro>h2,.intro>p:not(.eyebrow),.tile,.split>div>*,.promo,.shead,.lp,.mban>div,.msub,.mlist>li,.note,.endcta,.rhero>div>*,.panel>h2,.steps li,.bigmap,.mapinfo,.strip img,footer .wrap>*';
+  const RVI='.split>img,.rhero>img,.mban img';
+  $$(RV).forEach(e=>e.classList.add('rv'));$$(RVI).forEach(e=>e.classList.add('rvi'));
+  $$('.mban img,.tile img').forEach(e=>e.classList.add('px'));
+  // a photo is watched through its frame, since its own clip hides it from the observer until it is shown
+  const show=(t,i)=>{t.style.setProperty('--d',Math.min(i*.08,.48)+'s');t.classList.add('in');setTimeout(()=>t.style.removeProperty('--d'),1600)};
+  const who=new Map(),io=new IntersectionObserver(es=>{let i=0;
+    es.filter(e=>e.isIntersecting).flatMap(e=>(io.unobserve(e.target),who.get(e.target)))
+      .sort((a,b)=>a.compareDocumentPosition(b)&2?1:-1).forEach(t=>show(t,i++))},{rootMargin:'0px 0px -6% 0px'});
+  $$('.rv,.rvi').forEach(e=>{const o=e.classList.contains('rvi')?e.parentElement:e;who.has(o)?who.get(o).push(e):(who.set(o,[e]),io.observe(o))});
+  // parallax: only for photos on screen, at most once a frame
+  const live=new Set(),pio=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?live.add(e.target):live.delete(e.target)));
+  $$('.px').forEach(e=>pio.observe(e));
+  const hero=document.querySelector('.hero'),himg=hero&&hero.querySelector('img'),htxt=hero&&hero.querySelector('.wrap');
+  let raf=0,done=0;const tick=()=>{raf=0;const vh=innerHeight;
+    // at the very bottom, show whatever is left (the last footer line can sit below the reveal line)
+    if(!done&&scrollY+vh>=document.documentElement.scrollHeight-4){done=1;let i=0;$$('.rv:not(.in),.rvi:not(.in)').forEach(t=>{if(t.getBoundingClientRect().top<vh)show(t,i++)})}
+    live.forEach(e=>{const r=e.parentElement.getBoundingClientRect(),p=(r.top+r.height/2-vh/2)/(vh/2+r.height/2);e.style.translate=`0 ${(p*r.height*.07).toFixed(1)}px`});
+    if(hero){const y=scrollY,h=hero.offsetHeight;if(y<h){himg.style.translate=`0 ${(y*.35).toFixed(1)}px`;htxt.style.translate=`0 ${(y*-.12).toFixed(1)}px`;htxt.style.opacity=Math.max(0,1-y/(h*.6)).toFixed(3)}}};
+  const req=()=>{if(!raf)raf=requestAnimationFrame(tick)};addEventListener('scroll',req,{passive:true});addEventListener('resize',req);req();
+}
 const over=document.querySelector('.top.over');
 if(over){const f=()=>over.classList.toggle('solid',scrollY>40);addEventListener('scroll',f,{passive:true});f()}
 // menu + order chips scrollspy (armSpy runs again after the order page swaps in a live menu)
@@ -766,9 +810,12 @@ if(!want&&navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>{con
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Tulpen+One&display=swap">'
 
+# Turns scroll motion on before first paint, so revealed blocks never flash; skipped for reduced motion and browsers without IntersectionObserver.
+MOTION_ON = "<script>if('IntersectionObserver'in window&&matchMedia('(prefers-reduced-motion: no-preference)').matches)document.documentElement.classList.add('motion')</script>"
+
 def page(title, desc, body, is_index=False, extra_js=""):
     head = (f'<title>{title}</title><meta name="claude:viewport-fit-sides" content="cover"><meta name="theme-color" content="#faf6ef">'
-            f'<meta name="description" content="{esc(desc)}"><meta property="og:image" content="{img("chai-pour")}"><link rel="icon" href="assets/img/logo.png">{FONTS}<style>{CSS}</style>')
+            f'<meta name="description" content="{esc(desc)}"><meta property="og:image" content="{img("chai-pour")}"><link rel="icon" href="assets/img/logo.png">{FONTS}<style>{CSS}</style>{MOTION_ON}')
     tail = f'<script>{JS}{extra_js}</script>'
     if ARTIFACT and is_index:
         return head + body + tail
